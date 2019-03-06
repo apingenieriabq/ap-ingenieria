@@ -9,18 +9,17 @@ class Colaboradores extends ModeloDatos {
     }
     $Colaborador = $this->porID($colaboradorID);
     if(!empty($Colaborador)){
-      $Colaborador->Cargo = new Cargos($this->colaboradorID);
-      $Colaborador->Persona = new Personas($this->colaboradorID);
-      $Colaborador->JefeInmediato = new Colaboradores($this->colaboradorJEFEINMEDIATO);
+      $this->JefeInmediato = new Colaboradores($this->colaboradorJEFEINMEDIATO);
     }
-    return $Colaborador;
+    return $this;
    }
 
   public function __construct($colaboradorID = null) {
-    $this->nombreTabla = 'Colaboradores';
-    $this->nombreCampoID = 'colaboradorID';
-    $this->colaboradorID = $colaboradorID;
-    $this->datos();
+    parent::__construct('Colaboradores', 'colaboradorID', $colaboradorID);
+    if(!is_null($colaboradorID)){
+      $this->Cargo = new Cargos($this->cargoID);
+      $this->Persona = new Personas($this->personaID);
+    }
   }
 
 }

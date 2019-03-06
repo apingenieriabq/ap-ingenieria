@@ -36,22 +36,23 @@ $app->add(function ($request, $response, $next) {
     $uri = $request->getUri();
     $ruta = $uri->getPath();
     $response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
+    // $response = $response->withHeader('Content-type', 'text/html; charset=utf-8');
 
+    if ( $ruta === '/') {
+    //     if( !$errorAPI ){
+    //          $response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
+    //     }else{
+            $response = $response->withHeader('Content-type', 'text/html; charset=utf-8');
+        // }
+    // } else {
+    //     $response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
+    }
     // $myvar1 = $req->getParam('myvar'); //checks both _GET and _POST [NOT PSR-7 Compliant]
     // $myvar2 = $req->getParsedBody()['myvar']; //checks _POST  [IS PSR-7 compliant]
     // $myvar3 = $req->getQueryParams()['myvar']; //checks _GET [IS PSR-7 compliant]
 
     $response = $next($request, $response);
 
-    // if ( $ruta === '/') {
-        if( !$errorAPI ){
-             $response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
-        }else{
-            $response = $response->withHeader('Content-type', 'text/html; charset=utf-8');
-        }
-    // } else {
-    //     $response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
-    // }
 
     Usuario::registrarPosicion();
     return $response;
@@ -62,9 +63,15 @@ $app->add(function ($request, $response, $next) {
 // $app->add(new RKA\Middleware\IpAddress($checkProxyHeaders, $trustedProxies));
 $app->map(['GET', 'POST'], '/{componente}/{controlador}/{operacion}', function ($request, $response, $args) {
 
+    // echo "<p>Hola {$_SERVER['PHP_AUTH_USER']}.</p>";
+    // echo "<p>Introdujo {$_SERVER['PHP_AUTH_PW']} como su contraseña.</p>";
+    // echo "<p>El sistema tiene registrado el usuaurio:</p>";
+    // print_r(Usuario::sesionActiva());
+
     $componente = $request->getAttribute('componente');
     $controlador = $request->getAttribute('controlador');
     $operacion = $request->getAttribute('operacion');
+    // echo "<br />VAmos a ejeuctar la funcion en el motor.";
     $errorAPI = Motor::procesar($componente, $controlador, $operacion);
     if(!$errorAPI){
          echo json_encode( SesionCliente::valor('ERROR') );

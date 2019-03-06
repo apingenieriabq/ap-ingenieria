@@ -2,28 +2,49 @@
 if (!defined('CLAVE_SECRETA')) die('acceso no autorizado');
 class ModeloDatos {
 
-    var $nombreTabla;
-    var $nombreCampoID;
+  protected $nombreTabla;
+  protected $nombreCampoID;
+
+  public function __construct($nombreTabla, $nombreCampoID, $valorCampoID = null) {
+
+    // echo "<br />Dentro del Modelo [".$nombreTabla."] -> ".$valorCampoID;
+    $this->nombreTabla = $nombreTabla;
+    $this->nombreCampoID = $nombreCampoID;
+    $this->{$nombreCampoID} = null;
+    if(!is_null($valorCampoID)){
+        // krumo($this);
+        // echo "<br />Se va a asignar la variable [".$nombreCampoID."] es valor -> ".$valorCampoID;
+        $this->{$nombreCampoID} = $valorCampoID;
+        // echo "<br />Se asigno a la variable [".$nombreCampoID."] es valor -> ".$this->$nombreCampoID;
+        $this->datos();
+    }
+    // echo "<br />asi quedó el objeto de ID ".$valorCampoID;
+    // krumo($this);
+    return $this;
+  }
+
+
+
     function porID($valorCampoID){
         return $this->datos([$this->nombreCampoID=> $valorCampoID]);
     }
     public function datos($donde = null){
         if(is_null($donde)){
-            echo $valor = $this->nombreCampoID;
-            $donde = [
-                $this->nombreCampoID =>
-                $valor
-            ];
+            $nombreCampo = $this->nombreCampoID;
+            $valorCampo = $this->$nombreCampo;
+            $donde = [$nombreCampo =>$valorCampo];
+            // echo "<br />asi quedó el objeto donde ";
+            // krumo($donde);
         }
-         $datosRegistro = self::fila($donde);
-         if(count($datosRegistro)){
+        $datosRegistro = self::fila($donde);
+        if(count($datosRegistro)){
             foreach($datosRegistro as $variable => $dato){
-            //  echo $variable."  =  ".$dato. " <br />  ";
-             $this->$variable = $dato;
-         }
-            return (object) $datosRegistro;
-         }
-         return null;
+                //  echo $variable."  =  ".$dato. " <br />  ";
+                $this->$variable = $dato;
+            }
+            return $this;
+        }
+        return null;
 
     }
 

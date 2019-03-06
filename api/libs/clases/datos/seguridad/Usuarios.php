@@ -13,8 +13,6 @@ class Usuarios extends ModeloDatos {
     return $Usuario;
    }
 
-
-
   function porID($usuarioID = 0){
      return $this->datos(['usuarioID'=> $usuarioID]);
    }
@@ -47,14 +45,8 @@ class Usuarios extends ModeloDatos {
     );
   }
 
-  public function __construct($usuario = null, $contrasena = null) {
-    $this->nombreTabla = 'Usuarios';
-    $this->nombreCampoID = 'usuarioID';
-    if(!is_null($usuario) and is_null($contrasena) ):
-      $this->porID($usuario);
-    elseif(!is_null($usuario) and !is_null($contrasena) ):
-      $this->nuevo($usuario, $contrasena);
-    endif;
+  public function __construct($usuarioID = null) {
+    parent::__construct('Usuarios', 'usuarioID', $usuarioID);
   }
 
 }
