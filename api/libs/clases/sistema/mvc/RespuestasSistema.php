@@ -21,12 +21,15 @@ class RespuestasSistema {
         if(array_key_exists('IDLOG',$_SESSION) && !empty(SesionCliente::valor("IDLOG"))):
             Log::respuestaOperacion(SesionCliente::valor("IDLOG"), $respuesta, $mensaje);
         endif;
-        @session_write_close();
 
-        if( !empty(SesionCliente::valor('ERROR_BD')) ){
-          $mensaje .= "<br /><strong>___Datos para Soporte TICS___</strong><br /><em><small>" . SesionCliente::valor('ERROR_BD')."</small></em>";
-          SesionCliente::valor('ERROR_BD', '');
+        if(isset($_SESSION)){
+            @session_write_close();
         }
+
+        // if( !empty(SesionCliente::valor('ERROR_BD')) ){
+        //   $mensaje .= "<br /><strong>___Datos para Soporte TICS___</strong><br /><em><small>" . SesionCliente::valor('ERROR_BD')."</small></em>";
+        //   SesionCliente::valor('ERROR_BD', '');
+        // }
 
         if(!empty($mensaje)){
           $mensaje = "<em>".$mensaje."</em>";
@@ -40,7 +43,9 @@ class RespuestasSistema {
                 'ERROR' => $error
         );
 
-        if( $respuesta == self::ERROR ) SesionCliente::valor('ERROR', $arrayRespuesta);
+        //  SesionCliente::eliminar('ERROR');
+        // SesionCliente::valor('ERROR', '');
+        // if( $respuesta == self::ERROR ) SesionCliente::valor('ERROR', $arrayRespuesta);
         $jsonRespuesta = json_encode($arrayRespuesta);
         return $jsonRespuesta;
     }

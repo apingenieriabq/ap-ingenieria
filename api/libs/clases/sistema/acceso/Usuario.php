@@ -94,16 +94,15 @@ class Usuario {
   public static function iniciarSesion($nombreUsuario, $claveUsuario){
     $Usuarios = new Usuarios();
     $Usuarios->comprobar($nombreUsuario, $claveUsuario);
+    // print_r($Usuarios);
+    // die();
     if (isset($Usuarios->usuarioID)){
-      if($Usuarios->usuarioID === 0){
-        Usuario::comoInvitado();
-      }else{
         $Usuarios->datosCompletos();
-      }
-      if (!empty($Usuarios)) {
+        if($Usuarios->usuarioID === 0){
+          Usuario::comoInvitado();
+        }
         Usuario::abrirSesion($Usuarios);
         return true;
-      }
     }
     return false;
   }
@@ -156,21 +155,17 @@ class Usuario {
 
 
   public static function tienePermiso($codigoOperacion) {
-      $permisosDefault = [ 'iniciarSesion', 'cerrarSesion' ];
-      if (!in_array($codigoOperacion, $permisosDefault) and !empty(self::getUsuario())):
-          if(!Cliente::esAdministrador()):
-              if(ControlAcceso::porIp(self::getUsuario())):
-                  if(ControlAcceso::delUsaurioPorCodigoOperacion(self::dato('usuarioID'), $codigoOperacion)):
-                      return true;
-                  else:
-                      return false;
-                  endif;
-              else:
-                  return false;
-              endif;
-          else:
-              return true;
-          endif;
+      $permisosDefault = [ 'iniciarSesion', 'perfilUsuarioSeguridad', 'cerrarSesion' ];
+      if (!in_array($codigoOperacion, $permisosDefault)):
+        if(ControlAcceso::porIp(self::ip())):
+            if(ControlAcceso::delUsaurioPorCodigoOperacion(self::dato('usuarioID'), $codigoOperacion)):
+                return true;
+            else:
+                return false;
+            endif;
+        else:
+            return false;
+        endif;
       else:
           return true;
       endif;
@@ -207,6 +202,9 @@ class Usuario {
   }
   public static function usuarioNOMBRE() {
       return isset($_SESSION['USUARIO']) ? $_SESSION['USUARIO']->usuarioNOMBRE : null;
+  }
+  public static function usuarioESTADO() {
+      return isset($_SESSION['USUARIO']) ? $_SESSION['USUARIO']->usuarioESTADO : null;
   }
 
   public static function cargoID() {

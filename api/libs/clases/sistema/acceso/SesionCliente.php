@@ -80,6 +80,10 @@ error_reporting(0);
     }
 
     static public function destruir() {
+
+        // echo "<p>Hola {$_SERVER['PHP_AUTH_USER']}.</p>";
+        // echo "<p>Introdujo {$_SERVER['PHP_AUTH_PW']} como su contraseña.</p>";
+
         self::abrir();
         $_SESSION = array();
         $helper = array_keys($_SESSION);
@@ -88,6 +92,7 @@ error_reporting(0);
         }
         session_destroy();
         self::cerrar();
+
         header('WWW-Authenticate: Basic realm="Test Authentication System"');
         header('HTTP/1.0 401 Unauthorized');
         echo "Debes escribir un usuario y clave validos.\n";

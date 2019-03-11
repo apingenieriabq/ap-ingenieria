@@ -26,6 +26,7 @@ $app = new \Slim\App([
     ]
 ]);
 $errorAPI = false;
+$modoPRUEBA_SINSEGURIDAD = false;
 
 $app->add(function ($request, $response, $next) {
     global $errorAPI;
@@ -74,12 +75,12 @@ $app->map(['GET', 'POST'], '/{componente}/{controlador}/{operacion}', function (
     // echo "<br />VAmos a ejeuctar la funcion en el motor.";
     $errorAPI = Motor::procesar($componente, $controlador, $operacion);
     if(!$errorAPI){
-         echo json_encode( SesionCliente::valor('ERROR') );
+        echo Motor::$respuesta;
     }
     return $response;
 })->add( new ControlAutenticacion() );
 
-$app->get('/conectar', function ($request, $response, $args) {
+$app->map(['GET', 'POST'],'/conectar', function ($request, $response, $args) {
     return $response->write(
         RespuestasSistema::exito("Bienvenido al Api REST de la AP Ingenieria.", Usuario::sesionActiva() )
     );
@@ -92,7 +93,7 @@ $app->get('/sesionActiva', function ($request, $response, $args) {
 $app->get('/mostrarMenu', function ($request, $response, $args) {
     $errorAPI = Motor::procesar('seguridad', 'usuarios', 'mostrarMenu');
     if(!$errorAPI){
-         echo json_encode( SesionCliente::valor('ERROR') );
+         echo Motor::$respuesta;
     }
     return $response;
 })->add( new ControlAutenticacion() );
@@ -104,17 +105,18 @@ $app->get('/desconectar', function ($request, $response, $args) {
     return $response->write(
         RespuestasSistema::exito("Desconectado correctamente.")
     );
-})->add( new ControlAutenticacion('SALIR') );
+});//->add( new ControlAutenticacion('SALIR') );
 
 $app->get('/', function (Request $request,  Response $response, $args = []) {
     global $errorAPI;
 
     if(!Usuario::estaLogueado()){
+        Usuario::iniciarSesion('invitado','invitado');
         Usuario::comoInvitado();
     }
     $errorAPI = Motor::procesar('sistema', 'api', 'inicio');
     if(!$errorAPI){
-         echo json_encode( SesionCliente::valor('ERROR') );
+         echo Motor::$respuesta;
     }
     return $response;
 });

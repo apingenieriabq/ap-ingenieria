@@ -1,28 +1,34 @@
 <?php
-class Parametros
+class Parametros extends ModeloDatos
 {
-    public static function datos($parametroID)
-    {
-        $sqlQuery = ParametrosSQL::DATOS_COMPLETOS . " WHERE MAESTRASDB.Parametros.parametroID = ? ";
-        return MaestrasDB::selectUnaFila($sqlQuery, array($parametroID));
-    }
+
+
+  public function __construct($parametroID = null) {
+    parent::__construct('Parametros', 'parametroID', $parametroID);
+  }
+
+    // public static function datos($parametroID)
+    // {
+    //     $sqlQuery = ParametrosSQL::DATOS_COMPLETOS . " WHERE Parametros.parametroID = ? ";
+    //     return BasededatosAP::selectUnaFila($sqlQuery, array($parametroID));
+    // }
 
     public static function deLaAplicacion($aplicacionID)
     {
-        $sqlQuery = ParametrosSQL::DATOS_COMPLETOS . " WHERE MAESTRASDB.ParametrosAplicaciones.aplicacionID = ? ";
-        return MaestrasDB::selectVariasFilas($sqlQuery, array($aplicacionID));
+        $sqlQuery = ParametrosSQL::DATOS_COMPLETOS . " WHERE ParametrosAplicaciones.aplicacionID = ? ";
+        return BasededatosAP::selectVariasFilas($sqlQuery, array($aplicacionID));
     }
 
-    public static function todos()
-    {
-        $sqlQuery = ParametrosSQL::DATOS_COMPLETOS;
-        return MaestrasDB::selectVariasFilas($sqlQuery, array());
-    }
+    // public static function todos()
+    // {
+    //     $sqlQuery = ParametrosSQL::DATOS_COMPLETOS;
+    //     return BasededatosAP::selectVariasFilas($sqlQuery, array());
+    // }
 
     public static function valor($codigoParametro)
     {
-        $sqlQuery =  ParametrosSQL::DATOS_COMPLETOS . " WHERE MAESTRASDB.Parametros.parametroCODIGO = ?; ";
-        $Parametro = MaestrasDB::selectUnaFila($sqlQuery, array($codigoParametro));
+        $sqlQuery =  ParametrosSQL::DATOS_COMPLETOS . " WHERE Parametros.parametroCODIGO = ?; ";
+        $Parametro = BasededatosAP::selectUnaFila($sqlQuery, array($codigoParametro));
         switch ($Parametro->parametroTIPO) {
             case 'COLABORADOR':
                 return Colaboradores::porId($Parametro->parametroVALOR);
@@ -37,7 +43,7 @@ class Parametros
     public static function tipos()
     {
         $sqlQuery = ParametrosSQL::TIPOS_PARAMETROS;
-        $consulta = MaestrasDB::selectUnaFila($sqlQuery, array());
+        $consulta = BasededatosAP::selectUnaFila($sqlQuery, array());
         $tipos = explode("','", substr($consulta->Type, 6, -2));
         return $tipos;
     }
@@ -45,22 +51,19 @@ class Parametros
     public static function guardar($parametroTIPO, $parametroCODIGO, $parametroTITULO, $parametroDESCRIPCION, $parametroVALOR)
     {
         $sqlQuery = ParametrosSQL::CREAR_REGISTRO;
-        return MaestrasDB::insertFila(
-            $sqlQuery,
-            array(
-               $parametroTIPO, $parametroCODIGO, $parametroTITULO, $parametroDESCRIPCION, $parametroVALOR, Cliente::usuarioID()
-                )
-        );
+        return BasededatosAP::insertFila($sqlQuery,array($parametroTIPO, $parametroCODIGO, $parametroTITULO, $parametroDESCRIPCION, $parametroVALOR, Usuario::usuarioID()));
     }
 
     public static function actualizar($parametroID, $parametroTIPO, $parametroCODIGO, $parametroTITULO, $parametroDESCRIPCION, $parametroVALOR)
     {
         $sqlQuery = ParametrosSQL::ACTUALIZAR_REGISTRO;
-        return MaestrasDB::actualizarFila(
+        return BasededatosAP::actualizarFila(
             $sqlQuery,
             array(
-               $parametroTIPO, $parametroCODIGO, $parametroTITULO, $parametroDESCRIPCION, $parametroVALOR, Cliente::usuarioID(), $parametroID
-                )
+            $parametroTIPO, $parametroCODIGO,
+            $parametroTITULO, $parametroDESCRIPCION,
+            $parametroVALOR, Usuario::usuarioID(), $parametroID
+            )
         );
     }
 
@@ -73,16 +76,16 @@ class Parametros
     public static function eliminar($parametroID)
     {
         $sqlQuery = ParametrosSQL::ELIMINAR_REGISTRO;
-        return MaestrasDB::actualizarFila($sqlQuery, array($parametroID));
+        return BasededatosAP::actualizarFila($sqlQuery, array($parametroID));
     }
 
     public static function asignarAplicacion($aplicacionID, $parametroID)
     {
         $sqlQuery = ParametrosSQL::ASIGNAR_APLICACION;
-        return MaestrasDB::insertFila(
+        return BasededatosAP::insertFila(
             $sqlQuery,
             array(
-               $aplicacionID, $parametroID, Cliente::usuarioID()
+               $aplicacionID, $parametroID, Usuario::usuarioID()
             )
         );
     }
@@ -90,6 +93,6 @@ class Parametros
     public static function eliminarAsignacionAplicacion($aplicacionID, $parametroID)
     {
         $sqlQuery = ParametrosSQL::ELIMINAR_REGISTRO_ASIGNACION_APLICACION;
-        return MaestrasDB::actualizarFila($sqlQuery, array($aplicacionID, $parametroID));
+        return BasededatosAP::actualizarFila($sqlQuery, array($aplicacionID, $parametroID));
     }
 }

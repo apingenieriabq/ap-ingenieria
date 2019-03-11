@@ -71,61 +71,63 @@ class MenuOperaciones {
 
     public static function todos(){
         $sqlQuery = OperacionesSQL::DATOS_COMPLETOS
-            .' ORDER BY ControlOperaciones.operacionORDEN ';
+            .' ORDER BY MenuOperaciones.operacionORDEN ';
         return BasededatosAP::selectVariasFilas($sqlQuery, array());
     }
 
     public static function datos($operacionID){
         $sqlQuery = OperacionesSQL::DATOS
-            . ' WHERE ControlOperaciones.operacionID = ? ';
+            . ' WHERE MenuOperaciones.operacionID = ? ';
         return BasededatosAP::selectUnaFila($sqlQuery, array($operacionID));
     }
 
     public static function datosCompletos($operacionID){
         $sqlQuery = OperacionesSQL::DATOS_COMPLETOS
-            . ' WHERE ControlOperaciones.operacionID = ? ';
+            . ' WHERE MenuOperaciones.operacionID = ? ';
         return BasededatosAP::selectUnaFila($sqlQuery, array($operacionID));
     }
 
     public static function todosDelComponente($componenteID){
-        $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_COMPONENTES . ' WHERE ControlComponentes.componenteID = ? '
-            .'ORDER BY ControlOperaciones.operacionORDEN ';
+        $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_COMPONENTES . ' WHERE MenuComponentes.componenteID = ? '
+            .'ORDER BY MenuOperaciones.operacionORDEN ';
         return BasededatosAP::selectVariasFilas($sqlQuery, array($componenteID));
     }
 
     public static function delControlador($controladorID){
         $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_COMPONENTES
-            . ' WHERE ControlControladores.controladorID = ? '
+            . ' WHERE MenuOperaciones.controladorID = ? '
             .'';
         return BasededatosAP::selectVariasFilas($sqlQuery, array($controladorID));
     }
 
     public static function delMenuControlador($controladorID){
         $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_COMPONENTES
-            .' WHERE ControlControladores.controladorID = ? AND ControlOperaciones.operacionMENU = "SI" '
-            .' ORDER BY ControlOperaciones.operacionORDEN ' ;
+            .' WHERE MenuOperaciones.controladorID = ? AND MenuOperaciones.operacionMENU = "SI" '
+            .' ORDER BY MenuOperaciones.operacionORDEN ' ;
         return BasededatosAP::selectVariasFilas($sqlQuery, array($controladorID));
     }
 
     public static function delMenuPorUsuario($idUsuario, $controladorID){
         $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_USUARIO_Y_COMPONENTES . ' WHERE (Usuarios.usuarioID = ? OR UsuariosRol.usuarioID = ? )'
-            . 'AND ControlOperaciones.operacionMENU = "SI" AND ControlOperaciones.controladorID = ? '
-            .'GROUP BY ControlOperaciones.operacionID '
-            .'ORDER BY ControlOperaciones.operacionORDEN ' ;
+            . 'AND MenuOperaciones.operacionMENU = "SI" AND MenuOperaciones.controladorID = ? '
+            .'GROUP BY MenuOperaciones.operacionID '
+            .'ORDER BY MenuOperaciones.operacionORDEN ' ;
         return BasededatosAP::selectVariasFilas($sqlQuery, array($idUsuario, $idUsuario, $controladorID));
     }
 
     public static function datosPorCodigo($codigoOperacion){
-        $sqlQuery = ControlAccesoSQL::DATOS_COMPLETOS . 'WHERE ControlOperaciones.operacionCODIGO = ? ';
+        $sqlQuery = ControlAccesoSQL::DATOS_COMPLETOS . 'WHERE MenuOperaciones.operacionCODIGO = ? ';
         return BasededatosAP::selectUnaFila($sqlQuery, array($codigoOperacion));
     }
 
-    public static function datosPorCombinacion($componenteCARPETA, $controladorCLASE, $operacionFUNCION ){
+    public static function datosPorCombinacion($componenteCODIGO, $menuCONTROLADOR, $menuOPERACION ){
         $sqlQuery = ControlAccesoSQL::DATOS_COMPLETOS .
-            ' WHERE ControlComponentes.componenteCARPETA = ? '.
-            ' AND ControlControladores.controladorCLASE = ? '.
-            ' AND ControlOperaciones.operacionFUNCION = ? ';
-        return BasededatosAP::selectUnaFila($sqlQuery, array($componenteCARPETA, $controladorCLASE, $operacionFUNCION));
+            ' WHERE LOWER(MenuComponentes.componenteCODIGO) = ? '.
+            ' AND LOWER(MenuOperaciones.menuCONTROLADOR) = ? '.
+            ' AND LOWER(MenuOperaciones.menuOPERACION) = ? ';
+        return BasededatosAP::selectUnaFila($sqlQuery,
+            array(strtolower($componenteCODIGO), strtolower($menuCONTROLADOR), strtolower($menuOPERACION))
+        );
     }
 
     //
@@ -140,14 +142,14 @@ class MenuOperaciones {
 
 
     public static function guardar( $controladorID , $operacionCODIGO , $operacionTITULO ,
-        $operacionFUNCION , $operacionNOMBRETAB , $operacionMENU , $operacionMENUICONO , $operacionMENUTITULO ) {
-        $sqlQuery = "INSERT INTO BasededatosAP.ControlOperaciones ( "
-        ."controladorID , operacionCODIGO , operacionTITULO , operacionFUNCION ,  "
+        $menuOPERACION , $operacionNOMBRETAB , $operacionMENU , $operacionMENUICONO , $operacionMENUTITULO ) {
+        $sqlQuery = "INSERT INTO BasededatosAP.MenuOperaciones ( "
+        ."controladorID , operacionCODIGO , operacionTITULO , menuOPERACION ,  "
         ."operacionNOMBRETAB , operacionMENU , operacionMENUICONO , operacionMENUTITULO , operacionUSRCREO  "
         .") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ";
         return BasededatosAP::insertFila(
             $sqlQuery, array(
-                $controladorID , $operacionCODIGO , $operacionTITULO , $operacionFUNCION , $operacionNOMBRETAB ,
+                $controladorID , $operacionCODIGO , $operacionTITULO , $menuOPERACION , $operacionNOMBRETAB ,
                 $operacionMENU , $operacionMENUICONO , $operacionMENUTITULO, Cliente::usuarioID()
             )
         );

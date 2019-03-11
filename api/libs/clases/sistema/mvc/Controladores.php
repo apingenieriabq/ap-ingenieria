@@ -1,7 +1,6 @@
 <?php
 class Controladores {
 
-
     public function __construct() {
         if (isset($_POST) and ! empty($_POST)){
             foreach ($_POST as $variable => $valor) {
@@ -37,18 +36,6 @@ class Controladores {
                 }
             }
         }
-        // $operacion = Operaciones::datosPorCombinacion($this->componente, $this->controlador, $this->operacion);
-        // if(!empty($operacion)):
-        //     if(!Cliente::tienePermiso($operacion->operacionCODIGO) and $operacion->operacionSEGURIDAD == "RESTRINGIDA"):
-        //         echo RespuestasSistema::alerta(
-        //             'No estás autorizad@ para '.$operacion->operacionTITULO.' [' . $this->operacion . ']'
-        //         );
-        //         //Log::insertarRegistro($_POST['componente'], Cliente::ipUsuario(), $_POST['controlador'], Cliente::getDato('usuarioNOMBRE'), $_POST['operacion'], RespuestasSistema::getRespuesta(), RespuestasSistema::getMensajeRespuesta());
-        //         session_write_close();
-        //         exit(0);
-        //     endif;
-        // endif;
     }
-
 
 }

@@ -2,8 +2,8 @@
 if (!defined('CLAVE_SECRETA')) die('acceso no autorizado');
 class ModeloDatos {
 
-  protected $nombreTabla;
-  protected $nombreCampoID;
+  private $nombreTabla;
+  private $nombreCampoID;
 
   public function __construct($nombreTabla, $nombreCampoID, $valorCampoID = null) {
 
@@ -48,6 +48,37 @@ class ModeloDatos {
 
     }
 
+    public function todos($donde = null){
+        if(is_null($donde)){
+            $nombreCampo = $this->nombreCampoID;
+            $valorCampo = $this->$nombreCampo;
+            // echo "<br />asi quedó el objeto donde ";
+            // krumo($donde);
+        }
+        $Registros = self::variasFilas($donde);
+        if(count($Registros)){
+            $this->Registros = array();
+            foreach($Registros as $k => $datosRegistro ){
+                $this->Registros[$k] = new stdClass();
+                foreach($datosRegistro as $variable => $dato){
+                    //  echo $variable."  =  ".$dato. " <br />  ";
+                    $this->Registros[$k]->$variable = $dato;
+                }
+            }
+            return $this->Registros;
+        }
+        return null;
+
+    }
+
+
+
+
+
+
+
+
+
 
     function consulta($sql, $donde = null){
         global $BD_AP_PRINCIPAL;
@@ -59,7 +90,7 @@ class ModeloDatos {
     }
     function variasFilas($donde = null, $columnas = '*' ){
         global $BD_AP_PRINCIPAL;
-        return $BD_AP_PRINCIPAL->select(self::$nombreTabla, $columnas, $donde);
+        return $BD_AP_PRINCIPAL->select($this->nombreTabla, $columnas, $donde);
     }
 
 
@@ -68,7 +99,7 @@ class ModeloDatos {
         $BD_AP_PRINCIPAL->insert($this->nombreTabla, $datos);
         return $BD_AP_PRINCIPAL->id();
     }
-    function actualizar($datos, $donde){
+    function actualiza($datos, $donde){
         global $BD_AP_PRINCIPAL;
         $datos = $BD_AP_PRINCIPAL->update($this->nombreTabla, $datos, $donde );
         return $datos->rowCount();

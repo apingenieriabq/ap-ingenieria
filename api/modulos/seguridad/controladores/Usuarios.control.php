@@ -2,12 +2,41 @@
 
 class UsuariosControlador extends Controladores {
 
+
+    /**
+     * @api {post} seguridad/usuarios/perfil Solicitud de datos del perfil de usuario
+     * @apiName perfilUsuario
+     * @apiGroup Usuarios
+     *
+     * @apiParam {Number} usuarioID=NULL ID del Usuario dentro del sistema. Si el valor es NULL
+     *  se responde con los datos del usuario logueado.
+     *
+     * @apiSuccess {Usuarios} DatosUsuario Datos del Usuario con el colaborador asociado.
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "firstname": "John",
+     *       "lastname": "Doe"
+     *     }
+     *
+     * @apiError UserNotFound The id of the User was not found.
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     *     {
+     *       "error": "UserNotFound"
+     *     }
+     *
+     *
+     *
+     */
     public function perfil(){
         // print_r($_SESSION);
         if(!isset($this->usuarioID)){
             $this->usuarioID = Usuario::usuarioID();
         }
-        print_r(new Paises(47));
         $Usuario = new Usuarios($this->usuarioID);
         echo RespuestasSistema::exito( 'Datos del Pefil del Usuario', $Usuario->datosCompletos() );
     }

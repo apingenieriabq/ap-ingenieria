@@ -39,7 +39,7 @@ class Usuarios extends ModeloDatos {
       $usuarioID = $this->usuarioID;
     }
     // print_r(array($usuarioID, $usuarioIP, $usuarioLATITUD, $usuarioLONGITUD));
-    $cambios = self::actualizar(
+    $cambios = self::actualiza(
       [ "usuarioULTIMAVISITA" => date('Y-m-d h:i:s') , "usuarioULTIMAIP" => $usuarioIP, "usuarioULTIMALATITUD" => $usuarioLATITUD, "usuarioULTIMALONGITUD" => $usuarioLONGITUD],
       [ "usuarioID" => $usuarioID ]
     );
