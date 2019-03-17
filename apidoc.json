@@ -1,0 +1,14 @@
+{
+  "name": "apidoc-apingenieria",
+  "version": "1.0.0",
+  "description": "Documentacion del API de AP Ingenieria",
+  "title": "Documentación de API SIAP.",
+  "url": "https://ap-ingenieria-puroingeniosamario.c9users.io/api/",
+  "order": [
+    "GetUser", "PostUser"
+  ],
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  }
+}

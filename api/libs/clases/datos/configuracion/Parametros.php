@@ -4,7 +4,7 @@ class Parametros extends ModeloDatos
 
 
   public function __construct($parametroID = null) {
-    parent::__construct('Parametros', 'parametroID', $parametroID);
+    return parent::__construct('Parametros', 'parametroID', $parametroID);
   }
 
     // public static function datos($parametroID)

@@ -62,12 +62,12 @@ $app->add(function ($request, $response, $next) {
 // $checkProxyHeaders = true;
 // $trustedProxies = ['10.0.0.1', '10.0.0.2'];
 // $app->add(new RKA\Middleware\IpAddress($checkProxyHeaders, $trustedProxies));
-$app->map(['GET', 'POST'], '/{componente}/{controlador}/{operacion}', function ($request, $response, $args) {
+$app->map(['GET','POST'], '/{componente}/{controlador}/{operacion}', function ($request, $response, $args) {
 
     // echo "<p>Hola {$_SERVER['PHP_AUTH_USER']}.</p>";
     // echo "<p>Introdujo {$_SERVER['PHP_AUTH_PW']} como su contraseña.</p>";
     // echo "<p>El sistema tiene registrado el usuaurio:</p>";
-    // print_r(Usuario::sesionActiva());
+    // // print_r(Usuario::sesionActiva());
 
     $componente = $request->getAttribute('componente');
     $controlador = $request->getAttribute('controlador');
@@ -80,7 +80,7 @@ $app->map(['GET', 'POST'], '/{componente}/{controlador}/{operacion}', function (
     return $response;
 })->add( new ControlAutenticacion() );
 
-$app->map(['GET', 'POST'],'/conectar', function ($request, $response, $args) {
+$app->map(['GET','POST'],'/conectar', function ($request, $response, $args) {
     return $response->write(
         RespuestasSistema::exito("Bienvenido al Api REST de la AP Ingenieria.", Usuario::sesionActiva() )
     );
@@ -97,7 +97,7 @@ $app->get('/mostrarMenu', function ($request, $response, $args) {
     }
     return $response;
 })->add( new ControlAutenticacion() );
-$app->map(['GET', 'POST'],'/registrarUbicacion', function ($request, $response, $args) {
+$app->map(['GET','POST'],'/registrarUbicacion', function ($request, $response, $args) {
     return $response;
 })->add( new ControlAutenticacion('GPS') );
 $app->get('/desconectar', function ($request, $response, $args) {

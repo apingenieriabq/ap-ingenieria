@@ -1,10 +1,8 @@
 <?php
 
 class Paises extends ModeloDatos {
-
-
+  const COLOMBIA = 47;
   public function __construct($paisID = null) {
-    parent::__construct('Paises', 'paisID', $paisID);
+    return parent::__construct('Paises', 'paisID', $paisID);
   }
-
 }

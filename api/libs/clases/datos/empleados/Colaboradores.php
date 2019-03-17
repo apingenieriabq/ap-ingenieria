@@ -20,6 +20,7 @@ class Colaboradores extends ModeloDatos {
       $this->Cargo = new Cargos($this->cargoID);
       $this->Persona = new Personas($this->personaID);
     }
+    return $this;
   }
 
 }
