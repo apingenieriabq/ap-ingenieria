@@ -26,7 +26,7 @@ $app = new \Slim\App([
     ]
 ]);
 $errorAPI = false;
-$modoPRUEBA_SINSEGURIDAD = false;
+$modoPRUEBA_SINSEGURIDAD = true;
 
 $app->add(function ($request, $response, $next) {
     global $errorAPI;

@@ -38,4 +38,22 @@ class Controladores {
         }
     }
 
+
+    protected function validarDatosEnviados($datos = array()){
+        $errores = '';
+        foreach($datos as $nombreVariable ){
+            if( empty($this->$nombreVariable) ){
+                $errores .= 'Es obligatorios enviar el parametro ['.$nombreVariable.'].<br />';
+            }
+        }
+        return $errores;
+    }
+
+    protected function verificar($nombreVariable, $valorDefault = null){
+        if(isset($this->$nombreVariable)){
+            return $this->$nombreVariable;
+        }
+        return $valorDefault;
+    }
+
 }

@@ -97,6 +97,8 @@ class ModeloDatos {
     function insertar($datos){
         global $BD_AP_PRINCIPAL;
         $BD_AP_PRINCIPAL->insert($this->nombreTabla, $datos);
+        // $nombreCampo = $this->nombreCampoID;
+        // $this->$nombreCampo =  $BD_AP_PRINCIPAL->id();
         return $BD_AP_PRINCIPAL->id();
     }
     function actualiza($datos, $donde){

@@ -17,10 +17,11 @@ class Usuarios extends ModeloDatos {
      return $this->datos(['usuarioID'=> $usuarioID]);
    }
 
-  function nuevo( $nombre, $contrasena){
+  function nuevo( $nombre, $contrasena, $colaboradorID = null){
         return $this->usuarioID = self::insertar(array(
         	"usuarioNOMBRE" =>$nombre,
-        	"usuarioHASH" => password_hash($contrasena, PASSWORD_DEFAULT)
+        	"usuarioHASH" => password_hash($contrasena, PASSWORD_DEFAULT),
+        	"colaboradorID" => $colaboradorID
         ));
     }
 
@@ -32,6 +33,19 @@ class Usuarios extends ModeloDatos {
       }
     }
     return null;
+  }
+
+  function cambiarNombreParaColaborador( $usuarioNOMBRE, $colaboradorID ){
+    return $this->actualiza(['usuarioNOMBRE' => $usuarioNOMBRE], ['colaboradorID' => $colaboradorID]);
+  }
+  function activarParaColaborador($colaboradorID ){
+    return $this->actualiza(['usuarioESTADO' => UsuariosEstados::ACTIVO], ['colaboradorID' => $colaboradorID]);
+  }
+  function desactivarParaColaborador($colaboradorID ){
+    return $this->actualiza(['usuarioESTADO' => UsuariosEstados::DESACTIVO], ['colaboradorID' => $colaboradorID]);
+  }
+  function suspenderParaColaborador($colaboradorID ){
+    return $this->actualiza(['usuarioESTADO' => UsuariosEstados::SUSPENDIDO], ['colaboradorID' => $colaboradorID]);
   }
 
   function registrarUltimaVisita( $usuarioIP, $usuarioLATITUD, $usuarioLONGITUD, $usuarioID = null){
