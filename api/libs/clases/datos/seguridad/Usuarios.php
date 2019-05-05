@@ -16,6 +16,12 @@ class Usuarios extends ModeloDatos {
   function porID($usuarioID = 0){
      return $this->datos(['usuarioID'=> $usuarioID]);
    }
+  function porNombre($usuarioNOMBRE){
+     return $this->datos(['usuarioNOMBRE'=> $usuarioNOMBRE]);
+   }
+  function porColaboradorID($colaboradorID){
+     return $this->datos(['colaboradorID'=> $colaboradorID]);
+   }
 
   function nuevo( $nombre, $contrasena, $colaboradorID = null){
         return $this->usuarioID = self::insertar(array(
@@ -49,6 +55,7 @@ class Usuarios extends ModeloDatos {
   }
 
   function registrarUltimaVisita( $usuarioIP, $usuarioLATITUD, $usuarioLONGITUD, $usuarioID = null){
+
     if(is_null($usuarioID)){
       $usuarioID = $this->usuarioID;
     }

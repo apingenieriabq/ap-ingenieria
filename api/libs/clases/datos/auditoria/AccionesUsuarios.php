@@ -3,19 +3,19 @@
 class AccionesUsuarios extends ModeloAuditoria {
 
    var $accionID;
-   public function __construct($accionCOMPONENTE, $accionCONTROLADOR, $accionOPERACION)
+   public function __construct($accionCOMPONENTE, $accionCONTROLADOR, $accionOPERACION, $usuarioNOMBRE, $accionIP = null, $usuarioID = null)
    {
        self::$nombreTabla = 'AccionesUsuarios';
-       $this->nuevo($operacionID = null, $accionCOMPONENTE, $accionCONTROLADOR, $accionOPERACION );
+       $this->nuevo($operacionID = null, $accionCOMPONENTE, $accionCONTROLADOR, $accionOPERACION, $usuarioNOMBRE, $accionIP, $usuarioID );
    }
 
 
-  function nuevo( $operacionID, $accionCOMPONENTE, $accionCONTROLADOR, $accionOPERACION ){
+  function nuevo( $operacionID, $accionCOMPONENTE, $accionCONTROLADOR, $accionOPERACION, $usuarioNOMBRE, $accionIP, $usuarioID = null){
       $this->accionID = self::insertar(array(
-        'usuarioID' => Usuario::usuarioID(),
-        'usuarioNOMBRE' => Usuario::usuarioNOMBRE(),
+        'usuarioID' => $usuarioID,
+        'usuarioNOMBRE' => $usuarioNOMBRE,
         'operacionID' => $operacionID,
-        'accionIP' => Usuario::ip(),
+        'accionIP' => $accionIP,
         'accionCOMPONENTE' => $accionCOMPONENTE,
         'accionCONTROLADOR' => $accionCONTROLADOR,
         'accionOPERACION'  => $accionOPERACION

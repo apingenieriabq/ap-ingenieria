@@ -14,7 +14,7 @@ class Componentes {
     public static function delMenuPorUsuario($idUsuario){
         $sqlQuery = ControlAccesoSQL::COMPONENTES_POR_USUARIO_Y_COMPONENTES
         . ' WHERE (BasededatosAP.Usuarios.usuarioID = ? OR BasededatosAP.UsuariosRol.usuarioID = ? ) '
-        . ' AND BasededatosAP.MenuComponentes.componenteMENU = "SI" AND BasededatosAP.ControlOperaciones.operacionMENU = "SI" '
+        . ' AND BasededatosAP.MenuComponentes.componenteMENU = "SI" AND BasededatosAP.MenuOperaciones.menuMENU = "SI"  '
         . ' GROUP BY MenuComponentes.componenteID '
         . "ORDER BY MenuComponentes.componenteORDEN  ";
         return BasededatosAP::selectVariasFilas($sqlQuery, array($idUsuario, $idUsuario));

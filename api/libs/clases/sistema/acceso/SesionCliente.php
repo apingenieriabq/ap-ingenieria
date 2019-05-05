@@ -29,7 +29,7 @@ error_reporting(0);
 
     static function activa(){
         self::abrir();
-        $SesionActiva = self::valor(SESION);
+        $SesionActiva = self::valor('SESION');
         // self::cerrar();
         return $SesionActiva;
     }
@@ -43,7 +43,7 @@ error_reporting(0);
 
     static function dato($variable){
         $valor = false;
-        $SesionActiva = self::valor(SESION);
+        $SesionActiva = self::valor('SESION');
         if (property_exists( $SesionActiva, $variable)) {
             $valor = $SesionActiva->$variable;
         }
@@ -51,22 +51,24 @@ error_reporting(0);
     }
 
     static public function valor($nombre, $valor = null) {
+
         if (!is_null($valor)) {
             self::abrir();
-            $_SESSION [$nombre] = $valor;
+            // print_r($valor);
+            $_SESSION[$nombre] = $valor;
             self::cerrar();
         } else {
                 self::abrir();
-            if (!empty($_SESSION [$nombre])) {
+            if (!empty($_SESSION[$nombre])) {
                 try {
                     try {
-                        $valor = $_SESSION [$nombre];
+                        $valor = $_SESSION[$nombre];
                     } catch (Exception $e) { $valor =  null; }
                 } catch (Exception $e) { $valor =  null; }
                 self::cerrar();
             } else {
                 self::cerrar();
-                return false;
+                return null;
             }
         }
         return $valor;
@@ -75,7 +77,7 @@ error_reporting(0);
 
     static public function eliminar($nombre) {
         self::abrir();
-        unset($_SESSION [$nombre]);
+        unset($_SESSION[$nombre]);
         self::abrir();
     }
 

@@ -32,6 +32,56 @@ class UsuariosControlador extends Controladores {
      *
      *
      */
+    public function verificarLoginCedulaColaborador(){
+        // print_r($this);
+        if (!empty($this->personaIDENTIFICACION) and !empty($this->usuarioCLAVE)){
+          $resultado = Usuario::iniciarSesionColaboradorCedula($this->personaIDENTIFICACION, $this->usuarioCLAVE);
+          switch($resultado){
+              case 'FALLO CEDULA':
+                return Respuestassistema::error("La cédula no está registrado en nuestro sistema.");
+                break;
+              case 'COMBINACION':
+                return Respuestassistema::error("La combinación de cédula y clave no coinciden.");
+                break;
+              case 'CORRECTO':$Colaborador = new Colaboradores();
+                $Colaborador->datosPorCedula($this->personaIDENTIFICACION);
+                // print_r($Colaboradores);
+                if(!is_null($Colaborador->colaboradorID)){
+                  $Usuario = new Usuarios();
+                  $Usuario->porColaboradorID( $Colaborador->colaboradorID );
+                }
+                $Respuesta = Respuestassistema::exito("Bienvenid@ .........", $Usuario->datosCompletos());
+                return $Respuesta;
+                break;
+          }
+        }
+        // Usuario::cerrarSesion();
+        return Respuestassistema::error("Los datos no son validos");;
+
+    }
+    public function verificarLoginColaborador(){
+        // print_r($this);
+        if (!empty($this->colaboradorCORREO) and !empty($this->usuarioCLAVE)){
+          $Usuario = Usuario::iniciarSesionColaborador($this->colaboradorCORREO, $this->usuarioCLAVE);
+          switch($Usuario){
+              case 'FALLO CORREO':
+                return Respuestassistema::error("El correo no está registrado en nuestro sistema.");
+                break;
+              case 'COMBINACION':
+                return Respuestassistema::error("La combinación de correo y clave no coinciden.");
+                break;
+              case 'CORRECTO':
+              default:
+                return Respuestassistema::exito("Datos del Usuario.");
+                break;
+          }
+        }
+        // Usuario::cerrarSesion();
+        return Respuestassistema::error("Los datos no son validos");;
+
+    }
+
+
     public function perfil(){
         // print_r($_SESSION);
         if(!isset($this->usuarioID)){
@@ -42,18 +92,28 @@ class UsuariosControlador extends Controladores {
     }
 
     public function mostrarMenu() {
+
+        $user = null;
+        if( isset($this->usuarioID) and !empty($this->usuarioID)  ){
+            $user = new Usuarios($this->usuarioID);
+            Usuario::abrirSesion($user);
+        }
+        $menu = null;
         if(Usuario::esAdministrador() == 'SI'):
             $menu = self::menuCompleto();
         else:
             $menu = self::menuDelUsuario( Usuario::usuarioID() );
         endif;
-        echo RespuestasSistema::exito($menu);
+        echo RespuestasSistema::exito( "Menu del Usuario", $menu );
     }
 
     public static function menuCompleto() {
         $menuComponente = Componentes::todosdelMenu();
         foreach ($menuComponente as $componentes):
-            $componentes->operaciones = MenuOperaciones::delMenuComponente($componentes->componenteID);
+            $componentes->Operaciones = MenuOperaciones::menuPadresComponente($componentes->componenteID);
+            foreach($componentes->Operaciones as $OperacionMenu){
+                $OperacionMenu->SubOperaciones = MenuOperaciones::delMenu($OperacionMenu->menuID);
+            }
         endforeach;
         return $menuComponente;
     }
@@ -62,12 +122,10 @@ class UsuariosControlador extends Controladores {
         $menuComponente = Componentes::delMenuPorUsuario($idUsuario);
         if($menuComponente):
             foreach ($menuComponente as $componentes):
-                $componentes->controladores = ControladoresBD::delMenuPorUsuario($idUsuario,$componentes->componenteID);
-                if($componentes->controladores):
-                    foreach ($componentes->controladores as $controladores):
-                        $controladores->operaciones = Operaciones::delMenuPorUsuario($idUsuario, $controladores->controladorID);
-                    endforeach;
-                endif;
+                $componentes->Operaciones = MenuOperaciones::menuPadresComponentePorUsuario($idUsuario,$componentes->componenteID);
+                foreach($componentes->Operaciones as $OperacionMenu){
+                    $OperacionMenu->SubOperaciones = MenuOperaciones::delMenuPorUsuario($idUsuario,$componentes->componenteID);
+                }
             endforeach;
         endif;
         return $menuComponente;

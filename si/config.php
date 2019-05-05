@@ -18,6 +18,34 @@ if (!defined('DS')) {
 if (!defined('DIR_BASE')) {
     define('DIR_BASE', __DIR__.DS);
 }
+if (!defined('URL_BASE')) {
+    define('URL_BASE', 'https://si-ap-ingenieria-puroingeniosamario.c9users.io/si/');
+}
+
+if (!defined('DIR_API')) {
+    define('DIR_API', '../api/'.__DIR__.DS);
+}
+
+
+if (!defined('DIR_VISTAS')) {
+    define('DIR_VISTAS', DIR_BASE.'vistas'.DS);
+}
+if (!defined('EXT_VISTA')) {
+    define('EXT_VISTA', ".html.php");
+}
+if (!defined('EXT_CONTROLADOR')) {
+    define('EXT_CONTROLADOR', ".control.php");
+}
+if (!defined('DIR_ARCHIVOS')) {
+    define('DIR_ARCHIVOS', DIR_API.'archivo/');
+}
+if (!defined('URL_ARCHIVOS')) {
+    define('URL_ARCHIVOS', URL_BASE.'archivo/');
+}
+
+
+
+
 if (!defined('DIR_PLANTILLAS')) {
     define('DIR_PLANTILLAS', DIR_BASE.'plantilla'.DS);
 }
@@ -26,7 +54,22 @@ if (!defined('PLANTILLA_ACTIVA')) {
 }
 require_once 'vendor'.DS.'autoload.php';
 // require_once 'clases/Autoload.php';
-require_once 'clases'.DS.'sistema'.DS.'Main.php';
+spl_autoload_register(function ($nombre_clase) {
+    $archivo = 'clases'.DS.'sistema'.DS. $nombre_clase . '.php';
+    if(is_file($archivo)){
+        require_once $archivo;
+    }else{
+        $archivo = 'clases'.DS.'util'.DS. $nombre_clase . '.php';
+        if(is_file($archivo)){
+            require_once $archivo;
+        }else{
+            $archivo = 'clases'.DS.'conexiones'.DS. $nombre_clase . '.php';
+            if(is_file($archivo)){
+                require_once $archivo;
+            }
+        }
+    }
+});
 //Main::start();
+$Api = new APISAPI();
 $twig = Main::twigConfigPlantilla(DIR_PLANTILLAS);
-//Autoload::start();

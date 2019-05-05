@@ -21,6 +21,25 @@ class ParametrosControlador extends Controladores
             }
         }
     }
+    public function valores()
+    {
+        if (empty($this->parametrosCODIGOS)) {
+            return Respuestassistema::error("No llego el CODIGO DEL PARAMETRO [parametroCODIGO] para consultar su valor. Verifique los datos, o contacte al Centro TICS.");
+        } else {
+          $valores = array();
+          if(count($this->parametrosCODIGOS)){
+            foreach($this->parametrosCODIGOS as $parametroCODIGO){
+              array_push($valores, Parametros::valor($parametroCODIGO) );
+            }
+          }
+
+            if(empty($valores)){
+              return Respuestassistema::error("No existe un parametro para los códigos enviados.");
+            }else{
+              return Respuestassistema::exito("Valores de la Parametros enviados.", $valores);
+            }
+        }
+    }
     public function datos()
     {
         if (empty($this->parametroID)) {

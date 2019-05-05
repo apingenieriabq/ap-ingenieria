@@ -3,6 +3,38 @@
 class MenuOperaciones {
 
 
+    public static function porCombinacion($componenteCODIGO, $menuOPERACION ){
+        $sqlQuery = ControlAccesoSQL::DATOS_COMPLETOS .
+            ' WHERE LOWER(MenuComponentes.componenteCODIGO) = ? '.
+            ' AND LOWER(MenuOperaciones.menuOPERACION) = ? ';
+        return BasededatosAP::selectUnaFila($sqlQuery,
+            array(strtolower($componenteCODIGO), strtolower($menuOPERACION))
+        );
+    }
+
+    public static function delMenu($menuID){
+        $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_COMPONENTES
+            .' WHERE MenuOperaciones.menuPADRE = ? AND MenuOperaciones.menuMENU = "SI" '
+            .' ORDER BY MenuOperaciones.menuORDEN ' ;
+        return BasededatosAP::selectVariasFilas($sqlQuery, array($menuID));
+    }
+
+
+    public static function delMenuPorUsuario($idUsuario, $componenteID){
+       $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_USUARIO_Y_COMPONENTES . ' WHERE (Usuarios.usuarioID = ? OR UsuariosRol.usuarioID = ? )'
+            . 'AND MenuOperaciones.menuMENU = "SI" AND MenuOperaciones.componenteID = ? '
+            .'GROUP BY MenuOperaciones.menuID '
+            .'ORDER BY MenuOperaciones.menuORDEN ' ;
+        return BasededatosAP::selectVariasFilas($sqlQuery, array($idUsuario, $idUsuario, $componenteID));
+    }
+
+    public static function menuPadresComponentePorUsuario($idUsuario, $componenteID){
+       $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_USUARIO_Y_COMPONENTES . ' WHERE (Usuarios.usuarioID = ? OR UsuariosRol.usuarioID = ? )'
+            . 'AND MenuOperaciones.menuMENU = "SI" AND MenuOperaciones.componenteID = ? AND MenuOperaciones.menuPADRE = 0 '
+            .'GROUP BY MenuOperaciones.menuID '
+            .'ORDER BY MenuOperaciones.menuORDEN ' ;
+        return BasededatosAP::selectVariasFilas($sqlQuery, array($idUsuario, $idUsuario, $componenteID));
+    }
 
 
 
@@ -20,6 +52,15 @@ class MenuOperaciones {
             .' ORDER BY MenuOperaciones.menuORDEN ' ;
         return BasededatosAP::selectVariasFilas($sqlQuery, array($componenteID));
     }
+
+    public static function menuPadresComponente($componenteID){
+        $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_COMPONENTES
+            .' WHERE MenuOperaciones.componenteID = ? AND MenuOperaciones.menuMENU = "SI" AND MenuOperaciones.menuPADRE = 0 '
+            .' ORDER BY MenuOperaciones.menuORDEN ' ;
+        return BasededatosAP::selectVariasFilas($sqlQuery, array($componenteID));
+    }
+
+
 
 
 
@@ -105,14 +146,6 @@ class MenuOperaciones {
             .' WHERE MenuOperaciones.controladorID = ? AND MenuOperaciones.operacionMENU = "SI" '
             .' ORDER BY MenuOperaciones.operacionORDEN ' ;
         return BasededatosAP::selectVariasFilas($sqlQuery, array($controladorID));
-    }
-
-    public static function delMenuPorUsuario($idUsuario, $controladorID){
-        $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_USUARIO_Y_COMPONENTES . ' WHERE (Usuarios.usuarioID = ? OR UsuariosRol.usuarioID = ? )'
-            . 'AND MenuOperaciones.operacionMENU = "SI" AND MenuOperaciones.controladorID = ? '
-            .'GROUP BY MenuOperaciones.operacionID '
-            .'ORDER BY MenuOperaciones.operacionORDEN ' ;
-        return BasededatosAP::selectVariasFilas($sqlQuery, array($idUsuario, $idUsuario, $controladorID));
     }
 
     public static function datosPorCodigo($codigoOperacion){

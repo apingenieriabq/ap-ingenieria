@@ -39,7 +39,6 @@ $BD_AP_PRINCIPAL = new Medoo([
         'SET SQL_MODE=ANSI_QUOTES',
     ],
 ]);
-die();
 $BD_AP_LOGS = new Medoo([
     // required
     'database_type' => 'mysql',

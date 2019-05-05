@@ -6,16 +6,17 @@ class Motor {
   static $operacion;
   static $respuesta;
 
-  static function procesar($modulo, $controlador, $operacion){
+  static function procesar($modulo, $controlador, $operacion, $usuario){
+    // echo 'procesando /'.$modulo.'/'.$controlador.'/'.$operacion.'/      ';
     global $modoPRUEBA_SINSEGURIDAD;
     // print_r($this);
     self::$modulo = $modulo;
     self::$controlador = $controlador;
     self::$operacion = $operacion;
-    Usuario::registrarOperacion($modulo, $controlador, $operacion);
+    Usuario::registrarOperacion($modulo, $controlador, $operacion, $usuario);
     if(!$modoPRUEBA_SINSEGURIDAD){
       if(Usuario::usuarioESTADO() == 'ACTIVO' ){
-          if(!Usuario::esAdministrador()):
+          if(!Usuario::esAdministrador()){
             $ItemMenu = MenuOperaciones::datosPorCombinacion($modulo, $controlador, $operacion);
             // print_r($ItemMenu);
             if(!empty($ItemMenu)){
@@ -31,17 +32,20 @@ class Motor {
                 return self::ejecutarClassFunction($modulo, $controlador, $operacion);
               }
             }else{
+
               self::$respuesta = RespuestasSistema::error('Esta operación no se encuentra registrada en el sistema. Vefirique la ruta .../'.$modulo.'/'.$controlador.'/'.$operacion.'/  a la que está accediendo.');
+
             }
-          else:
+          }else{
             return self::ejecutarClassFunction($modulo, $controlador, $operacion);
-          endif;
+          }
       }else{
         self::$respuesta = RespuestasSistema::error('El usuario '.Usuario::usuarioNOMBRE().' esta en estado '.Usuario::usuarioESTADO().' .');
       }
     }else{
       return self::ejecutarClassFunction($modulo, $controlador, $operacion);
     }
+
     Usuario::registrarRespuesta( self::$respuesta );
     return false;
   }

@@ -23,6 +23,8 @@ class Autenticador implements AuthenticatorInterface
 
 
     private function validarDatos(array $arguments){
+    // echo "<p>Hola {$_SERVER['PHP_AUTH_USER']}.</p>";
+    // echo "<p>Introdujo {$_SERVER['PHP_AUTH_PW']} como su contraseña.</p>";
         if (strlen($arguments["user"]) >= 0) {
             try {
                 // $nombreUsuario = Encriptacion::desencriptar(CLAVE_SECRETA_SICAM, $user);
@@ -42,7 +44,8 @@ class Autenticador implements AuthenticatorInterface
         if (!empty($nombreUsuario) and !empty($claveUsuario)){
           return Usuario::iniciarSesion($nombreUsuario, $claveUsuario);
         }
-        Usuario::cerrarSesion();
+
+        session_destroy();
         return false;
     }
 

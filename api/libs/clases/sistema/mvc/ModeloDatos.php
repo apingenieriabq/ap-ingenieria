@@ -84,6 +84,37 @@ class ModeloDatos {
         global $BD_AP_PRINCIPAL;
         return $BD_AP_PRINCIPAL->query($sql, $donde)->fetchAll();
     }
+    function consultaUNO($sql, $donde = null){
+        global $BD_AP_PRINCIPAL;
+        $filas = $BD_AP_PRINCIPAL->query($sql, $donde)->fetchAll();
+        if(count($filas)){
+
+            if(count($filas[0])){
+                foreach($filas[0] as $variable => $dato){
+                    //  echo $variable."  =  ".$dato. " <br />  ";
+                    $this->$variable = $dato;
+                }
+                return $this;
+            }
+        }
+        return null;
+    }
+    function consultaMUCHOS($sql, $donde = null){
+        global $BD_AP_PRINCIPAL;
+        $Registros = $BD_AP_PRINCIPAL->query($sql, $donde)->fetchAll();
+
+        if(count($Registros)){
+            $this->Registros = array();
+            foreach($Registros as $k => $datosRegistro ){
+                $this->Registros[$k] = new stdClass();
+                foreach($datosRegistro as $variable => $dato){
+                    //  echo $variable."  =  ".$dato. " <br />  ";
+                    $this->Registros[$k]->$variable = $dato;
+                }
+            }
+            return $this->Registros;
+        }
+    }
     function fila($donde = null, $columnas = '*' ){
         global $BD_AP_PRINCIPAL;
         return $BD_AP_PRINCIPAL->get($this->nombreTabla, $columnas, $donde);

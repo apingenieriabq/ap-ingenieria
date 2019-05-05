@@ -1,7 +1,38 @@
 <?php
 
-class Main
-{
+class Main {
+
+    public static function  procesarPeticion($modulo, $operacion){
+        if (isset($modulo) and isset($operacion)) {
+            $archivoControlador = DIR_BASE . 'controladores' . DS . (ucfirst($modulo)) . EXT_CONTROLADOR;
+            if (file_exists($archivoControlador)) {
+                require_once $archivoControlador;
+                $nombreClase = ucfirst($modulo) . 'Controlador';
+                if (class_exists($nombreClase)) {
+                    $classCtrl = new $nombreClase();
+                    if ($classCtrl instanceof $nombreClase) {
+                        if (method_exists($classCtrl, $operacion)) {
+                            $classCtrl->$operacion();
+                        } else {
+                            echo RespuestasSistema::error('NO EXISTE LA OPERACION [' . $nombreClase . '::' . $operacion . ']');
+                        }
+                    } else {
+                        echo RespuestasSistema::error('NO ES UN OBJETO VALIDO [' . $classCtrl . ']');
+                    }
+                } else {
+                    echo RespuestasSistema::error('NO EXISTE LA CLASE [' . $nombreClase . ']');
+                }
+            } else {
+                echo RespuestasSistema::error('NO EXISTE EL ARCHIVO [' . $archivoControlador . ']');
+            }
+        } else {
+            echo RespuestasSistema::error('NO LLEGARON DATOS PARA LA OPERACION');
+        }
+        if (@session_start()) {
+            @session_write_close();
+        }
+    }
+
     public static function init()
     {
         self::twigConfigPlantilla();
@@ -28,26 +59,33 @@ class Main
 
     public static function getGlobals()
     {
-        // SesionCliente::abrir();
+        global $Api;
+        $datos = $Api->ejecutar('sistema','parametros','valores',
+            array( 'parametrosCODIGOS' => array( 'LOGOAP_PNG', 'URL_PUBLICA') )
+        );
 
+        $Menu = null;
+        $estaLogueado = Cliente::estaLogueado();
+        if($estaLogueado){
+            $Menu = $Api->ejecutar(
+              'seguridad', 'usuarios', 'mostrarMenu',
+              array( 'usuarioID' => Cliente::datos()->usuarioID )
+            );
+        }
+        // print_r(Cliente::datos());
         return array(
-        // 'favicon' => 'favicon.html.php',
-        // 'login' => PLANTILLA_ACTIVA.'login.html.php',
-        // 'dashboard' => PLANTILLA_ACTIVA.'dashboard.html.php',
-        // 'mantenimiento' => PLANTILLA_ACTIVA.'mantenimiento.html.php',
-        // 'bloqueo' => PLANTILLA_ACTIVA.'bloqueo.html.php',
-        // 'inactividad' => PLANTILLA_ACTIVA.'inactividad.html.php',
-        // 'estaLogueado' => Cliente::estaLogueado(),
-        // 'isEstadoSesion' => Cliente::estadoSesion(),
-        // 'session' => Cliente::getUsuario(),
-        // 'estado_session' => Cliente::get('ESTADO'),
-        // 'session_desde' => SesionCliente::valor('LOGIN_DESDE'),
-        // 'session_ip' => SesionCliente::valor('LOGIN_IP'),
-        // 'isMantenimiento' => Parametros::valor('MODO_MANTENIMIENTO'),
-        // 'URL_SICAM' => URL_SICAM,
-        // 'VERSION_SICAM_EJECUCION' => VERSION_SICAM_EJECUCION,
-        // 'hash_vista' => uniqid(),
-        // 'URL_ARCHIVOS' => URL_ARCHIVOS,
+            'logo' => $datos[0],
+            'url_api' => $datos[1],
+        'favicon' => 'favicon.html.php',
+        'login' => PLANTILLA_ACTIVA.'login.html.php',
+        'admin' => PLANTILLA_ACTIVA.'admin.html.php',
+        'mantenimiento' => PLANTILLA_ACTIVA.'mantenimiento.html.php',
+        'bloqueo' => PLANTILLA_ACTIVA.'bloqueo.html.php',
+        'inactividad' => PLANTILLA_ACTIVA.'inactividad.html.php',
+        'estaLogueado' => $estaLogueado,
+        'Menu' => $Menu,
+        'Usuario' => Cliente::datos(),
+        'hash_vista' => uniqid()
         );
     }
 }

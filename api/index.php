@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 // session_destroy();
 // die();
 $origin=isset($_SERVER['HTTP_ORIGIN'])?$_SERVER['HTTP_ORIGIN']:$_SERVER['HTTP_HOST'];
@@ -26,12 +26,11 @@ $app = new \Slim\App([
     ]
 ]);
 $errorAPI = false;
-$modoPRUEBA_SINSEGURIDAD = true;
+$modoPRUEBA_SINSEGURIDAD = false;
 
 $app->add(function ($request, $response, $next) {
     global $errorAPI;
     Usuario::ip();
-
     //Antes de la RUTA
     $method = $request->getMethod();
     $uri = $request->getUri();
@@ -54,7 +53,6 @@ $app->add(function ($request, $response, $next) {
 
     $response = $next($request, $response);
 
-
     Usuario::registrarPosicion();
     return $response;
 });
@@ -73,7 +71,10 @@ $app->map(['GET','POST'], '/{componente}/{controlador}/{operacion}', function ($
     $controlador = $request->getAttribute('controlador');
     $operacion = $request->getAttribute('operacion');
     // echo "<br />VAmos a ejeuctar la funcion en el motor.";
-    $errorAPI = Motor::procesar($componente, $controlador, $operacion);
+    $errorAPI = Motor::procesar($componente, $controlador, $operacion,
+        (isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null)
+    );
+
     if(!$errorAPI){
         echo Motor::$respuesta;
     }
@@ -93,6 +94,7 @@ $app->get('/sesionActiva', function ($request, $response, $args) {
 $app->get('/mostrarMenu', function ($request, $response, $args) {
     $errorAPI = Motor::procesar('seguridad', 'usuarios', 'mostrarMenu');
     if(!$errorAPI){
+
          echo Motor::$respuesta;
     }
     return $response;
@@ -122,4 +124,4 @@ $app->get('/', function (Request $request,  Response $response, $args = []) {
 });
 $app->run();
 // echo "99 - Terminó:  ".date('Ymdhisu')."       <br /><br /><br /><br />";
-exit();
+// exit();

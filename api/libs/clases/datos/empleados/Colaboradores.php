@@ -3,6 +3,36 @@
 class Colaboradores extends ModeloDatos {
 
 
+  function datosPorCedula($cedulaCOLABORADOR){
+    $SQL = 'SELECT `Colaboradores`.colaboradorID FROM `Colaboradores` INNER JOIN `Personas` ON (`Colaboradores`.`personaID` = `Personas`.`personaID`) WHERE `Personas`.personaIDENTIFICACION = :cedula ';
+    $Colaborador = $this->consultaUNO(
+      $SQL, [ ':cedula' => $cedulaCOLABORADOR]
+    );
+    if(!is_null($Colaborador)){
+      $Colaborador = $this->datosCompletos($Colaborador->colaboradorID);
+    }
+    return $Colaborador;
+   }
+
+  function datosPorCorreo($colaboradorEMAIL = null){
+    if(is_null($colaboradorEMAIL)){
+      $colaboradorEMAIL =  $this->colaboradorEMAIL;
+    }
+    $Colaborador = $this->datos([ 'colaboradorEMAIL' => $colaboradorEMAIL]);
+    if(!is_null($Colaborador)){
+      $Colaborador = $this->datosCompletos($Colaborador->colaboradorID);
+    }
+    return $Colaborador;
+   }
+
+  function usuarioAsociado($colaboradorID = null){
+    $Colaborador = $this->consulta([ 'colaboradorID' => $colaboradorID]);
+    if(!is_null($Colaborador)){
+      $Colaborador = $this->datosCompletos($Colaborador->colaboradorID);
+    }
+    return $Colaborador;
+   }
+
   function datosCompletos($colaboradorID = null){
     if(is_null($colaboradorID)){
       $colaboradorID =  $this->colaboradorID;
