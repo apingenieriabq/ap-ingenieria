@@ -71,9 +71,7 @@ $app->map(['GET','POST'], '/{componente}/{controlador}/{operacion}', function ($
     $controlador = $request->getAttribute('controlador');
     $operacion = $request->getAttribute('operacion');
     // echo "<br />VAmos a ejeuctar la funcion en el motor.";
-    $errorAPI = Motor::procesar($componente, $controlador, $operacion,
-        (isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : null)
-    );
+    $errorAPI = Motor::procesar($componente, $controlador, $operacion);
 
     if(!$errorAPI){
         echo Motor::$respuesta;

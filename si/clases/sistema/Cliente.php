@@ -24,34 +24,34 @@ class Cliente {
     }
     static function datos($Usuario = null){
         if(is_null($Usuario)){
-            if(isset($_SESSION['Usuario'])){
-                return $_SESSION['Usuario'];
+            if((SesionCliente::valor('Usuario'))){
+                return SesionCliente::valor('Usuario');
             }
             return null;
         }else{
-            return $_SESSION['Usuario'] = $Usuario;
+            return SesionCliente::valor('Usuario', $Usuario);
         }
     }
 
-    static function nombreUsuario($Usuario = null){
-        if(is_null($Usuario)){
-            if(isset($_SESSION['UsuarioNombre'])){
-                return $_SESSION['UsuarioNombre'];
+    static function usuarioNOMBRE($usuarioNOMBRE = null){
+        if(is_null($usuarioNOMBRE)){
+            if((SesionCliente::valor('usuarioNOMBRE'))){
+                return SesionCliente::valor('usuarioNOMBRE');
             }
             return null;
         }else{
-            return $_SESSION['UsuarioNombre'] = $Usuario;
+            return SesionCliente::valor('usuarioNOMBRE', $usuarioNOMBRE);
         }
     }
 
-    static function claveUsuario($Usuario = null){
-        if(is_null($Usuario)){
-            if(isset($_SESSION['UsuarioClave'])){
-                return $_SESSION['UsuarioClave'];
+    static function usuarioCLAVE($usuarioCLAVE = null){
+        if(is_null($usuarioCLAVE)){
+            if((SesionCliente::valor('usuarioCLAVE'))){
+                return SesionCliente::valor('usuarioCLAVE');
             }
             return null;
         }else{
-            return $_SESSION['UsuarioClave'] = $Usuario;
+            return SesionCliente::valor('usuarioCLAVE', $usuarioCLAVE);
         }
     }
 

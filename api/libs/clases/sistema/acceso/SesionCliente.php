@@ -34,6 +34,13 @@ error_reporting(0);
         return $SesionActiva;
     }
 
+    static function usuario(){
+        self::abrir();
+        $SesionActiva = self::valor('Usuario');
+        // self::cerrar();
+        return $SesionActiva;
+    }
+
     static function completa(){
         self::abrir();
         $SesionActiva = $_SESSION;

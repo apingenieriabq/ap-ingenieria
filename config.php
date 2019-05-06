@@ -36,13 +36,17 @@ if (!defined('DIR_BASE')) {
     define('DIR_BASE', __DIR__ . DS);
 }
 if (!defined('URL_BASE')) {
-    define('URL_BASE', 'https://ap-ingenieria-puroingeniosamario.c9users.io/');
+    define('URL_BASE', 'https://si-ap-ingenieria-puroingeniosamario.c9users.io/');
 }
 if (!defined('DIR_API')) {
     define('DIR_API', DIR_BASE.'api/');
 }
 if (!defined('URL_API')) {
     define('URL_API', URL_BASE.'api/');
+}
+
+if (!defined('DIR_CONTROLADORES')) {
+    define('DIR_CONTROLADORES', DIR_API.'controladores'.DS);
 }
 if (!defined('DIR_LIBRERIA')) {
     define('DIR_LIBRERIA', DIR_API.'libs'.DS);

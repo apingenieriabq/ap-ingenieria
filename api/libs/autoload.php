@@ -1,17 +1,17 @@
 <?php
-class AutoCargaClases
-{
+class AutoCargaClases{
     public static function start()
     {
-        spl_autoload_register('AutoCargaClases::cargarClasesSistema');
-        spl_autoload_register('AutoCargaClases::cargarClasesUtilidades');
-        spl_autoload_register('AutoCargaClases::cargarClasesModelos');
-        //self::cargarModelos(DIR_MODELOS);
-        //self::cargarModelos(DIR_LIBRERIA . 'clases/');
+        AutoCargaClases::cargarClasesSistema();
+        AutoCargaClases::cargarClasesUtilidades();
+        spl_autoload_register(function ($nombre_clase) {
+            AutoCargaClases::cargarModelos(DIR_API . 'modelos'.DS, $nombre_clase);
+        });
     }
 
     private static function cargarClasesSistema(){
-        self::cargarModelos(DIR_LIBRERIA . 'clases'.DS.'sistema'.DS);
+        $archivos = self::cargarModelos(DIR_LIBRERIA . 'clases'.DS.'sistema'.DS);
+        print_r($archivos);
     }
 
     private static function cargarClasesUtilidades(){
@@ -19,30 +19,34 @@ class AutoCargaClases
     }
 
     private static function cargarClasesModelos(){
-        self::cargarModelos(DIR_LIBRERIA . 'clases'.DS.'datos'.DS);
+        self::cargarModelos(DIR_API . 'modelos'.DS);
     }
 
-    protected static function cargarModelos($directorio)
+    protected static function cargarModelos($directorio, $nombreArchivo = null)
     {
-        $listArchivos = array();
-        if (is_dir($directorio)):
-            $listArchivos = self::buscarArchivos($directorio);
 
-        // krumo($listArchivos);
+        $listArchivos = array();
+        if (is_dir($directorio)){
+            if(!is_null($nombreArchivo)){
+                $listArchivos = self::buscarArchivos($directorio, array($nombreArchivo) );
+            }else{
+                $listArchivos = self::buscarArchivos($directorio);
+            }
+
+        // var_dump($listArchivos);
         // echo "<br />";
             foreach ($listArchivos as $archivo) {
                 $Ext = pathinfo($archivo, PATHINFO_EXTENSION);
                 if ($Ext == "php") {
                     try {
-                        // echo "cargando ......  ".$archivo. "<br /><br />";
                         require_once $archivo;
                     }
                     catch (Exception $e) {
-                        krumo($e);
+                        var_dump($e);
                     }
                 }
             }
-        endif;
+        }
         // krumo($listArchivos);
     }
 
@@ -67,6 +71,7 @@ class AutoCargaClases
 
     private static function buscarArchivos($carpetas, $listArchivos = array() )
     {
+        // print_r($listArchivos);
             // echo "buscando archivos en $carpetas ".date("ymdhisu").".....<br />";
             if (is_dir($carpetas)):
                 $openCarpetas = scandir($carpetas);

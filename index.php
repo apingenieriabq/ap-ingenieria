@@ -28,9 +28,9 @@
 </div>
 <script type="text/javascript">
 	function abrirSIAPI(){
-		window.open('https://ap-ingenieria-puroingeniosamario.c9users.io/si/','SIAPI');
+		window.open('https://si-ap-ingenieria-puroingeniosamario.c9users.io/si/','SIAPI');
 	}
 	function abrirAPIAPI(){
-		window.open('https://ap-ingenieria-puroingeniosamario.c9users.io/api/','APIAPI');
+		window.open('https://si-ap-ingenieria-puroingeniosamario.c9users.io/api/','APIAPI');
 	}
 </script>

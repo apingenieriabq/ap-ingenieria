@@ -8,6 +8,7 @@ if(isset($_POST) and count($_POST)){
   Main::procesarPeticion($_POST['modulo'], $_POST['operacion']);
 
 }else{
-  echo $twig->render('index.tmpl', Main::getGlobals());
+  // print_r(Main::parametros());
+  echo $twig->render('index.tmpl', Main::parametros());
 }
 // session_write_close();

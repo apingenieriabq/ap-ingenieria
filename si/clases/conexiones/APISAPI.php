@@ -77,10 +77,14 @@ class APISAPI {
     }
 
     public function ejecutar($componente, $controlador, $operacion, array $parametros = null, $soloMENSAJE = true) {
-        $nombreUsuarioAPI = Cliente::estaLogueado() ? Cliente::nombreUsuario() : self::USERNAME;
-        $claveUsuarioAPI = Cliente::estaLogueado() ? base64_decode(Cliente::claveUsuario()) : self::PASSWORD;
+        $nombreUsuarioAPI = Cliente::estaLogueado() ? Cliente::usuarioNOMBRE() : self::USERNAME;
+        $claveUsuarioAPI = Cliente::estaLogueado() ? (Cliente::usuarioCLAVE()) : self::PASSWORD;
         $JSONRespuesta = null;
         $estadoConexion = false;
+
+        // echo "Cadena de conexion >>>  ".$nombreUsuarioAPI . ":" . $claveUsuarioAPI." <br />";
+        // print_r($_SESSION);
+
         $this->conexionApi = curl_init();
         curl_setopt($this->conexionApi, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->conexionApi, CURLOPT_USERPWD, $nombreUsuarioAPI . ":" . $claveUsuarioAPI);
@@ -111,25 +115,6 @@ class APISAPI {
 
         $resultado = curl_exec($this->conexionApi);
         if($soloMENSAJE){
-            // print_r($resultado);
-            // var_dump(json_decode($resultado, true));
-            // $respuesta = json_decode($resultado);
-            // if (json_last_error() === JSON_ERROR_NONE) {
-            //     if(isset($respuesta->RESPUESTA)){
-            //         if ($respuesta->RESPUESTA == 'EXITO') {
-            //             if (!session_status() == PHP_SESSION_ACTIVE)
-            //                 session_start();
-            //             $estadoConexion = $_SESSION['API_CONEXION'] = true;
-            //             session_write_close();
-            //             $info = curl_getinfo($this->conexionApi);
-            //             $JSONRespuesta = $respuesta->DATOS;
-            //         }else{
-            //             $JSONRespuesta = $respuesta->MENSAJE;
-            //         }
-            //     }else{
-            //         // var_dump($respuesta);
-            //     }
-            // }
             return $JSONRespuesta =  $this->procesarRESPUESTA($resultado);
         }else{
             return $resultado;

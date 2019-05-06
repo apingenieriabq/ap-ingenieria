@@ -40,14 +40,16 @@ class SeguridadControlador extends Controladores {
     $Clave = base64_decode($this->claveDelColaborador);
     $Respuesta = $Api->ejecutar(
       'seguridad', 'usuarios', 'verificarLoginCedulaColaborador',
-      array( 'personaIDENTIFICACION' => $this->cedulaDelColaborador, 'usuarioCLAVE' => $Clave), true
+      array( 'personaIDENTIFICACION' => $this->cedulaDelColaborador, 'usuarioCLAVE' => $Clave)
     );
     if(!is_null($Respuesta)){
       if(is_object($Respuesta)){
         // var_dump($Respuesta);
         Cliente::abrirSesion($Respuesta);
-        Cliente::nombreUsuario($Respuesta->usuarioNOMBRE);
-        Cliente::claveUsuario($this->claveDelColaborador);
+        Cliente::usuarioNOMBRE($Respuesta->usuarioNOMBRE);
+        Cliente::usuarioCLAVE($this->claveDelColaborador);
+        // print_r($_SESSION);
+        // die();
         echo RespuestasSistema::exito('Bienvenido al Sistema '.$Respuesta->usuarioNOMBRE.'. Tu último ingreso fue '.$Respuesta->usuarioULTIMAVISITA.'.',$Respuesta);
       }else{
         echo RespuestasSistema::fallo("No hemos podido iniciar con ese usuario.<br /><h3>".$Respuesta."</h3>", $Respuesta);

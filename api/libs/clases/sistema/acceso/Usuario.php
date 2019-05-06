@@ -67,8 +67,8 @@ class Usuario {
 
 
   public static function esAdministrador() {
-      if (self::estaLogueado()):
-          $dato = SesionCliente::activa();
+      $dato = SesionCliente::usuario();
+      if (!empty($dato)):
           if($dato->usuarioADMINISTRADOR == 'SI'):
               return true;
           endif;
@@ -90,7 +90,7 @@ class Usuario {
 
   public static function estaLogueado() {
       SesionCliente::abrir();
-      $ObjUSER = SesionCliente::valor(SESION);
+      $ObjUSER = SesionCliente::usuario();
       SesionCliente::cerrar();
       if($ObjUSER){
           return true;
@@ -298,12 +298,10 @@ class Usuario {
   }
 
   static $ultimaOperacionRegistrada;
-  public static function registrarOperacion($accionCOMPONENTE, $accionCONTROLADOR, $accionOPERACION, $usuarioNOMBRE){
+  public static function registrarOperacion($accionCOMPONENTE, $accionCONTROLADOR, $accionOPERACION, $usuarioNOMBRE, $usuarioID){
 
-    $Usuario = new Usuarios();
-    $Usuario->porNombre($usuarioNOMBRE);
     self::$ultimaOperacionRegistrada = new AccionesUsuarios(
-      $accionCOMPONENTE, $accionCONTROLADOR, $accionOPERACION, $usuarioNOMBRE, Usuario::ip(),  $Usuario->usuarioID
+      $accionCOMPONENTE, $accionCONTROLADOR, $accionOPERACION, $usuarioNOMBRE, Usuario::ip(),  $usuarioID
     );
   }
   public static function registrarRespuesta($respuesta){
@@ -330,7 +328,7 @@ class Usuario {
     }
     $Usuarios = new Usuarios();
     $GeoIP = Usuario::ip();
-    $lon = Usuario::longitud($lon);
+    // $lon = Usuario::longitud($lon);
     $lat = Usuario::latitud($lat);
     $usuarioID = Usuario::usuarioID();
     $Usuarios->registrarUltimaVisita( $GeoIP, $lat, $lon, $usuarioID );
@@ -366,6 +364,14 @@ class Usuario {
   public static function sesionActiva() {
       if (!empty(SesionCliente::completa())):
           return SesionCliente::completa();
+      else:
+          return null;
+      endif;
+  }
+
+  public static function conectado() {
+      if (!empty(SesionCliente::usuario())):
+          return SesionCliente::usuario();
       else:
           return null;
       endif;

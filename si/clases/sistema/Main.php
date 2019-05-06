@@ -57,22 +57,25 @@ class Main {
         return $twig;
     }
 
-    public static function getGlobals()
+    public static function parametros()
     {
         global $Api;
-        $datos = $Api->ejecutar('sistema','parametros','valores',
+        $datos = $Api->ejecutar(
+            'sistema','parametros','valores',
             array( 'parametrosCODIGOS' => array( 'LOGOAP_PNG', 'URL_PUBLICA') )
         );
+
+        // print_r($datos);
 
         $Menu = null;
         $estaLogueado = Cliente::estaLogueado();
         if($estaLogueado){
             $Menu = $Api->ejecutar(
-              'seguridad', 'usuarios', 'mostrarMenu',
-              array( 'usuarioID' => Cliente::datos()->usuarioID )
+              'seguridad', 'usuarios', 'mostrarMenu'
+            //   , array( 'usuarioID' => Cliente::datos()->usuarioID )
             );
         }
-        // print_r(Cliente::datos());
+        // // print_r(Cliente::datos());
         return array(
             'logo' => $datos[0],
             'url_api' => $datos[1],

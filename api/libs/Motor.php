@@ -6,41 +6,50 @@ class Motor {
   static $operacion;
   static $respuesta;
 
-  static function procesar($modulo, $controlador, $operacion, $usuario){
+  static function procesar($modulo, $controlador, $operacion, $usuarioNOMBRE = null){
     // echo 'procesando /'.$modulo.'/'.$controlador.'/'.$operacion.'/      ';
+    $Usuario = new Usuarios();
+    if(!is_null($usuarioNOMBRE)){
+      $Usuario->porNombre($usuarioNOMBRE);
+    }else{
+      $Usuario =  Usuario::conectado();
+    }
+
     global $modoPRUEBA_SINSEGURIDAD;
     // print_r($this);
     self::$modulo = $modulo;
     self::$controlador = $controlador;
     self::$operacion = $operacion;
-    Usuario::registrarOperacion($modulo, $controlador, $operacion, $usuario);
+    Usuario::registrarOperacion($modulo, $controlador, $operacion, $Usuario->usuarioNOMBRE, $Usuario->usuarioID);
     if(!$modoPRUEBA_SINSEGURIDAD){
-      if(Usuario::usuarioESTADO() == 'ACTIVO' ){
-          if(!Usuario::esAdministrador()){
-            $ItemMenu = MenuOperaciones::datosPorCombinacion($modulo, $controlador, $operacion);
-            // print_r($ItemMenu);
-            if(!empty($ItemMenu)){
-              if($ItemMenu->menuSEGURIDAD == "RESTRINGIDA"){
-                if(Usuario::tienePermiso($ItemMenu->menuCODIGO)){
-                    return self::ejecutarClassFunction($modulo, $controlador, $operacion);
+      if(Usuario::estaLogueado()){
+        if(Usuario::usuarioESTADO() == 'ACTIVO' ){
+            if(!Usuario::esAdministrador()){
+              $ItemMenu = MenuOperaciones::datosPorCombinacion($modulo, $controlador, $operacion);
+              // print_r($ItemMenu);
+              if(!empty($ItemMenu)){
+                if($ItemMenu->menuSEGURIDAD == "RESTRINGIDA"){
+                  if(Usuario::tienePermiso($ItemMenu->menuCODIGO) or Usuario::esAdministrador()){
+                      return self::ejecutarClassFunction($modulo, $controlador, $operacion);
+                  }else{
+                    self::$respuesta = RespuestasSistema::error(
+                      ''.strtoupper(Usuario::usuarioNOMBRE()).': No estás autorizad@ para realizar la operación '.$ItemMenu->menuTITULO.' [' . $ItemMenu->menuCONTROLADOR . '::' . $ItemMenu->menuOPERACION . '].'
+                    );
+                  }
                 }else{
-                  self::$respuesta = RespuestasSistema::error(
-                    ''.strtoupper(Usuario::usuarioNOMBRE()).': No estás autorizad@ para realizar la operación '.$ItemMenu->menuTITULO.' [' . $ItemMenu->menuCONTROLADOR . '::' . $ItemMenu->menuOPERACION . '].'
-                  );
+                  return self::ejecutarClassFunction($modulo, $controlador, $operacion);
                 }
               }else{
-                return self::ejecutarClassFunction($modulo, $controlador, $operacion);
+                self::$respuesta = RespuestasSistema::error('Esta operación no se encuentra registrada en el sistema. Vefirique la ruta .../'.$modulo.'/'.$controlador.'/'.$operacion.'/  a la que está accediendo.');
               }
             }else{
-
-              self::$respuesta = RespuestasSistema::error('Esta operación no se encuentra registrada en el sistema. Vefirique la ruta .../'.$modulo.'/'.$controlador.'/'.$operacion.'/  a la que está accediendo.');
-
+              return self::ejecutarClassFunction($modulo, $controlador, $operacion);
             }
-          }else{
-            return self::ejecutarClassFunction($modulo, $controlador, $operacion);
-          }
+        }else{
+          self::$respuesta = RespuestasSistema::error('El usuario '.Usuario::usuarioNOMBRE().' esta en estado '.Usuario::usuarioESTADO().' .');
+        }
       }else{
-        self::$respuesta = RespuestasSistema::error('El usuario '.Usuario::usuarioNOMBRE().' esta en estado '.Usuario::usuarioESTADO().' .');
+          self::$respuesta = RespuestasSistema::error('El usuario '.Usuario::usuarioNOMBRE().' no ha iniciado sesion en el sistema .');
       }
     }else{
       return self::ejecutarClassFunction($modulo, $controlador, $operacion);
@@ -54,7 +63,7 @@ class Motor {
     if (isset($controlador) and isset($modulo)) {
       $modulo = trim(strtolower($modulo));
       $controlador = ucfirst(trim(ucwords(strtolower($controlador))));
-      $archivoControlador =DIR_API . 'modulos' . DS .$modulo . DS .'controladores' . DS .$controlador. EXT_CONTROLADOR;
+      $archivoControlador =DIR_CONTROLADORES . DS .$modulo . DS .'controladores' . DS .$controlador. EXT_CONTROLADOR;
       if (file_exists($archivoControlador)) {
           require_once $archivoControlador;
           $nombreClase = ($controlador) . 'Controlador';
