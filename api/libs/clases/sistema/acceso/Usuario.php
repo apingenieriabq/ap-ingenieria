@@ -252,8 +252,11 @@ class Usuario {
   var $nombre;
   var $correo;
   var $cedula;
-  public static function usuarioID() {
+  public static function id() {
       return isset($_SESSION['Usuario']) ? $_SESSION['Usuario']->usuarioID : null;
+  }
+  public static function usuarioID() {
+      return self::id();
   }
   public static function usuarioNOMBRE() {
       return isset($_SESSION['Usuario']) ? $_SESSION['Usuario']->usuarioNOMBRE : null;

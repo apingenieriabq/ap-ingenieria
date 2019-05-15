@@ -32,17 +32,21 @@ function crearFormData(idElementoForm) {
     // }
     return formdata;
 }
-
 function activarPlugins() {
     $("form").attr('onsubmit', 'return false;');
 }
+
+
+
+
+
 
 function cargarVista(modulo, operacion, datos = '', nombreTabMenu = '', idTabMenu = '') {
     bloquearPantalla();
     var datosOperacion = "modulo=" + modulo + "&operacion=" + operacion + "&" + datos;
     ajaxApi(datosOperacion, function(dataVISTA) {
         if (isJson(dataVISTA)) {
-            activarLoader();
+            bloquearPantalla();
             controlRespuesta(dataVISTA);
             desbloquearPantalla();
         }
@@ -70,13 +74,57 @@ function cargaHTMLVistaAreaPlantilla(modulo, operacion, htmlVISTA, nombreTabMenu
     // });
 }
 
-
 function crearTabs(nameTabMenu, idTabMenu, html) {
     // if (!$("#" + idTabMenu).length) {
         $("#contenido-vista" ).html(html);
     // } else {
     // }
 }
+
+
+
+
+function cargandoDivision(idDivision) {
+    var top = $("#"+idDivision).css('top');
+    var left = $("#"+idDivision).css('left');
+    var width = $("#"+idDivision).css('width');
+    var height = $("#"+idDivision).css('height');
+
+    $("#" + idDivision).append('<div id="' + idDivision + '-load" class="cargando-division" style="z-index: ' + (zIndex() - 1) + ';position: absolute; top:' + top +'; left: ' + left +'; min-width: 100%; min-height:120px; width: ' + width +'; height: ' + height +';background: rgba(255,255,255,0.7);border-radius: 3px;" ><i class="fa fa-cog fa-spin" style="position: absolute; top: 50%; left: 50%; margin-left: -15px; margin-top: -15px; color: #000; font-size: 30px;"></i><div style="clear:both;" ></div></div>');
+}
+
+function quitarCargandoDivision(idDivision) {
+    $('#' + idDivision + '-load').remove();
+}
+
+function cargarDivision(idDivision, modulo, operacion, datos, functionEjecutable = null) {
+    cargandoDivision(idDivision);
+    var datosOperacion = "modulo=" + modulo + "&operacion=" + operacion + "&" + datos;
+    ajaxApi(datosOperacion, function(data) {
+        $("#" + idDivision).html(data);
+        if (functionEjecutable != null) {
+            functionEjecutable(data);
+        }
+        activarPlugins();
+        // quitarCargandoDivision(idDivision);
+    });
+}
+
+// function ejecutarOperacionEnDivision(idDivision, modulo, controlador, operacion, datos, funcionEjecutable = null, bloquear = true) {
+//     cargandoDivision(idDivision);
+//     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
+//     ajaxApi(datosOperacion, function(data) {
+//         controlRespuesta(data, funcionEjecutable);
+//         quitarCargandoDivision(idDivision);
+//     });
+// }
+
+
+
+
+
+
+
 
 
 function ejecutarOperacion(modulo, operacion, datos, funcionEjecutable = null, bloquear = true) {
@@ -92,6 +140,51 @@ function ejecutarOperacion(modulo, operacion, datos, funcionEjecutable = null, b
         desbloquearPantalla();
     });
 }
+
+function ejecutarOperacionFormData(modulo, operacion, formData, funcionEjecutable) {
+    bloquearPantalla();
+    formData.append("modulo", modulo);
+    formData.append("operacion", operacion);
+
+    if (modo_pruebas) console.log('%c Datos Enviados____', 'color: #bada55;  font-size:120%;');
+    if (modo_pruebas){
+        console.log(formData);
+        for (var key of formData.entries()) {
+            console.log(key[0] + ', ' + key[1]);
+        }
+    }
+
+    ajaxApi(formData, function(data) {
+        controlRespuesta(data, funcionEjecutable);
+        desbloquearPantalla();
+    }, false, false);
+//     $.ajax({
+//         url: '/api.php',
+//         type: 'post',
+//         dataType: "html",
+//         data: formData,
+//         cache: false,
+//         contentType: false,
+//         processData: false
+//     }).done(function(response) {
+//         //console.log(response);
+//         functionEjecutable(response);
+//     });
+}
+
+function ejecutarOperacionArchivo(modulo, operacion, archivoFormData, funcionEjecutable) {
+    bloquearPantalla();
+    archivoFormData.append("modulo", modulo);
+    archivoFormData.append("operacion", operacion);
+    ajaxApi(formData, function(data) {
+        controlRespuesta(data, funcionEjecutable);
+        desbloquearPantalla();
+    }, false, false);
+}
+
+
+
+
 
 function ajaxApi(datosOperacion, funcionEjecutable, procesarDatos = false, tipoContenidoEnviado = 'application/x-www-form-urlencoded; charset=UTF-8') {
 
@@ -159,54 +252,6 @@ function controlRespuesta(data, funcionEjecutable = null) {
 
 
 
-function ejecutarOperacionFormData(modulo, operacion, formData, funcionEjecutable) {
-    bloquearPantalla();
-    formData.append("modulo", modulo);
-    formData.append("operacion", operacion);
-
-    if (modo_pruebas) console.log('%c Datos Enviados____', 'color: #bada55;  font-size:120%;');
-    if (modo_pruebas){
-        console.log(formData);
-        for (var key of formData.entries()) {
-            console.log(key[0] + ', ' + key[1]);
-        }
-    }
-
-    ajaxApi(formData, function(data) {
-        controlRespuesta(data, funcionEjecutable);
-        desbloquearPantalla();
-    }, false, false);
-//     $.ajax({
-//         url: '/api.php',
-//         type: 'post',
-//         dataType: "html",
-//         data: formData,
-//         cache: false,
-//         contentType: false,
-//         processData: false
-//     }).done(function(response) {
-//         //console.log(response);
-//         functionEjecutable(response);
-//     });
-}
-
-
-function ejecutarOperacionArchivo(modulo, operacion, archivoFormData, funcionEjecutable) {
-    bloquearPantalla();
-    archivoFormData.append("modulo", modulo);
-    archivoFormData.append("operacion", operacion);
-    ajaxApi(formData, function(data) {
-        controlRespuesta(data, funcionEjecutable);
-        desbloquearPantalla();
-    }, false, false);
-}
-
-
-
-
-
-
-
 
 
 
@@ -227,7 +272,7 @@ function ejecutarOperacionArchivo(modulo, operacion, archivoFormData, funcionEje
 //     bloquearPantalla();
 //     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
 //     ajaxApi(datosOperacion, function(data) {
-//         activarLoader();
+//         bloquearPantalla();
 //         $("#area-modales").html(data);
 //         if (funcionEjecutable) {
 //             funcionEjecutable(data);
@@ -481,7 +526,7 @@ function ejecutarOperacionArchivo(modulo, operacion, archivoFormData, funcionEje
 //     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
 //     ajaxApi(datosOperacion, function(dataVISTA) {
 //         if (isJson(dataVISTA)) {
-//             activarLoader();
+//             bloquearPantalla();
 //             controlRespuesta(dataVISTA);
 //             desbloquearPantalla();
 //         }
@@ -495,7 +540,7 @@ function ejecutarOperacionArchivo(modulo, operacion, archivoFormData, funcionEje
 // function cargaHTMLVistaAreaPlantilla(modulo, controlador, operacion, htmlVISTA, nombreTabMenu = '', idTabMenu = '') {
 //     bloquearPantalla();
 //     ejecutarOperacion("sistema", "OperacionesSistema", "datosParaTab", "operacionmodulo=" + modulo + "&operacionControlador=" + controlador + "&operacionOperacion=" + operacion, function(datos) {
-//         activarLoader();
+//         bloquearPantalla();
 //         cambiarTITULO('' + datos.Operacion.operacionNOMBRETAB + ' :: ' + datos.Operacion.controladorTITULO + ' / ' + datos.Operacion.moduloTITULO);
 //         crearTabs('<i class="' + datos.Operacion.operacionMENUICONO + ' fa-xs" aria-hidden="true"></i> ' + datos.Operacion.operacionNOMBRETAB + '' + nombreTabMenu, (datos.Operacion.operacionCODIGO + "" + idTabMenu).toLowerCase(), htmlVISTA);
 //         activarPlugins();

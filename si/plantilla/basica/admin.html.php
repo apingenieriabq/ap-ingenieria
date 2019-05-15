@@ -6,16 +6,7 @@
 {% block area_central %}
 <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
     {% include 'basica/includes/barra-arriba.html.php' %}
-    <div class="main-content-container container-fluid px-4">
-      <div class="page-header row no-gutters py-4">
-        <div class="col-12 col-sm-4 text-center text-sm-left mb-4 mb-sm-0">
-          <span id="subtitulo-vista" class="text-uppercase page-subtitle">{{"now"|date("Y-m-d h:i:s")}}</span>
-          <h3 id="titulo-vista" class="page-title">Bienvenid@</h3>
-        </div>
-        <div id="herramientas-vista" ></div>
-        <div id="contenido-vista" ></div>
-      </div>
-    </div>
+    <div id="contenido-vista" class="main-content-container container-fluid px-4"></div>
     <footer class="main-footer d-flex p-2 px-3 bg-white border-top">
       <!--<ul class="nav">-->
       <!--  <li class="nav-item">-->
@@ -73,9 +64,8 @@
       {% for ItemMenu in Componente.Operaciones %}
 
         {% if ItemMenu.SubOperaciones|length > 0 %}
-
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle " href="javascript:void(0);"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+        <li class="nav-item dropdown menu-lateral ">
+          <a class="nav-link dropdown-toggle menu-lateral" href="javascript:void(0);"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
             <i class="{{ItemMenu.menuMENUICONO}}"></i>
             <span>{{ItemMenu.menuTITULO}}</span>
           </a>
@@ -86,7 +76,6 @@
             {% endfor %}
           </div>
         </li>
-
         {% else %}
         <li class="nav-item">
           <a class="nav-link" href="javascript:void(0);"  data-modulo="{{ItemMenu.menuCONTROLADOR}}" data-operacion="{{ItemMenu.menuOPERACION}}"
@@ -110,18 +99,28 @@
 <div id="modales"></div>
 {% endblock %}
 
+
+{% block archivo_cabeza %}
+<link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.snow.css">
+{% endblock %}
+
+
+
 {% block archivos_script %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
     <script src="https://unpkg.com/shards-ui@latest/dist/js/shards.min.js"></script>
 <script src="plantilla/basica/scripts/shards-dashboards.1.3.1.min.js"></script>
 <!--<script src="plantilla/basica/scripts/app/app-analytics-overview.1.3.1.min.js"></script>-->
+<script src="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.min.js"></script>
 
 <script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
 <script type="text/javascript" src="plantilla/basica/scripts/app/app-file-manager.1.3.1.min.js"></script>
 
+
 <script src="js/modulos/login.js"></script>
 <script src="js/modulos/menu.js"></script>
+<script src="js/modulos/institucional.js"></script>
 {% endblock %}
 
 {% block scripts_al_pie %}

@@ -127,9 +127,12 @@ function irArriba() {
 }
 function scrollAlObjeto(ObjetoID) {
     if (window.jQuery) {
-        $('#ObjetoID').animate({
-            scrollTop: $(this).offset().top + 'px'
-        }, 179);
+
+    $('html,body').animate({
+        scrollTop: $("#" + ObjetoID).offset().top
+    }, 'slow');
+
+
     } else {
        var e = document.getElementById(ObjetoID);
        if (!!e && e.scrollIntoView) {

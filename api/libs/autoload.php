@@ -5,6 +5,7 @@ class AutoCargaClases{
         AutoCargaClases::cargarClasesSistema();
         AutoCargaClases::cargarClasesUtilidades();
         spl_autoload_register(function ($nombre_clase) {
+            // echo $nombre_clase. "  <<<<<<<<        ";
             AutoCargaClases::cargarModelos(DIR_API . 'modelos'.DS, $nombre_clase);
         });
     }

@@ -79,27 +79,27 @@ $app->map(['GET','POST'], '/{componente}/{controlador}/{operacion}', function ($
     return $response;
 })->add( new ControlAutenticacion() );
 
-$app->map(['GET','POST'],'/conectar', function ($request, $response, $args) {
-    return $response->write(
-        RespuestasSistema::exito("Bienvenido al Api REST de la AP Ingenieria.", Usuario::sesionActiva() )
-    );
-})->add( new ControlAutenticacion() );
-$app->get('/sesionActiva', function ($request, $response, $args) {
-    return $response->write(
-        RespuestasSistema::exito("Sesion Activa por el Usuario Actual", SesionCliente::completa() )
-    );
-})->add( new ControlAutenticacion() );
-$app->get('/mostrarMenu', function ($request, $response, $args) {
-    $errorAPI = Motor::procesar('seguridad', 'usuarios', 'mostrarMenu');
-    if(!$errorAPI){
+// $app->map(['GET','POST'],'/conectar', function ($request, $response, $args) {
+//     return $response->write(
+//         RespuestasSistema::exito("Bienvenido al Api REST de la AP Ingenieria.", Usuario::sesionActiva() )
+//     );
+// })->add( new ControlAutenticacion() );
+// $app->get('/sesionActiva', function ($request, $response, $args) {
+//     return $response->write(
+//         RespuestasSistema::exito("Sesion Activa por el Usuario Actual", SesionCliente::completa() )
+//     );
+// })->add( new ControlAutenticacion() );
+// $app->get('/mostrarMenu', function ($request, $response, $args) {
+//     $errorAPI = Motor::procesar('seguridad', 'usuarios', 'mostrarMenu');
+//     if(!$errorAPI){
 
-         echo Motor::$respuesta;
-    }
-    return $response;
-})->add( new ControlAutenticacion() );
-$app->map(['GET','POST'],'/registrarUbicacion', function ($request, $response, $args) {
-    return $response;
-})->add( new ControlAutenticacion('GPS') );
+//          echo Motor::$respuesta;
+//     }
+//     return $response;
+// })->add( new ControlAutenticacion() );
+// $app->map(['GET','POST'],'/registrarUbicacion', function ($request, $response, $args) {
+//     return $response;
+// })->add( new ControlAutenticacion('GPS') );
 $app->get('/desconectar', function ($request, $response, $args) {
     Usuario::cerrarSesion();
     return $response->write(
@@ -110,14 +110,15 @@ $app->get('/desconectar', function ($request, $response, $args) {
 $app->get('/', function (Request $request,  Response $response, $args = []) {
     global $errorAPI;
 
-    if(!Usuario::estaLogueado()){
-        Usuario::iniciarSesion('invitado','invitado');
-        Usuario::comoInvitado();
-    }
-    $errorAPI = Motor::procesar('sistema', 'api', 'inicio');
-    if(!$errorAPI){
-         echo Motor::$respuesta;
-    }
+    // if(!Usuario::estaLogueado()){
+    //     Usuario::iniciarSesion('invitado','invitado');
+    //     Usuario::comoInvitado();
+    // }
+    Vistas::plantilla('basica');
+    // $errorAPI = Motor::procesar('sistema', 'api', 'inicio', 'invitado');
+    // if(!$errorAPI){
+    //      echo Motor::$respuesta;
+    // }
     return $response;
 });
 $app->run();

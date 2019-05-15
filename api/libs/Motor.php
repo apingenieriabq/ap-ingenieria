@@ -62,8 +62,8 @@ class Motor {
   static private function ejecutarClassFunction($modulo, $controlador, $operacion){
     if (isset($controlador) and isset($modulo)) {
       $modulo = trim(strtolower($modulo));
-      $controlador = ucfirst(trim(ucwords(strtolower($controlador))));
-      $archivoControlador =DIR_CONTROLADORES . DS .$modulo . DS .'controladores' . DS .$controlador. EXT_CONTROLADOR;
+      $controlador = ucfirst(trim(ucwords(($controlador))));
+      $archivoControlador =DIR_COMPONENTES . DS .$modulo . DS .'controladores' . DS .$controlador. EXT_CONTROLADOR;
       if (file_exists($archivoControlador)) {
           require_once $archivoControlador;
           $nombreClase = ($controlador) . 'Controlador';

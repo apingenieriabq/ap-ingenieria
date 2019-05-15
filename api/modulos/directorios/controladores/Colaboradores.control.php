@@ -3,6 +3,13 @@
 
 class ColaboradoresControlador extends Controladores {
 
+  function porCargo(){
+    $P = new Colaboradores();
+    return Respuestassistema::exito("Todos los Colaboradoes con cargo de AP INGENENIERIA",
+      $P->conCargo($this->cargoID)
+    );
+  }
+
   function todos(){
     $P = new Colaboradores();
     return Respuestassistema::exito("Todos los Colaboradoes de AP INGENENIERIA",$P->todos());

@@ -52,7 +52,10 @@
         <div class="dropdown-menu dropdown-menu-small">
           <a class="dropdown-item" href="javascript::enConstruccion();"><i class="material-icons">&#xE7FD;</i> Perfil</a>
           <!--<a class="dropdown-item" href="edit-user-profile.html"><i class="material-icons">&#xE8B8;</i> Modificar</a>-->
-          <a class="dropdown-item" href="file-manager-cards.html"><i class="material-icons">&#xE2C7;</i> Archivos</a>
+          <a class="dropdown-item nav-link" href="javascript:void(0);" data-modulo="ListadoMaestroDocumento" data-operacion="mostrarNavegador" onclick="abrirItemMenu(this);" target="_self">
+            <!--<i class="material-icons">&#xE917;</i>-->
+            <i class="fa fa-folder-open"></i><span>Información Institucional</span>
+          </a>
           <a class="dropdown-item" href="transaction-history.html"><i class="material-icons">&#xE896;</i> Acciones</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="cerrarSesionColaborador();" >

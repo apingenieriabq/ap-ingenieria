@@ -28,9 +28,8 @@ class Vistas {
         }else{
           $datos['hash_vista'] = uniqid();
         }
-        session_start();
+
         $datos['SesionCompleta'] = SesionCliente::completa();
-        session_write_close();
         try{
             echo $twig->render( $nombre . DS . 'inicio.php',$datos);
         }catch (Exception $e){

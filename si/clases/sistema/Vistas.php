@@ -13,7 +13,9 @@ class Vistas {
         $rutaVista = $componente . DS . $vista . EXT_VISTA;
         try{
             SesionCliente::cerrar();
-            return ($twig->render( $rutaVista,$datos));
+            // print_r($datos);
+            $htmlENCABEZADO = '';
+            return $htmlENCABEZADO.($twig->render( $rutaVista,$datos));
         }catch (Exception $Ex){
             return (
                 'ERROR AL CARGAR VISTA [' . $rutaVista . '], COMUNICARSE CON GESTION TICS.' .

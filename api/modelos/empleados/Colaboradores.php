@@ -3,6 +3,14 @@
 class Colaboradores extends ModeloDatos {
 
 
+  function conCargo($cargoID){
+    $Colaboradores = $this->todos(['cargoID' => $cargoID]);
+    foreach($Colaboradores as $i => $Colaborador){
+      $Colaboradores[$i] = $this->datosCompletos($Colaborador->colaboradorID);
+    }
+    return $Colaboradores;
+   }
+
   function datosPorCedula($cedulaCOLABORADOR){
     $SQL = 'SELECT `Colaboradores`.colaboradorID FROM `Colaboradores` INNER JOIN `Personas` ON (`Colaboradores`.`personaID` = `Personas`.`personaID`) WHERE `Personas`.personaIDENTIFICACION = :cedula ';
     $Colaborador = $this->consultaUNO(
@@ -39,6 +47,7 @@ class Colaboradores extends ModeloDatos {
     }
     $Colaborador = $this->porID($colaboradorID);
     if(!empty($Colaborador)){
+      $this->Persona = new Personas($this->personaID);
       $this->JefeInmediato = new Colaboradores($this->colaboradorJEFEINMEDIATO);
     }
     return $this;
