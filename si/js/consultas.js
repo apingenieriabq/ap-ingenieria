@@ -265,9 +265,6 @@ function controlRespuesta(data, funcionEjecutable = null) {
 
 
 
-
-
-
 // function cargarModal(modulo, operacion, datos = '', funcionEjecutable = null) {
 //     bloquearPantalla();
 //     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
@@ -305,14 +302,6 @@ function controlRespuesta(data, funcionEjecutable = null) {
 //     }, false, false);
 // }
 
-// function crearFormData(idElementoForm) {
-//     var formElement = document.getElementById(idElementoForm);
-//     var formdata = new FormData(formElement);
-//     for (var key of formdata.entries()) {
-//         console.log(key[0] + ', ' + key[1]);
-//     }
-//     return formdata;
-// }
 
 // function activarInactividad() {
 //     ejecutarOperacion('usuarios', 'Sesion', 'activarInactividad', null, function(data) {

@@ -51,9 +51,23 @@ class DocumentosControlador extends Controladores {
   public function nuevo()
   {
     $validacion = $this->validarDatosEnviados(
-      ['tipoIdentificacionID','cargoID','tipoDocumentoID', 'tipoIdentificacionID', 'personaIDENTIFICACION', 'documentoEMAIL', 'personaNOMBRES', 'personaAPELLIDOS' ]
+      ['procesoID','documentoVERSION','documentoPUBLICADO', 'documentoNOMBRE', 'documentoCONTENIDO', 'documentoRESPONSABLE']
     );
     if(empty($validacion)){
+
+      $Doc = new DocumentosAP();
+      $Doc->nuevo(
+        $this->procesoID ,
+        $this->documentoVERSION ,
+        $this->documentoPUBLICADO ,
+        $this->documentoNOMBRE ,
+        $this->documentoCONTENIDO ,
+        $this->documentoURL ,
+        $this->documentoRESPONSABLE ,
+        $this->documentoOBSERVACIONES
+      );
+      return Respuestassistema::exito("Datos del Nuevo Documento AP", $Doc);
+
     }else{
       return Respuestassistema::error("No llegarón los datos OBLIGATORIOS para la operación. <br />" . $validacion);
     }
