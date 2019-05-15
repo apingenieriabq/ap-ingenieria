@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="plantilla/basica/styles/stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <link rel="stylesheet" id="main-stylesheet" data-version="1.3.1" href="plantilla/basica/styles/shards-dashboards.1.3.1.min.css">
   <link rel="stylesheet" href="plantilla/basica/styles/extras.1.3.1.min.css">
+  <link rel="stylesheet" href="plantilla/basica/styles/personalizado.css">
   <script async defer src="plantilla/basica/styles/buttons.github.io/buttons.js"></script>
 
   <!-- https://cdnjs.com/libraries/crypto-js -->

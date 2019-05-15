@@ -48,6 +48,29 @@ class DocumentosControlador extends Controladores {
       }
   }
 
+  public function recibirActualizarMiniatura(){
+    $validacion = $this->validarDatosEnviados(['documentoMINIATURA', 'documentoCODIGO', 'documentoID', 'procesoID']);
+    if(empty($validacion)){
+      $DIR_MINATURAS = 'institucional'.DS.'procesos'.DS.$this->procesoID.DS.'documentos'.DS.$this->documentoCODIGO.DS.'miniaturas'.DS;
+      $NOMBRE_MINIATURA = "min-".$this->documentoCODIGO.Archivos::extension($this->documentoMINIATURA);
+      $movido = Archivos::moverArchivoRecibido($this->documentoMINIATURA, DIR_ARCHIVOS.$DIR_MINATURAS, $NOMBRE_MINIATURA );
+      $miniaturaURL = URL_ARCHIVOS.$DIR_MINATURAS.$NOMBRE_MINIATURA;
+
+      if($movido === true ){
+        $Doc = new DocumentosAP($this->documentoID);
+        $Doc->actualizarIMAGEN($miniaturaURL);
+        return Respuestassistema::exito("Ruta de la minuatura", $miniaturaURL);
+      }else{
+        return Respuestassistema::error("No se pudo actualizar la minuatura." .$movido);
+      }
+
+
+
+    }else{
+      return Respuestassistema::error("No llegarón los datos OBLIGATORIOS para la operación. <br />" . $validacion);
+    }
+  }
+
   public function nuevo()
   {
     $validacion = $this->validarDatosEnviados(

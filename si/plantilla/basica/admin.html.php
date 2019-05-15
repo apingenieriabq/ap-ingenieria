@@ -102,6 +102,7 @@
 
 {% block archivo_cabeza %}
 <link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.snow.css">
+<link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.css">
 {% endblock %}
 
 
@@ -115,7 +116,9 @@
 
 <script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
-<script type="text/javascript" src="plantilla/basica/scripts/app/app-file-manager.1.3.1.min.js"></script>
+<!--<script type="text/javascript" src="plantilla/basica/scripts/app/app-file-manager.1.3.1.min.js"></script>-->
+
+<script src="js/configs.js"></script>
 
 
 <script src="js/modulos/login.js"></script>

@@ -59,16 +59,30 @@ function mostrarFormulario(){
 }
 
 
+function recibirMiniatura(){
+  if(isset($this->documentoIMAGEN)){
+    $carpeta = 'temporales'.DS.'documentos'.DS;
+    $nombre = uniqid().".".Archivos::extension($this->documentoIMAGEN);
+    $ruta = $carpeta.$nombre;
+    $cargado = Archivos::moverArchivoRecibido($this->documentoIMAGEN, $carpeta, $nombre);
+    if($cargado){
+      echo RespuestasSistema::exito('Minatura Cargada correctamente.', $ruta);
+    }else{
+      echo RespuestasSistema::fallo("No se pudo mover el archivo. ".$cargado, $cargado);
+    }
+  }else{
+    echo RespuestasSistema::error("No llegó la imagen / archivo.");
+  }
+
+}
+
 
 function guardarNuevo(){
-
-
     global $Api;
     $DocumentoAP = $Api->ejecutar(
       'institucional', 'Documentos', 'nuevo'
       , [
         'procesoID' => $this->procesoID ,
-        // 'documentoPUBLICO' => $this->documentoPUBLICO ,
         'documentoVERSION' => $this->documentoVERSION ,
         'documentoPUBLICADO' => $this->documentoPUBLICADO ,
         'documentoNOMBRE' => $this->documentoNOMBRE ,
@@ -78,10 +92,17 @@ function guardarNuevo(){
         'documentoOBSERVACIONES' => $this->documentoOBSERVACIONES ,
       ]
       // , null
-       , false
+      // , false
     );
-    if(is_object($DocumentoAP)){
-      echo RespuestasSistema::exito('Guardado',$DocumentoAP);
+    // print_r($DocumentoAP);die();
+    if(is_object($DocumentoAP) and !empty($DocumentoAP) ){
+      $miniatura = $Api->enviar(
+        'institucional', 'Documentos', 'recibirActualizarMiniatura'
+        ,['documentoID' => $DocumentoAP->documentoID,'procesoID' => $DocumentoAP->procesoID,'documentoCODIGO' => $DocumentoAP->documentoCODIGO]
+        ,[ 'documentoMINIATURA' => DIR_BASE.$this->documentoIMAGEN_RUTA]
+        // , false
+      );
+      echo RespuestasSistema::exito('Guardado correctamente el nuevo documento de código ['.$DocumentoAP->documentoCODIGO.'].',$DocumentoAP);
     }else{
       echo RespuestasSistema::fallo("No se guardaron los datos.<br /><h3>".$DocumentoAP."</h3>", $DocumentoAP);
     }

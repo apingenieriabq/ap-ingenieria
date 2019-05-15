@@ -7,20 +7,38 @@ class DocumentosAP extends ModeloDatos
     return parent::__construct('DocumentosAP', 'documentoID', $documentoID);
   }
 
-  public function todosSinProceso($documentoPUBLICADO = 'SI'){
-    return $this->todos([ 'procesoID' => null, 'documentoPUBLICADO' => $documentoPUBLICADO ]);
+
+  public function actualizarIMAGEN($documentoIMAGEN, $documentoID = null){
+    if(is_null($documentoID)){
+      $documentoID = $this->documentoID;
+    }
+    return $this->actualiza([ 'documentoIMAGEN' => $documentoIMAGEN], [ 'documentoID' => $documentoID] );
   }
 
-  public function todosSinProcesoDelUsuario($documentoPUBLICADO = 'SI'){
-    return $this->todos([ 'procesoID' => null, 'documentoPUBLICADO' => $documentoPUBLICADO ]);
+
+  public function todosSinProceso($documentoPUBLICADO = null){
+    if(!is_null($documentoPUBLICADO)){
+      return $this->todos([ 'procesoID' => null, 'documentoPUBLICADO' => $documentoPUBLICADO ]);
+    }
+    return $this->todos([ 'procesoID' => null]);
   }
 
-  public function todosDelProceso($procesoID, $documentoPUBLICADO = 'SI'){
-    return $this->todos([ 'procesoID' => $procesoID, 'documentoPUBLICADO' => $documentoPUBLICADO ]);
+  public function todosSinProcesoDelUsuario(){
+    return $this->todos([ 'procesoID' => null]);
   }
 
-  public function todosConProcesoDelUsuario($procesoID, $documentoPUBLICADO = 'SI'){
-    return $this->todos([ 'procesoID' => $procesoID, 'documentoPUBLICADO' => $documentoPUBLICADO ]);
+  public function todosDelProceso($procesoID, $documentoPUBLICADO = null){
+    if(!is_null($documentoPUBLICADO)){
+      return $this->todos([ 'procesoID' => $procesoID, 'documentoPUBLICADO' => $documentoPUBLICADO ]);
+    }
+    return $this->todos([ 'procesoID' => $procesoID]);
+  }
+
+  public function todosConProcesoDelUsuario($procesoID, $documentoPUBLICADO = null){
+    if(!is_null($documentoPUBLICADO)){
+      return $this->todos([ 'procesoID' => $procesoID, 'documentoPUBLICADO' => $documentoPUBLICADO ]);
+    }
+    return $this->todos([ 'procesoID' => $procesoID]);
   }
 
   public function nuevo( $procesoID, $documentoVERSION , $documentoPUBLICADO , $documentoNOMBRE , $documentoCONTENIDO ,
@@ -28,20 +46,20 @@ class DocumentosAP extends ModeloDatos
 
     $Proceso = new ProcesosAP($procesoID);
     $CantDocumentos = count($this->todosDelProceso($procesoID));
-    echo $documentoCODIGO = $Proceso->procesoCODIGO."-".str_pad($Proceso->procesoID,2,"0",STR_PAD_LEFT)."".str_pad($CantDocumentos, 3, "0", STR_PAD_LEFT);
-
-    return $this->insertar([ 'procesoID' => $procesoID ,
-        'documentoCODIGO' => $documentoCODIGO ,
-        'documentoVERSION' => $documentoVERSION ,
-        'documentoPUBLICADO' => $documentoPUBLICADO ,
-        'documentoNOMBRE' => $documentoNOMBRE ,
-        'documentoCONTENIDO' => $documentoCONTENIDO ,
-        'documentoURL' => $documentoURL ,
-        'documentoRESPONSABLE' => $documentoRESPONSABLE ,
-        'documentoOBSERVACIONES' => $documentoOBSERVACIONES,
-        'documentoUSRCREACION' => Usuario::id(),
-        'documentoUSRACTUALIZACION' => Usuario::id()
-      ]);
+    $documentoCODIGO = $Proceso->procesoCODIGO."-".str_pad($Proceso->procesoID,2,"0",STR_PAD_LEFT)."".str_pad($CantDocumentos, 3, "0", STR_PAD_LEFT);
+    $nuevo = $this->insertar([ 'procesoID' => $procesoID ,
+          'documentoCODIGO' => $documentoCODIGO ,
+          'documentoVERSION' => $documentoVERSION ,
+          'documentoPUBLICADO' => $documentoPUBLICADO ,
+          'documentoNOMBRE' => $documentoNOMBRE ,
+          'documentoCONTENIDO' => $documentoCONTENIDO ,
+          'documentoURL' => $documentoURL ,
+          'documentoRESPONSABLE' => $documentoRESPONSABLE ,
+          'documentoOBSERVACIONES' => $documentoOBSERVACIONES,
+          'documentoUSRCREACION' => Usuario::id(),
+          'documentoUSRACTUALIZACION' => Usuario::id()
+        ]);
+    return $this->porID($nuevo);
   }
 
 

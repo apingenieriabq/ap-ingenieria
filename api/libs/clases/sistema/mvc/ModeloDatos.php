@@ -4,8 +4,10 @@ class ModeloDatos {
 
   private $nombreTabla;
   private $nombreCampoID;
+  public $Registros = array();
 
   public function __construct($nombreTabla, $nombreCampoID, $valorCampoID = null) {
+    if(count($this->Registros)) { $this->Registros = array(); }
 
     // echo "<br />Dentro del Modelo [".$nombreTabla."] -> ".$valorCampoID;
     $this->nombreTabla = $nombreTabla;
@@ -26,9 +28,11 @@ class ModeloDatos {
 
 
     function porID($valorCampoID){
+        if(count($this->Registros)) { $this->Registros = array(); }
         return $this->datos([$this->nombreCampoID=> $valorCampoID]);
     }
     public function datos($donde = null){
+        if(count($this->Registros)) { $this->Registros = array(); }
         if(is_null($donde)){
             $nombreCampo = $this->nombreCampoID;
             $valorCampo = $this->$nombreCampo;
@@ -88,7 +92,6 @@ class ModeloDatos {
         global $BD_AP_PRINCIPAL;
         $filas = $BD_AP_PRINCIPAL->query($sql, $donde)->fetchAll();
         if(count($filas)){
-
             if(count($filas[0])){
                 foreach($filas[0] as $variable => $dato){
                     //  echo $variable."  =  ".$dato. " <br />  ";

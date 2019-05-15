@@ -16,8 +16,10 @@
   </div>
   <div class="row">
     <div class="col-lg-8 col-md-12">
+
       <div class="card card-small mb-3">
         <div class="card-body">
+
             <input class="form-control form-control-lg mb-3" type="text" name="documentoNOMBRE" placeholder="Titulo del Documento" required >
             <div class="row">
               <div class=" col-md-8">
@@ -28,8 +30,27 @@
               </div>
             </div>
             <div id="editor-documento-procesosAP" class="add-new-post__editor mb-1"></div>
+
         </div>
       </div>
+
+      <div class="card card-small mb-3">
+        <div class="card-body">
+
+          <div class="row">
+            <div class=" col-md-4">
+              <div id="cargarMiniaturaDocumento" class="dropzone"></div>
+              <input type="hidden" id="documentoIMAGEN_RUTA"  name="documentoIMAGEN_RUTA" value=""/>
+            </div>
+            <div class=" col-md-8">
+              <textarea id="documentoOBSERVACIONES" name="documentoOBSERVACIONES"
+                class="md-textarea form-control" rows="5" placeholder="observaciones sobre el documento o contenido....." ></textarea>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
     <div class="col-lg-4 col-md-12">
       <!-- Post Overview -->
@@ -41,22 +62,32 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item p-3">
               <span class="d-flex mb-2">
+                <i class="material-icons mr-1">lock</i>
+                <strong class="mr-1">Permisos: </strong>
+                {% if DocumentoAP %} {% if DocumentoAP.documentoPUBLICO == 'SI' %}PÚBLICO{% else %}RESTRINGIDO{% endif %} {% else %} RESTRINGIDO {% endif %}
+              </span>
+              <span class="d-flex mb-2">
                 <i class="material-icons mr-1">flag</i>
                 <strong class="mr-1">Estado: </strong>
+                {% if DocumentoAP %}{{DocumentoAP.documentoESTADO}}{% else %}INACTIVO{% endif %}
               </span>
               <span class="d-flex mb-2">
                 <i class="material-icons mr-1">fiber_pin</i>
                 <strong class="mr-1">Código: </strong>
+                {% if DocumentoAP %}{{DocumentoAP.documentoCODIGO}}{% else %}-{% endif %}
               </span>
               <span class="d-flex mb-2">
                 <i class="material-icons mr-1">visibility</i>
-                <strong class="mr-1">Publicado:</strong> <strong class="text-success">NO</strong>
+                <strong class="mr-1">Publicado: </strong>
+                {% if DocumentoAP %}{{DocumentoAP.documentoPUBLICADO}}{% else %}NO{% endif %}
               </span>
               <span class="d-flex mb-2">
-                <i class="material-icons mr-1">calendar_today</i><strong class="mr-1">Actualización:</strong> yyy-mm-dd hh:mm:ss
+                <i class="material-icons mr-1">calendar_today</i><strong class="mr-1">Actualización: </strong>
+                {% if DocumentoAP %}{{DocumentoAP.documentoFCHACTUALIZACION}}{% else %}{{ "now"|date("Y-m-d h:i.s") }}{% endif %}
               </span>
               <span class="d-flex">
-                <i class="material-icons mr-1">score</i><strong class="mr-1">Por:</strong> <strong class="text-warning">nombre_colaborador</strong>
+                <i class="material-icons mr-1">score</i><strong class="mr-1">Por: </strong>
+                <span class="text-warning">{% if DocumentoAP %}{{DocumentoAP.documentoESTADO}}{% else %}INACTIVO{% endif %}</span>
               </span>
             </li>
           </ul>
@@ -123,14 +154,6 @@
 
 
             </li>
-            <li class="list-group-item d-flex px-3">
-
-              <div class="form-group col-md-12">
-                <label for="documentoOBSERVACIONES">Observaciones</label>
-                <textarea id="documentoOBSERVACIONES" name="documentoOBSERVACIONES" class="form-control"></textarea>
-              </div>
-
-            </li>
           </ul>
         </div>
       </div>
@@ -140,10 +163,8 @@
 <script>
   "use strict";
   var editor;
+  var myDropzone;
   var documentoPUBLICADO = "NO";
-  function intercambiarModoBorrador(ACTIVADO){
-    documentoPUBLICADO = ACTIVADO;
-  }
 
 
   jQuery(document).ready(function(){
@@ -163,20 +184,32 @@
       theme:"snow"
     });
 
+    myDropzone = new Dropzone("div#cargarMiniaturaDocumento", {
+      paramName: "documentoIMAGEN",
+      params: {
+        modulo: "DocumentosAP",
+        operacion: "recibirMiniatura",
+      },
+      maxFilesize: 1,
+      acceptedFiles: 'image/*',
+    });
+
+    myDropzone.on("sending", function(file, done) { bloquearPantalla(); });
+    myDropzone.on("complete", function(file, done) { desbloquearPantalla(); });
+
+    myDropzone.on("success", function(file, done) {
+      controlRespuesta(done,
+        function(ruta){
+          $("#documentoIMAGEN_RUTA").val( ruta );
+        }
+      );
+    });
 
     $("#form-documentoAP").submit(function(){
       var documentoCONTENIDO = editor.root.innerHTML;
       var Datos = crearFormData("form-documentoAP");
       Datos.append("documentoCONTENIDO", documentoCONTENIDO);
       Datos.append("documentoPUBLICADO", documentoPUBLICADO);
-
-      for (var key of Datos.entries()) {
-          console.log(key[0] + ', ' + key[1]);
-      }
-
-      console.log(Datos.entries())
-      console.log( $(this).serializeArray() );
-
       ejecutarOperacionFormData('DocumentosAP', 'guardarNuevo', Datos,
         function(resp){ console.log(resp); }
       );
@@ -208,4 +241,7 @@
   }
 
 
+  function intercambiarModoBorrador(ACTIVADO){
+    documentoPUBLICADO = ACTIVADO;
+  }
 </script>

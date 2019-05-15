@@ -58,7 +58,7 @@ if (!defined('DIR_COMPONENTES')) {
     define('DIR_COMPONENTES', DIR_API.'modulos/');
 }
 if (!defined('DIR_ARCHIVOS')) {
-    define('DIR_ARCHIVOS', DIR_API.'archivo/');
+    define('DIR_ARCHIVOS', DIR_BASE.'archivo/');
 }
 if (!defined('URL_ARCHIVOS')) {
     define('URL_ARCHIVOS', URL_BASE.'archivo/');

@@ -2,7 +2,7 @@
 class ProcesosAP extends ModeloDatos
 {
 
-
+public $documentos ;
   public function __construct($procesoID = null) {
     return parent::__construct('ProcesosAP', 'procesoID', $procesoID);
   }
@@ -22,6 +22,32 @@ class ProcesosAP extends ModeloDatos
         ]);
         return $this->porID($procesoID);
     }
+
+  function documentos(){
+      $DocumentosAP = new DocumentosAP();
+      return $this->documentos = $DocumentosAP->todosDelProceso($procesoID);
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static function guardar($procesoCODIGO, $procesoTITULO, $procesoDESCRIPCION, $procesoRESPONSABLE)
     {

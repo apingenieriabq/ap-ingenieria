@@ -121,6 +121,57 @@ class APISAPI {
         }
     }
 
+
+
+
+    private function cearArchivoCURL($file)
+    {
+        $mime = mime_content_type($file);
+        $info = pathinfo($file);
+        $name = $info['basename'];
+        $output = new CURLFile($file, $mime, $name);
+        return $output;
+    }
+
+    public function enviar($componente, $controlador, $operacion, $parametros = null, $archivos = null, $soloMENSAJE = true) {
+        $JSONRespuesta = null;
+        $estadoConexion = false;
+        $this->conexionApi = curl_init();
+        curl_setopt($this->conexionApi, CURLOPT_POST, true);
+        curl_setopt($this->conexionApi, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->conexionApi, CURLOPT_USERPWD, self::USERNAME . ":" . self::PASSWORD);
+        curl_setopt($this->conexionApi, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($this->conexionApi, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($this->conexionApi, CURLOPT_RETURNTRANSFER, true);
+        $urlCompleta = self::URL . $componente . "/" . $controlador . "/" . $operacion;
+        curl_setopt($this->conexionApi, CURLOPT_URL, $urlCompleta);
+
+
+
+        $paraEnviar = array();
+        if (!is_null($parametros)) {
+            foreach($parametros as $clave => $valor ) {
+                $paraEnviar[$clave] = $valor;
+            }
+        }
+
+        if (!is_null($archivos)) {
+            foreach ($archivos as $clave => $valor) {
+                $paraEnviar[$clave] = $this->cearArchivoCURL($valor);
+            }
+        }
+        curl_setopt($this->conexionApi,CURLOPT_POST, count($paraEnviar));
+        curl_setopt($this->conexionApi,CURLOPT_POSTFIELDS, $paraEnviar);
+
+        $resultado = curl_exec($this->conexionApi);
+        if($soloMENSAJE){
+            return $JSONRespuesta =  $this->procesarRESPUESTA($resultado);
+        }else{
+            return $resultado;
+        }
+
+    }
+
     public function procesarRESPUESTA($resultado){
         $JSONRespuesta = null;
         $respuesta = json_decode($resultado);
