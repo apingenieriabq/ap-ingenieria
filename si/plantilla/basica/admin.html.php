@@ -101,6 +101,20 @@
 
 
 {% block archivo_cabeza %}
+<!--<link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.16/css/jquery.dataTables.css">-->
+<link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/DataTables-1.10.18/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/AutoFill-2.3.3/css/autoFill.dataTables.css"/>
+<link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Buttons-1.5.6/css/buttons.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/FixedColumns-3.2.5/css/fixedColumns.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/FixedHeader-3.1.4/css/fixedHeader.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Responsive-2.2.2/css/responsive.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/RowGroup-1.1.0/css/rowGroup.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/RowReorder-1.2.4/css/rowReorder.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Scroller-2.0.0/css/scroller.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Select-1.3.0/css/select.dataTables.min.css"/>
+
+
+
 <link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.snow.css">
 <link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.css">
 {% endblock %}
@@ -114,7 +128,31 @@
 <!--<script src="plantilla/basica/scripts/app/app-analytics-overview.1.3.1.min.js"></script>-->
 <script src="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.min.js"></script>
 
-<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<!--<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>-->
+
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/JSZip-2.5.0/jszip.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/pdfmake-0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/pdfmake-0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/AutoFill-2.3.3/js/dataTables.autoFill.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Buttons-1.5.6/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Buttons-1.5.6/js/buttons.colVis.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Buttons-1.5.6/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Buttons-1.5.6/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Buttons-1.5.6/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/FixedHeader-3.1.4/js/dataTables.fixedHeader.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/RowGroup-1.1.0/js/dataTables.rowGroup.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/RowReorder-1.2.4/js/dataTables.rowReorder.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Scroller-2.0.0/js/dataTables.scroller.min.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Select-1.3.0/js/dataTables.select.min.js"></script>
+
+
+
+
+
+
 <script type="text/javascript" src="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
 <!--<script type="text/javascript" src="plantilla/basica/scripts/app/app-file-manager.1.3.1.min.js"></script>-->
 
@@ -132,4 +170,5 @@
     // cargarMenuDelSistema();
   })
 </script>
+<div id="area-modales"></div>
 {% endblock %}

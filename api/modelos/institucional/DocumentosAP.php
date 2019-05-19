@@ -7,6 +7,18 @@ class DocumentosAP extends ModeloDatos
     return parent::__construct('DocumentosAP', 'documentoID', $documentoID);
   }
 
+  public function todosCompletos(){
+    $Documentos = $this->consultaMUCHOS(  DocumentosAPSQL::DATOS_COMPLETOS);
+    return $Documentos;
+  }
+
+  public function datosCompletos($documentoID=null){
+    if(is_null($documentoID)){
+      $documentoID =  $this->documentoID;
+    }
+    $Documento = $this->consultaUNO(  DocumentosAPSQL::DATOS_COMPLETOS." WHERE `DocumentosAP`.documentoID = :documentoID ", [':documentoID' => $documentoID] );
+    return $Documento;
+  }
 
   public function actualizarIMAGEN($documentoIMAGEN, $documentoID = null){
     if(is_null($documentoID)){
@@ -14,7 +26,6 @@ class DocumentosAP extends ModeloDatos
     }
     return $this->actualiza([ 'documentoIMAGEN' => $documentoIMAGEN], [ 'documentoID' => $documentoID] );
   }
-
 
   public function todosSinProceso($documentoPUBLICADO = null){
     if(!is_null($documentoPUBLICADO)){
@@ -41,14 +52,19 @@ class DocumentosAP extends ModeloDatos
     return $this->todos([ 'procesoID' => $procesoID]);
   }
 
+  private function generarCodigo($procesoID){
+    $Proceso = new ProcesosAP($procesoID);
+    $CantDocumentos = count($this->todosDelProceso($procesoID));
+    $documentoCODIGO = $Proceso->procesoCODIGO."-"
+      .str_pad($Proceso->procesoID,2,"0",STR_PAD_LEFT).""
+      .str_pad($CantDocumentos, 2, "0", STR_PAD_LEFT);
+    return $documentoCODIGO;
+  }
   public function nuevo( $procesoID, $documentoVERSION , $documentoPUBLICADO , $documentoNOMBRE , $documentoCONTENIDO ,
     $documentoURL , $documentoRESPONSABLE , $documentoOBSERVACIONES){
 
-    $Proceso = new ProcesosAP($procesoID);
-    $CantDocumentos = count($this->todosDelProceso($procesoID));
-    $documentoCODIGO = $Proceso->procesoCODIGO."-".str_pad($Proceso->procesoID,2,"0",STR_PAD_LEFT)."".str_pad($CantDocumentos, 3, "0", STR_PAD_LEFT);
     $nuevo = $this->insertar([ 'procesoID' => $procesoID ,
-          'documentoCODIGO' => $documentoCODIGO ,
+          'documentoCODIGO' => $this->generarCodigo($procesoID) ,
           'documentoVERSION' => $documentoVERSION ,
           'documentoPUBLICADO' => $documentoPUBLICADO ,
           'documentoNOMBRE' => $documentoNOMBRE ,

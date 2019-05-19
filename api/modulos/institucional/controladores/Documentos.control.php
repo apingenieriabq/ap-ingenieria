@@ -3,9 +3,30 @@
 
 class DocumentosControlador extends Controladores {
 
+
+  function listadoProcesosCargos(){
+    $P = new ProcesosAP();
+    $C = new Cargos();
+    $PyC = array( "Procesos" => $P->todos(), "Cargos" => $C->todos() );
+    return Respuestassistema::exito("Todos los Procesos de AP INGENENIERIA",$PyC);
+  }
+
+
+  function todosCompletos(){
+    $DocumentosAP = new DocumentosAP();
+    $DocumentosAP->todosCompletos();
+  // echo "  +++++++++++++++++++++++    ";
+  //   print_r($DocumentosAP);
+  // echo "  -------------   ";
+    return Respuestassistema::exito(
+      "Todos los Documentos de AP INGENIERIA con Datos Completos",
+      $DocumentosAP->Registros
+    );
+  }
+
   function todos(){
     $P = new DocumentosAP();
-    return Respuestassistema::exito("Todos los Documentos de AP INGENENIERIA",$P->todos());
+    return Respuestassistema::exito("Todos los Documentos de AP INGENIERIA",$P->todos());
   }
 
   function sinProcesoDelUsuario(){
@@ -39,12 +60,27 @@ class DocumentosControlador extends Controladores {
     return Respuestassistema::exito("Los Documentos de AP INGENENIERIA asociados al usuario.",$P->delUsuario());
   }
 
-  public function datos()
-  {
-      if (empty($this->documentoID)) {
-          return Respuestassistema::error("No llego documentoID. Verifique los datos, o contacte al Centro TICS.");
+  public function datosCompletos() {
+    $validacion = $this->validarDatosEnviados(
+      ['documentoID']
+    );
+    if(empty($validacion)){
+        $DOC = new DocumentosAP($this->documentoID);
+        $DOC->datosCompletos();
+        return Respuestassistema::exito("Datos para el Documento ".$this->documentoID, $DOC );
       } else {
+          return Respuestassistema::error("No llego documentoID. Verifique los datos, o contacte al Centro TICS.");
+      }
+  }
+
+  public function datos() {
+    $validacion = $this->validarDatosEnviados(
+      ['documentoID']
+    );
+    if(empty($validacion)){
           return Respuestassistema::exito("Datos para el Documento ".$this->documentoID, new DocumentosAP($this->documentoID) );
+      } else {
+          return Respuestassistema::error("No llego documentoID. Verifique los datos, o contacte al Centro TICS.");
       }
   }
 
@@ -89,7 +125,11 @@ class DocumentosControlador extends Controladores {
         $this->documentoRESPONSABLE ,
         $this->documentoOBSERVACIONES
       );
-      return Respuestassistema::exito("Datos del Nuevo Documento AP", $Doc);
+      if(!empty($Doc->documentoID)){
+        return Respuestassistema::exito("Datos del Nuevo Documento AP", $Doc);
+      }else{
+        return Respuestassistema::fallo("No se pudo guardar el Nuevo Documento AP.");
+      }
 
     }else{
       return Respuestassistema::error("No llegarón los datos OBLIGATORIOS para la operación. <br />" . $validacion);

@@ -102,10 +102,10 @@ class ModeloDatos {
         }
         return null;
     }
-    function consultaMUCHOS($sql, $donde = null){
+    function consultaMUCHOS($sql, $donde = array()){
         global $BD_AP_PRINCIPAL;
         $Registros = $BD_AP_PRINCIPAL->query($sql, $donde)->fetchAll();
-
+// print_r($Registros);
         if(count($Registros)){
             $this->Registros = array();
             foreach($Registros as $k => $datosRegistro ){

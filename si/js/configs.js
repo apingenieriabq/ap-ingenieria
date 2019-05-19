@@ -12,3 +12,44 @@ Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "No puedes subir más a
 Dropzone.prototype.defaultOptions.addRemoveLinks = true;
 Dropzone.prototype.defaultOptions.method = "POST";
 Dropzone.prototype.defaultOptions.url = "index.php";
+
+
+
+
+
+$.extend(true, $.fn.dataTable.defaults, {
+  "buttons": ['copy', 'excel', 'pdf'],
+  "searching": true,
+  "ordering": true,
+  "scrollX": true,
+  "scrollY": "460px",
+  "scrollCollapse": true,
+  "paging": false,
+
+  "dom": '<"#botonera_documentosAP.botonera">frtip',
+
+  "language": {
+    "sProcessing": "Procesando...",
+    "sLengthMenu": "Mostrar _MENU_ registros",
+    "sZeroRecords": "No se encontraron resultados",
+    "sEmptyTable": "Ningún dato disponible en esta tabla",
+    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+    "sInfoPostFix": "",
+    "sSearch": "Buscar:",
+    "sUrl": "",
+    "sInfoThousands": ",",
+    "sLoadingRecords": "Cargando...",
+    "oPaginate": {
+      "sFirst": "Primero",
+      "sLast": "Último",
+      "sNext": "Siguiente",
+      "sPrevious": "Anterior"
+    },
+    "oAria": {
+      "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+      "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+    }
+  }
+});

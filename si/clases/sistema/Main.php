@@ -4,7 +4,7 @@ class Main {
 
     public static function  procesarPeticion($modulo, $operacion){
         if (isset($modulo) and isset($operacion)) {
-            $archivoControlador = DIR_BASE . 'controladores' . DS . (ucfirst($modulo)) . EXT_CONTROLADOR;
+            $archivoControlador = DIR_CONTROLADORES . (ucfirst($modulo)) . EXT_CONTROLADOR;
             if (file_exists($archivoControlador)) {
                 require_once $archivoControlador;
                 $nombreClase = ucfirst($modulo) . 'Controlador';

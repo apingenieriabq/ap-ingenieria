@@ -1,7 +1,46 @@
 .form-control {
   border: 1px solid #aaaaaa;
+  color: black;
+}
+.form-control:hover,
+.form-control:focus {
+  border: 1px solid #333333;
+  font-weight: bold;
 }
 
 .btn-accent {
   margin: 0px 5px!important;
+}
+
+
+
+.btn-xs {
+  padding: 5px!important;
+  margin: 0px!important;
+}
+
+
+.sorting,
+.sorting_desc,
+.sorting_asc {
+  cursor: pointer;
+}
+
+
+.botonera {
+  display: block;
+  float: left;
+  padding: 10px;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+
+.dataTables_filter label {
+  float: none!important;
+}
+
+table.dataTable tbody td {
+  padding: 10px!important;
+  font-size: 100%;
 }

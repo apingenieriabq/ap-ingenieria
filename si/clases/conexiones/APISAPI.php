@@ -77,6 +77,7 @@ class APISAPI {
     }
 
     public function ejecutar($componente, $controlador, $operacion, array $parametros = null, $soloMENSAJE = true) {
+        usleep(1234);
         $nombreUsuarioAPI = Cliente::estaLogueado() ? Cliente::usuarioNOMBRE() : self::USERNAME;
         $claveUsuarioAPI = Cliente::estaLogueado() ? (Cliente::usuarioCLAVE()) : self::PASSWORD;
         $JSONRespuesta = null;
@@ -84,7 +85,6 @@ class APISAPI {
 
         // echo "Cadena de conexion >>>  ".$nombreUsuarioAPI . ":" . $claveUsuarioAPI." <br />";
         // print_r($_SESSION);
-
         $this->conexionApi = curl_init();
         curl_setopt($this->conexionApi, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->conexionApi, CURLOPT_USERPWD, $nombreUsuarioAPI . ":" . $claveUsuarioAPI);
@@ -114,11 +114,13 @@ class APISAPI {
         curl_setopt($this->conexionApi,CURLOPT_POSTFIELDS, $parametros_string);
 
         $resultado = curl_exec($this->conexionApi);
+        // print_r($resultado);
         if($soloMENSAJE){
             return $JSONRespuesta =  $this->procesarRESPUESTA($resultado);
         }else{
             return $resultado;
         }
+        usleep(1234);
     }
 
 

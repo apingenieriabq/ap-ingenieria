@@ -28,7 +28,10 @@ if (!defined('DIR_API')) {
 
 
 if (!defined('DIR_VISTAS')) {
-    define('DIR_VISTAS', DIR_BASE.'vistas'.DS);
+    define('DIR_VISTAS', DIR_BASE.'modulos'.DS.'vistas'.DS);
+}
+if (!defined('DIR_CONTROLADORES')) {
+    define('DIR_CONTROLADORES', DIR_BASE.'modulos'.DS.'controladores'.DS);
 }
 if (!defined('EXT_VISTA')) {
     define('EXT_VISTA', ".html.php");
@@ -37,7 +40,7 @@ if (!defined('EXT_CONTROLADOR')) {
     define('EXT_CONTROLADOR', ".control.php");
 }
 if (!defined('DIR_ARCHIVOS')) {
-    define('DIR_ARCHIVOS', DIR_API.'archivo/');
+    define('DIR_ARCHIVOS', DIR_BASE.'archivo/');
 }
 if (!defined('URL_ARCHIVOS')) {
     define('URL_ARCHIVOS', URL_BASE.'archivo/');

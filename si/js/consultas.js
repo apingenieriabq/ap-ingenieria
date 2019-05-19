@@ -38,6 +38,19 @@ function activarPlugins() {
 
 
 
+function cargarModal(modulo, operacion, datos = '', funcionEjecutable = function(){}) {
+    bloquearPantalla();
+    var datosOperacion = "modulo=" + modulo +  "&operacion=" + operacion + "&" + datos;
+    ajaxApi(datosOperacion, function(data) {
+        bloquearPantalla();
+        $("#area-modales").html(data);
+        if (funcionEjecutable) {
+            funcionEjecutable(data);
+        }
+        desbloquearPantalla();
+    });
+}
+
 
 
 
@@ -97,7 +110,7 @@ function quitarCargandoDivision(idDivision) {
     $('#' + idDivision + '-load').remove();
 }
 
-function cargarDivision(idDivision, modulo, operacion, datos, functionEjecutable = null) {
+function cargarDivision(idDivision, modulo, operacion, datos, functionEjecutable = function(){}) {
     cargandoDivision(idDivision);
     var datosOperacion = "modulo=" + modulo + "&operacion=" + operacion + "&" + datos;
     ajaxApi(datosOperacion, function(data) {
@@ -127,7 +140,7 @@ function cargarDivision(idDivision, modulo, operacion, datos, functionEjecutable
 
 
 
-function ejecutarOperacion(modulo, operacion, datos, funcionEjecutable = null, bloquear = true) {
+function ejecutarOperacion(modulo, operacion, datos, funcionEjecutable = function(){}, bloquear = true) {
     bloquearPantalla();
     var datosOperacion = "modulo=" + modulo + "&operacion=" + operacion + "&" + datos;
     if (modo_pruebas) console.log('%c Datos Enviados____', 'color: #bada55;  font-size:120%;');
@@ -141,7 +154,7 @@ function ejecutarOperacion(modulo, operacion, datos, funcionEjecutable = null, b
     });
 }
 
-function ejecutarOperacionFormData(modulo, operacion, formData, funcionEjecutable) {
+function ejecutarOperacionFormData(modulo, operacion, formData, funcionEjecutable = function(){}) {
     bloquearPantalla();
     formData.append("modulo", modulo);
     formData.append("operacion", operacion);
@@ -172,7 +185,7 @@ function ejecutarOperacionFormData(modulo, operacion, formData, funcionEjecutabl
 //     });
 }
 
-function ejecutarOperacionArchivo(modulo, operacion, archivoFormData, funcionEjecutable) {
+function ejecutarOperacionArchivo(modulo, operacion, archivoFormData, funcionEjecutable = function(){}) {
     bloquearPantalla();
     archivoFormData.append("modulo", modulo);
     archivoFormData.append("operacion", operacion);
@@ -208,7 +221,7 @@ function ajaxApi(datosOperacion, funcionEjecutable, procesarDatos = false, tipoC
     });
 }
 
-function controlRespuesta(data, funcionEjecutable = null) {
+function controlRespuesta(data, funcionEjecutable = function(){}) {
     if (isJson(data)) {
         var response = JSON.parse(data);
         if (modo_pruebas) console.log('%c Datos Recibidos____', 'color: #F00; font-size:120%;');
