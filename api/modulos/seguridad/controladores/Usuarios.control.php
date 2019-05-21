@@ -98,6 +98,7 @@ class UsuariosControlador extends Controladores {
             $user = new Usuarios($this->usuarioID);
             Usuario::abrirSesion($user);
         }
+
         $menu = null;
         if(Usuario::esAdministrador() == 'SI'):
             $menu = self::menuCompleto();

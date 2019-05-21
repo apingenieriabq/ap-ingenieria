@@ -12,6 +12,7 @@ class DocumentosAPSQL {
     , `CargoResponsable`.`cargoCODIGO`
     , `CargoResponsable`.`cargoTITULO`
     , `Responsable`.`colaboradorEMAIL`
+    , `Responsable`.`colaboradorFOTO`
     , `Usuarios`.`usuarioNOMBRE`
   FROM
       `DocumentosAP`

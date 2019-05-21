@@ -2,15 +2,21 @@
 
 class UsuariosControlador extends Controladores {
 
-  function perfil(){
+  function mostrarFormularioNuevoUsuario(){
 
     global $Api;
-    $Usuario = $Api->ejecutar(
-      'seguridad', 'usuarios', 'perfil',
-      array( 'usuarioID' => Cliente::datos()->usuarioID )
+    $Operaciones = $Api->ejecutar(
+      'seguridad', 'Operaciones', 'arbolCompleto'
+      // ,null , false
     );
+    // echo "*************";
+    // print_r($Operaciones);
+    // $Usuario = $Api->ejecutar(
+    //   'seguridad', 'usuarios', 'perfil',
+    //   array( 'usuarioID' => Cliente::datos()->usuarioID )
+    // );
 
-    Vistas::mostrar('perfil', 'usuario', [ 'Usuario' => $Usuario ] );
+    Vistas::mostrar('usuarios', 'form-colaborador', [ 'Operaciones' => $Operaciones ] );
   }
 
 }

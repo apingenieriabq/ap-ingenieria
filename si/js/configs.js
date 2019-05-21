@@ -22,11 +22,11 @@ $.extend(true, $.fn.dataTable.defaults, {
   "searching": true,
   "ordering": true,
   "scrollX": true,
-  "scrollY": "460px",
+  "scrollY": "360px",
   "scrollCollapse": true,
   "paging": false,
 
-  "dom": '<"#botonera_documentosAP.botonera">frtip',
+  "dom": '<"#botonera_sobreTablaAP.botonera">frtip',
 
   "language": {
     "sProcessing": "Procesando...",
@@ -51,5 +51,16 @@ $.extend(true, $.fn.dataTable.defaults, {
       "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
       "sSortDescending": ": Activar para ordenar la columna de manera descendente"
     }
-  }
+  },
+  "preDrawCallback": function (settings) {
+    bloquearPantalla();
+    // console.log(settings);
+  },
+  "initComplete": function( settings ) {
+    // console.log(settings);
+    desbloquearPantalla();
+  },
+  "drawCallback": function( settings ) {
+    desbloquearPantalla();
+    },
 });

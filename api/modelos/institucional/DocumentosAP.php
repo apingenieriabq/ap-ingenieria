@@ -27,6 +27,41 @@ class DocumentosAP extends ModeloDatos
     return $this->actualiza([ 'documentoIMAGEN' => $documentoIMAGEN], [ 'documentoID' => $documentoID] );
   }
 
+
+
+
+
+  public function actualizarESTADO($documentoESTADO , $documentoID = null){
+    if(is_null($documentoID)){
+      $documentoID = $this->documentoID;
+    }
+    return $this->actualiza([ 'documentoESTADO' => $documentoESTADO], [ 'documentoID' => $documentoID] );
+  }
+  public function actualizarVISIBILIDAD($documentoPUBLICADO , $documentoID = null){
+    if(is_null($documentoID)){
+      $documentoID = $this->documentoID;
+    }
+    return $this->actualiza([ 'documentoPUBLICADO' => $documentoPUBLICADO], [ 'documentoID' => $documentoID] );
+  }
+  public function actualizarSEGURIDAD($documentoPUBLICADO , $documentoID = null){
+    if(is_null($documentoID)){
+      $documentoID = $this->documentoID;
+    }
+    return $this->actualiza([ 'documentoPUBLICO' => $documentoPUBLICADO], [ 'documentoID' => $documentoID] );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
   public function todosSinProceso($documentoPUBLICADO = null){
     if(!is_null($documentoPUBLICADO)){
       return $this->todos([ 'procesoID' => null, 'documentoPUBLICADO' => $documentoPUBLICADO ]);
@@ -60,6 +95,10 @@ class DocumentosAP extends ModeloDatos
       .str_pad($CantDocumentos, 2, "0", STR_PAD_LEFT);
     return $documentoCODIGO;
   }
+
+
+
+
   public function nuevo( $procesoID, $documentoVERSION , $documentoPUBLICADO , $documentoNOMBRE , $documentoCONTENIDO ,
     $documentoURL , $documentoRESPONSABLE , $documentoOBSERVACIONES){
 
@@ -70,6 +109,7 @@ class DocumentosAP extends ModeloDatos
           'documentoNOMBRE' => $documentoNOMBRE ,
           'documentoCONTENIDO' => $documentoCONTENIDO ,
           'documentoURL' => $documentoURL ,
+          'documentoIMAGEN' => 'images/logo-ap2.png',
           'documentoRESPONSABLE' => $documentoRESPONSABLE ,
           'documentoOBSERVACIONES' => $documentoOBSERVACIONES,
           'documentoUSRCREACION' => Usuario::id(),
@@ -77,6 +117,26 @@ class DocumentosAP extends ModeloDatos
         ]);
     return $this->porID($nuevo);
   }
+  public function cambios( $documentoID, $procesoID, $documentoVERSION , $documentoPUBLICADO , $documentoNOMBRE , $documentoCONTENIDO ,
+    $documentoURL , $documentoRESPONSABLE , $documentoOBSERVACIONES){
+
+    $actualizado = $this->actualiza([ 'procesoID' => $procesoID ,
+          'documentoCODIGO' => $this->generarCodigo($procesoID) ,
+          'documentoVERSION' => $documentoVERSION ,
+          'documentoPUBLICADO' => $documentoPUBLICADO ,
+          'documentoNOMBRE' => $documentoNOMBRE ,
+          'documentoCONTENIDO' => $documentoCONTENIDO ,
+          'documentoURL' => $documentoURL ,
+          'documentoRESPONSABLE' => $documentoRESPONSABLE ,
+          'documentoOBSERVACIONES' => $documentoOBSERVACIONES,
+          'documentoUSRCREACION' => Usuario::id(),
+          'documentoUSRACTUALIZACION' => Usuario::id()
+        ], ['documentoID' => $documentoID ]);
+    return $this->porID($documentoID);
+  }
+
+
+
 
 
 

@@ -54,5 +54,11 @@ class Cliente {
             return SesionCliente::valor('usuarioCLAVE', $usuarioCLAVE);
         }
     }
+    static function colaboradorID(){
+        if( SesionCliente::valor('Usuario') ){
+            return SesionCliente::valor('Usuario')->colaboradorID;
+        }
+        return null;
+    }
 
 }

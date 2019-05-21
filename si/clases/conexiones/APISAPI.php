@@ -77,7 +77,6 @@ class APISAPI {
     }
 
     public function ejecutar($componente, $controlador, $operacion, array $parametros = null, $soloMENSAJE = true) {
-        usleep(1234);
         $nombreUsuarioAPI = Cliente::estaLogueado() ? Cliente::usuarioNOMBRE() : self::USERNAME;
         $claveUsuarioAPI = Cliente::estaLogueado() ? (Cliente::usuarioCLAVE()) : self::PASSWORD;
         $JSONRespuesta = null;
@@ -115,10 +114,22 @@ class APISAPI {
 
         $resultado = curl_exec($this->conexionApi);
         // print_r($resultado);
+        // print_r(json_decode($resultado));
         if($soloMENSAJE){
-            return $JSONRespuesta =  $this->procesarRESPUESTA($resultado);
+            $JSONRespuesta =  $this->procesarRESPUESTA($resultado);
+            return $JSONRespuesta;
         }else{
-            return $resultado;
+            try{
+                $respuesta = json_decode($resultado);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    return ($respuesta);
+                }else{
+                    return ($resultado);
+                }
+            }catch(Exception $ex){
+             return ($resultado);
+            }
+            //  return ($resultado);
         }
         usleep(1234);
     }
@@ -169,7 +180,11 @@ class APISAPI {
         if($soloMENSAJE){
             return $JSONRespuesta =  $this->procesarRESPUESTA($resultado);
         }else{
-            return $resultado;
+            try{
+                return json_decode($resultado);
+            }catch(Exception $ex){
+             return ($resultado);
+            }
         }
 
     }

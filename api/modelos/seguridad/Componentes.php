@@ -22,9 +22,9 @@ class Componentes {
 
 
     public static function todos(){
-        $sqlQuery = ComponentesSQL::DATOS_COMPLETOS
-            . " GROUP BY BasededatosAP.MenuComponentes.componenteID  "
-            . "ORDER BY BasededatosAP.MenuComponentes.componenteORDEN  ";
+        $sqlQuery = ComponentesSQL::DATOS
+        . "GROUP BY BasededatosAP.MenuComponentes.componenteID  "
+        . "ORDER BY BasededatosAP.MenuComponentes.componenteORDEN  ";
         return BasededatosAP::selectVariasFilas($sqlQuery, array());
     }
 

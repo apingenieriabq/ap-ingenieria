@@ -12,6 +12,25 @@ class MenuOperaciones {
         );
     }
 
+    public static function padresDelComponente($componenteID){
+        $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_COMPONENTES
+            .' WHERE MenuOperaciones.componenteID = ? AND MenuOperaciones.menuPADRE = 0 '
+            .' ORDER BY MenuOperaciones.menuORDEN ' ;
+        return BasededatosAP::selectVariasFilas($sqlQuery, array($componenteID));
+    }
+    public static function delComponente($componenteID){
+        $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_COMPONENTES
+            .' WHERE MenuOperaciones.componenteID = ?  '
+            .' ORDER BY MenuOperaciones.menuORDEN ' ;
+        return BasededatosAP::selectVariasFilas($sqlQuery, array($componenteID));
+    }
+
+    public static function deLaOperacion($menuID){
+        $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_COMPONENTES
+            .' WHERE MenuOperaciones.menuPADRE = ? '
+            .' ORDER BY MenuOperaciones.menuORDEN ' ;
+        return BasededatosAP::selectVariasFilas($sqlQuery, array($menuID));
+    }
     public static function delMenu($menuID){
         $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_COMPONENTES
             .' WHERE MenuOperaciones.menuPADRE = ? AND MenuOperaciones.menuMENU = "SI" '

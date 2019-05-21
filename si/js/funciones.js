@@ -234,7 +234,15 @@ function salirPantallaCompleta() {
 }
 
 
-
+function crearHASH(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
 
 
 
@@ -247,16 +255,19 @@ function alerta(mensaje){
 }
 var frasesExito = [
     'Felicidades!',
+    'Lo hicimos....',
     'Divertido y friki:',
     'Genial!!!',
     'Exito',
-    'Bien Hecho!'
+    'Bien Hecho!',
+    'Correcto!'
 ];
 function alertaExito(mensaje){
     Swal.fire({
-      title: frasesExito[Math.random()*frasesExito.length],
+      title: "" + frasesExito[Math.round(Math.random()*frasesExito.length)] + "" ,
       html: mensaje,
       type: 'success',
+      timer: 7531,
     });
 }
 function alertaError(mensaje){
@@ -265,4 +276,22 @@ function alertaError(mensaje){
       html: mensaje,
       type: 'error',
     });
+}
+
+
+
+
+function abrirCuadroConfirmacion(TEXTO_CONFIRMACION, functionAceptar = function(){}){
+    Swal.fire({
+      title: '¿Estas segur@?',
+      html: TEXTO_CONFIRMACION,
+      type: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Estoy Segur@',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {if (result.value) { functionAceptar(); }});
+
+
 }

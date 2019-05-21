@@ -107,6 +107,77 @@ class DocumentosControlador extends Controladores {
     }
   }
 
+
+
+  public function enviarPapelera(){
+    $validacion = $this->validarDatosEnviados(['documentoID']);
+    if(empty($validacion)){
+      $Doc = new DocumentosAP($this->documentoID);
+      $actualizado = $Doc->actualizarESTADO('PAPELERA');
+      return Respuestassistema::exito("La publicación fue enviada a la PAPELERA DE RECICLAJE.", $Doc);
+    }else{
+      return Respuestassistema::error("No llegarón los datos OBLIGATORIOS para la operación. <br />" . $validacion);
+    }
+  }
+  public function cambiarEstado(){
+    $validacion = $this->validarDatosEnviados(['documentoID']);
+    if(empty($validacion)){
+      $Doc = new DocumentosAP($this->documentoID);
+      switch($Doc->documentoESTADO){
+        case 'ACTIVO':
+          $actualizado = $Doc->actualizarESTADO('INACTIVO');
+          return Respuestassistema::exito("Cambió el estado de ACTIVO -> INACTIVO.", $Doc);
+          break;
+        case 'INACTIVO':
+          $actualizado = $Doc->actualizarESTADO('ACTIVO');
+          return Respuestassistema::exito("Cambió el estado de INACTIVO -> ACTIVO.", $Doc);
+          break;
+        case 'PAPELERA':
+          $actualizado = $Doc->actualizarESTADO('INACTIVO');
+          return Respuestassistema::exito("Cambió el estado de PAPELERA -> INACTIVO.", $Doc);
+          break;
+      }
+    }else{
+      return Respuestassistema::error("No llegarón los datos OBLIGATORIOS para la operación. <br />" . $validacion);
+    }
+  }
+  public function cambiarVisibilidad(){
+    $validacion = $this->validarDatosEnviados(['documentoID']);
+    if(empty($validacion)){
+      $Doc = new DocumentosAP($this->documentoID);
+      switch($Doc->documentoPUBLICADO){
+        case 'SI':
+          $actualizado = $Doc->actualizarVISIBILIDAD('NO');
+          return Respuestassistema::exito("Cambió la visibilidad de PUBLICADO -> NO PUBLICADO.", $Doc);
+          break;
+        case 'NO':
+          $actualizado = $Doc->actualizarVISIBILIDAD('SI');
+          return Respuestassistema::exito("Cambió la visibilidad de NO PUBLICADO -> PUBLICADO.", $Doc);
+          break;
+      }
+    }else{
+      return Respuestassistema::error("No llegarón los datos OBLIGATORIOS para la operación. <br />" . $validacion);
+    }
+  }
+  public function cambiarSeguridad(){
+    $validacion = $this->validarDatosEnviados(['documentoID']);
+    if(empty($validacion)){
+      $Doc = new DocumentosAP($this->documentoID);
+      switch($Doc->documentoPUBLICO){
+        case 'SI':
+          $actualizado = $Doc->actualizarSEGURIDAD('NO');
+          return Respuestassistema::exito("Cambió la visibilidad de PUBLICO -> RESTRINGIDO.", $Doc);
+          break;
+        case 'NO':
+          $actualizado = $Doc->actualizarSEGURIDAD('SI');
+          return Respuestassistema::exito("Cambió la seguridad de RESTRINGIDO -> PUBLICO.", $Doc);
+          break;
+      }
+    }else{
+      return Respuestassistema::error("No llegarón los datos OBLIGATORIOS para la operación. <br />" . $validacion);
+    }
+  }
+
   public function nuevo()
   {
     $validacion = $this->validarDatosEnviados(
@@ -140,14 +211,31 @@ class DocumentosControlador extends Controladores {
   public function actualizar()
   {
     $validacion = $this->validarDatosEnviados(
-      ['documentoID', 'tipoIdentificacionID','cargoID','tipoDocumentoID', 'tipoIdentificacionID', 'personaIDENTIFICACION', 'documentoEMAIL', 'personaNOMBRES', 'personaAPELLIDOS' ]
+      ['documentoID', 'procesoID','documentoVERSION','documentoPUBLICADO', 'documentoNOMBRE', 'documentoCONTENIDO', 'documentoRESPONSABLE']
     );
     if(empty($validacion)){
+
+      $Doc = new DocumentosAP();
+      $Doc->cambios(
+        $this->documentoID ,
+        $this->procesoID ,
+        $this->documentoVERSION ,
+        $this->documentoPUBLICADO ,
+        $this->documentoNOMBRE ,
+        $this->documentoCONTENIDO ,
+        $this->documentoURL ,
+        $this->documentoRESPONSABLE ,
+        $this->documentoOBSERVACIONES
+      );
+      if(!empty($Doc->documentoID)){
+        return Respuestassistema::exito("Datos del Documento AP actualizado.", $Doc);
+      }else{
+        return Respuestassistema::fallo("No se pudo guardar los cambios del Documento AP.");
+      }
 
     }else{
       return Respuestassistema::error("No llegarón los datos OBLIGATORIOS para la operación. <br />" . $validacion);
     }
-
   }
 
 

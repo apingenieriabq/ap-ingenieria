@@ -29,7 +29,7 @@
                 <input class="form-control form-control-lg mb-3" type="text" name="documentoVERSION" placeholder="Versión" value="{{DocumentoAP.documentoVERSION}}" required >
               </div>
             </div>
-            <div id="editor-documento-procesosAP" class="add-new-post__editor mb-1">{{DocumentoAP.documentoCONTENIDO}}</div>
+            <div id="editor-documento-procesosAP" class="add-new-post__editor mb-1">{{DocumentoAP.documentoCONTENIDO|raw}}</div>
 
         </div>
       </div>
@@ -39,12 +39,32 @@
 
           <div class="row">
             <div class=" col-md-4">
-              <div id="cargarMiniaturaDocumento" class="dropzone"></div>
-              <input type="hidden" id="documentoIMAGEN_RUTA"  name="documentoIMAGEN_RUTA" value=""/>
+
+
+<ul class="nav nav-tabs">
+  <li class="nav-item active"><a class="nav-link active" data-toggle="tab" href="#home">Miniatura</a></li>
+  <li class="nav-item"><a  class="nav-link " data-toggle="tab" href="#menu1">Cargar</a></li>
+</ul>
+
+<div class="tab-content">
+  <div id="home" class="tab-pane fade in active show">
+    <img src="{% if DocumentoAP.documentoIMAGEN %}{{DocumentoAP.documentoIMAGEN}}{% else %}plantilla/basica/images/file-manager/document-preview-1.jpg{% endif %}" class="img-thumbnail rounded " />
+  </div>
+  <div id="menu1" class="tab-pane fade">
+    <div id="cargarMiniaturaDocumento" class="dropzone"></div>
+    <input type="hidden" id="documentoIMAGEN_RUTA"  name="documentoIMAGEN_RUTA" value=""/>
+  </div>
+</div>
+
+
+
+
+
             </div>
-            <div class=" col-md-8">
+            <div class=" col-md-8 form-group">
+              <label for="documentoOBSERVACIONES">Observaciones:</label>
               <textarea id="documentoOBSERVACIONES" name="documentoOBSERVACIONES"
-                class="md-textarea form-control" rows="5" placeholder="observaciones sobre el documento o contenido....." ></textarea>
+                class="md-textarea form-control" rows="7" placeholder="observaciones sobre el documento o contenido....." >{{DocumentoAP.documentoOBSERVACIONES}}</textarea>
             </div>
           </div>
 
@@ -53,7 +73,6 @@
 
     </div>
     <div class="col-lg-4 col-md-12">
-      <!-- Post Overview -->
       <div class='card card-small mb-3'>
         <div class="card-header border-bottom">
           <h6 class="m-0">Propiedades</h6>
@@ -62,39 +81,50 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item p-3">
               <span class="d-flex mb-2">
-                <i class="material-icons mr-1">lock</i>
-                <strong class="mr-1">Permisos: </strong>
-                {% if DocumentoAP %} {% if DocumentoAP.documentoPUBLICO == 'SI' %}PÚBLICO{% else %}RESTRINGIDO{% endif %} {% else %} RESTRINGIDO {% endif %}
-              </span>
-              <span class="d-flex mb-2">
-                <i class="material-icons mr-1">flag</i>
-                <strong class="mr-1">Estado: </strong>
-                {% if DocumentoAP %}{{DocumentoAP.documentoESTADO}}{% else %}INACTIVO{% endif %}
-              </span>
-              <span class="d-flex mb-2">
                 <i class="material-icons mr-1">fiber_pin</i>
                 <strong class="mr-1">Código: </strong>
                 {% if DocumentoAP %}{{DocumentoAP.documentoCODIGO}}{% else %}-{% endif %}
               </span>
               <span class="d-flex mb-2">
-                <i class="material-icons mr-1">visibility</i>
-                <strong class="mr-1">Publicado: </strong>
-                {% if DocumentoAP %}{{DocumentoAP.documentoPUBLICADO}}{% else %}NO{% endif %}
-              </span>
-              <span class="d-flex mb-2">
                 <i class="material-icons mr-1">calendar_today</i><strong class="mr-1">Actualización: </strong>
                 {% if DocumentoAP %}{{DocumentoAP.documentoFCHACTUALIZACION}}{% else %}{{ "now"|date("Y-m-d h:i.s") }}{% endif %}
               </span>
-              <span class="d-flex">
-                <i class="material-icons mr-1">score</i><strong class="mr-1">Por: </strong>
-                <span class="text-warning">{% if DocumentoAP %}{{DocumentoAP.documentoESTADO}}{% else %}INACTIVO{% endif %}</span>
+              <span class="d-flex mb-2">
+                <i class="material-icons mr-1">score</i><strong class="mr-1">Responsable: </strong>
+                <span class="text-warning">{% if DocumentoAP %}{{DocumentoAP.personaNOMBRES}} {{DocumentoAP.personaPAELLIDOS}}<br/><strong>{{DocumentoAP.cargoTITULO}}</strong>{% else %}-{% endif %}</span>
+              </span>
+              <span class="d-flex mb-2">
+                <i class="material-icons mr-1">lock</i>
+                <strong class="mr-1">Permisos: </strong>
+                {% if DocumentoAP %}
+                  {% if DocumentoAP.documentoPUBLICO == 'SI' %}PÚBLICO{% else %}RESTRINGIDO{% endif %}
+                  <a class="ml-auto" href="javascript:void(0);"
+                    onclick="mostrarConfirmacionCambiarSeguridadDocumentoAP({{DocumentoAP.documentoID}}, function(){ mostrarFormularioEditarDocumentoAP({{DocumentoAP.documentoID}}); } );"><i class="fas fa-sync"></i></a>
+                {% else %} RESTRINGIDO {% endif %}
+              </span>
+              <span class="d-flex mb-2">
+                <i class="material-icons mr-1">visibility</i>
+                <strong class="mr-1">Publicado: </strong>
+                {% if DocumentoAP %}
+                {{DocumentoAP.documentoPUBLICADO}}
+                  <a class="ml-auto" href="javascript:void(0);"
+                    onclick="mostrarConfirmacionCambiarVisibilidadDocumentoAP({{DocumentoAP.documentoID}}, function(){ mostrarFormularioEditarDocumentoAP({{DocumentoAP.documentoID}}); } );"><i class="fas fa-sync"></i></a>
+                {% else %}NO{% endif %}
+              </span>
+              <span class="d-flex mb-2">
+                <i class="material-icons mr-1">flag</i>
+                <strong class="mr-1">Estado: </strong>
+                {% if DocumentoAP %}
+                {{DocumentoAP.documentoESTADO}}
+                  <a class="ml-auto" href="javascript:void(0);"
+                    onclick="mostrarConfirmacionCambiarEstadoDocumentoAP({{DocumentoAP.documentoID}}, function(){ mostrarFormularioEditarDocumentoAP({{DocumentoAP.documentoID}}); } );"><i class="fas fa-sync"></i></a>
+                {% else %}INACTIVO{% endif %}
               </span>
             </li>
           </ul>
         </div>
       </div>
-      <!-- / Post Overview -->
-      <!-- Post Overview -->
+
       <div class='card card-small mb-3'>
         <div class="card-header border-bottom">
           <h6 class="m-0">Procesos</h6>
@@ -105,7 +135,7 @@
               {% for Proceso in Procesos %}
               <div class="custom-control custom-radio mb-1">
                 <input type="radio" id="proceso{{Proceso.procesoID}}" class="custom-control-input"
-                  name="procesoID" value="{{Proceso.procesoID}}" required  >
+                  name="procesoID" value="{{Proceso.procesoID}}" required {% if DocumentoAP and DocumentoAP.procesoID ==  Proceso.procesoID %}checked{% endif %}  >
                 <label class="custom-control-label" for="proceso{{Proceso.procesoID}}">{{Proceso.procesoTITULO}}</label>
               </div>
               {% endfor %}
@@ -122,7 +152,7 @@
           </ul>
         </div>
       </div>
-      <!-- / Post Overview -->
+
       <div class='card card-small mb-3'>
         <div class="card-header border-bottom">
           <h6 class="m-0">Responsable</h6>
@@ -136,7 +166,7 @@
                 <div class="input-group-prepend">
                   <label class="input-group-text" for="cargoRESPONSABLE">Cargos</label>
                 </div>
-                <select class="custom-select" id="cargoRESPONSABLE" onchange="cargarSelectColaboradorPorCargos()" required >
+                <select class="form-control custom-select" id="cargoRESPONSABLE" onchange="cargarSelectColaboradorPorCargos()" >
                   <option value="">Elija un CARGO</option>
                   {% for Cargo in Cargos %}
                   <option value="{{Cargo.cargoID}}">{{Cargo.cargoTITULO}}</option>
@@ -147,10 +177,14 @@
               <hr>
               <div class="form-group ">
                 <label for="opciones-responsable-documento">Colaborador</label>
-                <select class="form-control custom-select" id="opciones-responsable-documento" name="documentoRESPONSABLE" required >
+                <select class="form-control custom-select" id="opciones-responsable-documento" name="documentoRESPONSABLE" >
                   <option value="">Seleccione un CARGO antes</option>
                 </select>
               </div>
+
+              {% if DocumentoAP %}
+              <input type="hidden" name="documentoRESPONSABLE_ACTUAL" value="{{DocumentoAP.documentoRESPONSABLE}}" />
+              {% endif %}
 
 
             </li>
@@ -159,6 +193,10 @@
       </div>
     </div>
   </div>
+
+  {% if DocumentoAP %}
+  <input type="hidden" name="documentoID" value="{{DocumentoAP.documentoID}}" />
+  {% endif %}
 </form>
 <script>
   "use strict";
@@ -210,7 +248,7 @@
       var Datos = crearFormData("form-documentoAP");
       Datos.append("documentoCONTENIDO", documentoCONTENIDO);
       Datos.append("documentoPUBLICADO", documentoPUBLICADO);
-      ejecutarOperacionFormData('DocumentosAP', 'guardarNuevo', Datos,
+      ejecutarOperacionFormData('DocumentosAP', 'guardarDatos', Datos,
         function(resp){
           console.log(resp);
           mostrarFormularioEditarDocumentoAP(resp.documentoID);

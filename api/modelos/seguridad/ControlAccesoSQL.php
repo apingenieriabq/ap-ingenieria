@@ -7,7 +7,7 @@ class ControlAccesoSQL {
   	MenuOperaciones.*
   FROM
   	MenuOperaciones
-  INNER JOIN MenuComponentes ON
+  LEFT JOIN MenuComponentes ON
   	MenuComponentes.componenteID = MenuOperaciones.componenteID
 
 sql;
@@ -18,7 +18,7 @@ const DATOS_COMPLETOS = <<<sql
     	MenuOperaciones.*
     FROM
     	MenuOperaciones
-    INNER JOIN MenuComponentes ON
+    LEFT JOIN MenuComponentes ON
     	MenuComponentes.componenteID = MenuOperaciones.componenteID
 
 sql;

@@ -65,17 +65,21 @@ class Main {
             array( 'parametrosCODIGOS' => array( 'LOGOAP_PNG', 'URL_PUBLICA') )
         );
 
-        // print_r($datos);
 
         $Menu = null;
         $estaLogueado = Cliente::estaLogueado();
         if($estaLogueado){
+        // echo "--->>>>>>mostrarMenu>>>>>>>>>     <br /><br /><br />";
             $Menu = $Api->ejecutar(
               'seguridad', 'usuarios', 'mostrarMenu'
             //   , array( 'usuarioID' => Cliente::datos()->usuarioID )
+            // , null, false
             );
+        // echo "--->>>>>>>>>>>>>>>    <br /><br /><br />";
+        //     print_r($Menu);
+        //     die();
         }
-        // // print_r(Cliente::datos());
+
         return array(
             'logo' => $datos[0],
             'url_api' => $datos[1],

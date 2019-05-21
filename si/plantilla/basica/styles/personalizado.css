@@ -42,5 +42,18 @@
 
 table.dataTable tbody td {
   padding: 10px!important;
-  font-size: 100%;
+  font-size: 85%;
 }
+
+.modal-open .modal {
+  background-color: rgba(0,0,0,0.5);
+  z-index: 999999;
+}
+
+
+.form-group {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+

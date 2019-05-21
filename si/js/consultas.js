@@ -38,19 +38,43 @@ function activarPlugins() {
 
 
 
-function cargarModal(modulo, operacion, datos = '', funcionEjecutable = function(){}) {
+function cargarModal(tituloModal, modulo, operacion, datos = '', funcionEjecutable = function(){}) {
     bloquearPantalla();
     var datosOperacion = "modulo=" + modulo +  "&operacion=" + operacion + "&" + datos;
     ajaxApi(datosOperacion, function(data) {
         bloquearPantalla();
-        $("#area-modales").html(data);
         if (funcionEjecutable) {
             funcionEjecutable(data);
         }
+        crearModalVista(tituloModal, data);
         desbloquearPantalla();
     });
 }
 
+function crearModalVista(tituloModal, dataHTML){
+    var idModal = crearHASH();
+
+    var html =  '<div id="modal_'+idModal+'"  class="modal" tabindex="-1" role="dialog">';
+        html += '<div class="modal-dialog modal-lg modal-dialog-centered" role="document">';
+            html += '<div class="modal-content">';
+                html += '<div class="modal-header">';
+                    html += '<h5 class="modal-title">'+tituloModal+'</h5>';
+                    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>';
+                html += '</div>';
+                html += '<div class="modal-body">';
+                    html += dataHTML;
+                html += '</div>';
+                // html += '<div class="modal-footer">';
+                //     html += '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
+                //     html += '<button type="button" class="btn btn-primary">Save changes</button>';
+                // html += '</div>';
+            html += '</div>';
+        html += '</div>';
+    html += '</div>';  // modalWindow
+
+    $("#area-modales").html(html);
+    $('#modal_'+idModal+'').modal();
+}
 
 
 
@@ -64,8 +88,10 @@ function cargarVista(modulo, operacion, datos = '', nombreTabMenu = '', idTabMen
             desbloquearPantalla();
         }
         else {
+            bloquearPantalla();
             cargaHTMLVistaAreaPlantilla(modulo, operacion, dataVISTA);
             irArriba();
+            desbloquearPantalla();
         }
     });
 }
