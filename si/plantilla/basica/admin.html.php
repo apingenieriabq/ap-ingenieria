@@ -165,6 +165,7 @@
 <script src="js/modulos/login.js"></script>
 <script src="js/modulos/menu.js"></script>
 <script src="js/modulos/institucional.js"></script>
+<script src="js/modulos/colaboradores.js"></script>
 {% endblock %}
 
 {% block scripts_al_pie %}

@@ -8,6 +8,16 @@ public $documentos ;
   }
 
 
+
+
+  function todosCompletos(){
+    $Procesos = $this->todos();
+    foreach($Procesos as $i => $Proceso){
+      $Procesos[$i]->Documentos = $this->documentos($Proceso->procesoID);
+    }
+    return $Procesos;
+   }
+
     private static function generarCodigo($procesoTITULO){
         return strtoupper( substr ( $procesoTITULO , 0, 4 ) );
     }
@@ -23,7 +33,7 @@ public $documentos ;
         return $this->porID($procesoID);
     }
 
-  function documentos(){
+  function documentos($procesoID){
       $DocumentosAP = new DocumentosAP();
       return $this->documentos = $DocumentosAP->todosDelProceso($procesoID);
    }

@@ -267,7 +267,7 @@ function alertaExito(mensaje){
       title: "" + frasesExito[Math.round(Math.random()*frasesExito.length)] + "" ,
       html: mensaje,
       type: 'success',
-      timer: 7531,
+      timer: 97531,
     });
 }
 function alertaError(mensaje){

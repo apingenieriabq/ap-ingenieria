@@ -215,7 +215,7 @@ function ejecutarOperacionArchivo(modulo, operacion, archivoFormData, funcionEje
     bloquearPantalla();
     archivoFormData.append("modulo", modulo);
     archivoFormData.append("operacion", operacion);
-    ajaxApi(formData, function(data) {
+    ajaxApi(archivoFormData, function(data) {
         controlRespuesta(data, funcionEjecutable);
         desbloquearPantalla();
     }, false, false);

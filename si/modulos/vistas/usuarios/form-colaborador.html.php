@@ -1,16 +1,14 @@
+{{dump(UsuarioColaborador)}}
 <form id="form-usuarioColaborador" class="add-new-post" onsubmit="return false;" >
   <div class="page-header row no-gutters py-4">
     <div class="col-12 col-sm-8 text-center text-sm-left mb-0">
       <span class="text-uppercase page-subtitle">Seguridad</span>
       <h3 class="page-title">Usuario <strong>[Colaborador]</strong></h3>
     </div>
-    <div class="col-12 col-sm-4 d-flex align-items-center">
-      <button type="submit" onclick="intercambiarModoBorrador('NO');"
-        class="btn btn-sm btn-outline-accent ml-auto"><i class="material-icons">save</i> Borrador</button>
-      <button type="submit" onclick="intercambiarModoBorrador('SI');"
-        class="btn btn-sm btn-accent ml-auto"><i class="material-icons">file_copy</i> Publicar</button>
+    <div class="col-12 col-sm-4 align-items-right">
+      <button type="submit" class="btn btn-sm btn-accent"><i class="material-icons">save</i> Guardar</button>
       {% if UsuarioColaborador %}
-      <button type="button" onclick="confirmarBorrarDocumento();" class="btn btn-sm btn-salmon ml-auto"><i class="material-icons">delete</i> Eliminar</button>
+      <button type="button" onclick="confirmarBorrarDocumento();" class="btn btn-sm btn-salmon"><i class="material-icons">delete</i> Eliminar</button>
       {% endif %}
     </div>
   </div>
@@ -65,53 +63,7 @@
     </div>
     <div class="col-lg-4 col-md-12">
 
-      <div class='card card-small mb-3'>
-        <div class="card-header border-bottom">
-          <h6 class="m-0">Datos de Usuario</h6>
-        </div>
-        <div class='card-body p-0 mb-2'>
-
-          <div class="form-row mx-4" >
-            <h6 class="form-text m-0">Nombre de Usuario</h6>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">@</span>
-              </div>
-              <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
-          </div>
-          <div class="form-row mx-4">
-            <div class="col mb-0">
-              <h6 class="form-text m-0">Cambiar Contraseña</h6>
-            </div>
-          </div>
-          <div class="form-row mx-4">
-            <div class="form-group">
-              <label for="lastName">Nueva Clave</label>
-              <input type="text" class="form-control" id="lastName" placeholder="New Password">
-            </div>
-            <div class="form-group ">
-              <label for="emailAddress">Repita la clave</label>
-              <input type="email" class="form-control" id="emailAddress" placeholder="Repeat New Password">
-            </div>
-          </div>
-          <hr />
-
-          <div class="form-row mx-4">
-
-            <label for="vulnerabilitiesEmailsToggle" class="col col-form-label"> ¿Es Administrador? <small class="form-text text-muted"> Tiene permiso para ejecutar cualquier código.</small>
-            </label>
-            <div class="col d-flex">
-              <div class="custom-control custom-toggle ml-auto my-auto">
-                <input type="checkbox" id="vulnerabilitiesEmailsToggle" class="custom-control-input" checked>
-                <label class="custom-control-label" for="vulnerabilitiesEmailsToggle"></label>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
+      {% include 'usuarios/datos/usuarios.html.php' %}
 
       <div class='card card-small mb-3'>
         <div class="card-header border-bottom">
@@ -158,4 +110,25 @@
 
     </div>
   </div>
+  <input type="hidden" name="usuarioID" value=""/>
 </form>
+<script type="text/javascript" >
+  $(document).ready(function(){
+    $("#form-usuarioColaborador").submit(function(){
+
+      if(usuarioCLAVE.value != "" ){
+        if(usuarioCLAVE.value != usuarioCLAVE_REPETIR.value ){
+          alerta("Las claves no coinciden.");
+          return false;
+        }
+      }
+
+      var Formulario = crearFormData("form-usuarioColaborador");
+      ejecutarOperacionFormData(
+        'Usuarios', 'guardarDatos', Formulario ,
+        function(Colaborador){ console.log(Colaborador); mostrarFormularioEditarUsuarioColaborador(Colaborador.usuarioID) }
+      );
+
+    });
+  });
+</script>

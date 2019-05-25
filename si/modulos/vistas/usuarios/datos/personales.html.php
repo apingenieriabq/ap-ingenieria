@@ -4,9 +4,10 @@
 
       <div class="form-group col-md-3">
         <label for="displayEmail">Tipo de ID</label>
-        <select class="custom-select">
-          <option value="1" selected>Yes, display my email</option>
-          <option value="2">No, do not display my email.</option>
+        <select class="custom-select" name="tipoIdentificacionID">
+          {% for TipoID in Listados.TiposIdentificacion %}
+          <option value="{{TipoID.tipoIdentificacionID}}">{{TipoID.tipoIdentificacionCODIGO}} {{TipoID.tipoIdentificacionTITULO}}</option>
+          {% endfor %}
         </select>
       </div>
       <div class="form-group col-md-5">
@@ -17,7 +18,7 @@
               <i class="fas fa-id-card"></i>
             </div>
           </div>
-          <input type="email" class="form-control" id="personaIDENTIFICACION" name="personaIDENTIFICACION">
+          <input type="text" class="form-control" id="personaIDENTIFICACION" name="personaIDENTIFICACION">
         </div>
       </div>
       <div class="form-group col-md-4">
@@ -37,11 +38,11 @@
 
       <div class="form-group col-md-6">
         <label for="firstName">Nombres</label>
-        <input type="text" class="form-control" id="nombres" value="Sierra">
+        <input type="text" class="form-control" id="personaNOMBRES" name="personaNOMBRES" value="">
       </div>
       <div class="form-group col-md-6">
         <label for="lastName">Apellidos</label>
-        <input type="text" class="form-control" id="apellidos" value="Brooks">
+        <input type="text" class="form-control" id="personaAPELLIDOS" name="personaAPELLIDOS" value="">
       </div>
 
     </div>
@@ -57,24 +58,29 @@
     <div class="form-row">
 
       <div class="form-group col-md-4">
-        <label for="displayEmail">País</label>
-        <select class="custom-select">
-          <option value="1" selected>Yes, display my email</option>
-          <option value="2">No, do not display my email.</option>
+        <label for="paisID">País</label>
+        <select class="custom-select" id="paisID"  name="paisID" disabled >
+          {% for Pais in Listados.Paises %}
+          <option value="{{Pais.paisID}}" {% if Pais.paisID == 47 %}selected{% endif %} >{{Pais.paisCODIGOISO}} {{Pais.paisNOMBRE}}</option>
+          {% endfor %}
         </select>
       </div>
       <div class="form-group col-md-4">
-        <label for="displayEmail">Departamento</label>
-        <select class="custom-select">
-          <option value="1" selected>Yes, display my email</option>
-          <option value="2">No, do not display my email.</option>
+        <label for="departamentoID">Departamento </label>
+        <select class="custom-select" id="departamentoID" name="departamentoID" >
+          <option class="seleccione" value="" selected >Seleccione</option>
+          {% for Departamento in Listados.Departamentos %}
+          <option class="pais_{{Departamento.paisID}}" value="{{Departamento.departamentoID}}">{{Departamento.departamentoNOMBRE}} {{Departamento.departamentoCODIGO}}</option>
+          {% endfor %}
         </select>
       </div>
       <div class="form-group col-md-4">
-        <label for="displayEmail">Municipio</label>
-        <select class="custom-select">
-          <option value="1" selected>Yes, display my email</option>
-          <option value="2">No, do not display my email.</option>
+        <label for="personaMUNICIPIO">Ciudad</label>
+        <select class="custom-select" id="personaMUNICIPIO" name="personaMUNICIPIO" >
+          <option class="seleccione" value="" selected >Seleccione un departamento</option>
+          {% for Municipio in Listados.Municipios %}
+          <option  class="departamento_{{Municipio.departamentoID}}"  value="{{Municipio.municipioID}}">{{Municipio.municipioNOMBRE}} {{Municipio.municipioCODIGO}} </option>
+          {% endfor %}
         </select>
       </div>
       <div class="form-group col-md-12">
@@ -85,7 +91,7 @@
               <i class="material-icons">&#xE0C8;</i>
             </div>
           </div>
-          <input type="text" class="form-control" value="">
+          <input type="text" class="form-control" id="personaDIRECCION" name="personaDIRECCION"  value="">
         </div>
       </div>
 
@@ -100,7 +106,7 @@
               <i class="material-icons">&#xE0CD;</i>
             </div>
           </div>
-          <input type="text" class="form-control" id="phoneNumber" value="">
+          <input type="tel" class="form-control" id="personaTELEFONO" name="personaTELEFONO" value="">
         </div>
       </div>
       <div class="form-group col-md-3">
@@ -111,7 +117,7 @@
               <i class="material-icons">&#xE0CD;</i>
             </div>
           </div>
-          <input type="text" class="form-control" id="phoneNumber" value="">
+          <input type="tel" class="form-control" id="personaCELULAR" name="personaCELULAR" value="">
         </div>
       </div>
       <div class="form-group col-md-6">
@@ -122,10 +128,38 @@
               <i class="material-icons">&#xE0BE;</i>
             </div>
           </div>
-          <input type="email" class="form-control" id="emailAddress">
+          <input type="email" class="form-control" id="personaEMAIL" name="personaEMAIL" value=""  >
         </div>
       </div>
 
     </div>
   </div>
 </div>
+
+
+<script>
+  "use strict";
+  jQuery(document).ready(function(){
+
+    $('#paisID').change(function () {
+      actualizarListaDepartamentos($(this).val());
+    });
+    $('#departamentoID').change(function () {
+      actualizarListaMunicipios($(this).val());
+    });
+    $('#departamentoID').change();
+
+  });
+
+  function actualizarListaDepartamentos(paisID){
+    $('#departamentoID option').css('display','none');
+    $('#departamentoID option.seleccione').css('display','block');
+    $('#departamentoID option.pais_'+paisID).css('display','block');
+  }
+  function actualizarListaMunicipios(departamentoID){
+    $('#personaMUNICIPIO option').css('display','none');
+    $('#personaMUNICIPIO option.seleccione').css('display','block');
+    $('#personaMUNICIPIO option.departamento_'+departamentoID).css('display','block');
+  }
+
+</script>

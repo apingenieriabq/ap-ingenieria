@@ -1,10 +1,13 @@
+<div class="form-row">
+  <div class="col mb-3">
+    <h6 class="form-text m-0">Permisos para el SIAPI.</h6>
+    <p class="form-text text-muted m-0">Seleccione las operación que puede realizar el usuario sobre el sistema.</p>
+  </div>
+</div>
 <div class="container-fluid">
-        <div class="row">
-            <button id="btnSave" class="btn btn-default">Save Checked Nodes</button>
-        </div>
-        <div class="row">
-            <div id="tree{{hash_vista}}"></div>
-        </div>
+  <div class="row">
+      <div id="tree{{hash_vista}}"></div>
+  </div>
 </div>
 <script type="text/javascript">
 $(document).ready(function () {
@@ -13,9 +16,9 @@ $(document).ready(function () {
         uiLibrary: 'bootstrap4',
         dataSource:
         [
-          {% for Componente in Operaciones %}
+          {% for Componente in Listados.Permisos %}
            {
-              "id":{{Componente.componenteID}},
+              // "id":{{Componente.componenteID}},
               "text":"{{Componente.componenteTITULO}}",
               "flagUrl":"{{Componente.componenteMENUICONO}}",
               "checked":false,

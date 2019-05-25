@@ -28,8 +28,8 @@
   <tbody>
     {% for DocumentoAP in DocumentosAP %}
     <tr>
-      <td scope="col" >
-        <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+      <td scope="col" class="btn-operaciones-tablas" >
+        <div class="btn-group btn-group-sm btn-group-toggle " data-toggle="buttons">
           <button class="btn btn-xs btn-info" onclick="mostrarModalDetallesDocumentoAP({{DocumentoAP.documentoID}});" ><i class="fas fa-eye"></i></button>
           <button class="btn  btn-xs btn-success" onclick="mostrarFormularioEditarDocumentoAP({{DocumentoAP.documentoID}});" ><i class="fas fa-edit"></i></button>
           <button class="btn btn-xs btn-danger" onclick="mostrarConfirmacionEliminarDocumentoAP({{DocumentoAP.documentoID}});"><i class="fas fa-trash"></i></button>

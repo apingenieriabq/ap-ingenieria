@@ -1,9 +1,18 @@
+select option[selected] {
+  color: red;
+  border: 1px solid #333333;
+  font-weight: bold;
+  font-size: 110%;
+  border: thin solid black;
+}
+
 .form-control {
   border: 1px solid #aaaaaa;
   color: black;
 }
 .form-control:hover,
-.form-control:focus {
+.form-control:focus,
+select:hover, select:focus {
   border: 1px solid #333333;
   font-weight: bold;
 }
@@ -11,12 +20,29 @@
 .btn-accent {
   margin: 0px 5px!important;
 }
-
-
-
 .btn-xs {
   padding: 5px!important;
   margin: 0px!important;
+}
+.btn-operaciones-tablas  {
+  transition: 0.3s;
+}
+.btn-operaciones-tablas:hover  {
+  padding: 0px!important;
+	-webkit-animation: scale-up-center 0.5s cubic-bezier(1.000, 0.000, 0.000, 1.000) both!important;
+	        animation: scale-up-center 0.5s cubic-bezier(1.000, 0.000, 0.000, 1.000) both!important;
+}
+.btn-operaciones-tablas > .btn-group > .btn {
+  width: 0px!important;
+  -webkit-transition: width 1s; /* Safari */
+  transition: width 1s;
+}
+.btn-operaciones-tablas:hover > .btn-group > .btn {
+  width: 30px!important;
+}
+
+
+.scale-up-center {
 }
 
 
@@ -44,6 +70,15 @@ table.dataTable tbody td {
   padding: 10px!important;
   font-size: 85%;
 }
+
+
+
+
+
+
+
+
+
 
 .modal-open .modal {
   background-color: rgba(0,0,0,0.5);

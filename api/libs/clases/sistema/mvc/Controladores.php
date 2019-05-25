@@ -43,15 +43,19 @@ class Controladores {
         $errores = '';
         foreach($datos as $nombreVariable ){
             if( empty($this->$nombreVariable) ){
-                $errores .= 'Es obligatorios enviar el parametro ['.$nombreVariable.'].<br />';
+                $errores .= 'Es obligatorios enviar el parametro <b>['.$nombreVariable.']</b>.<br />';
             }
         }
         return $errores;
     }
 
     protected function verificar($nombreVariable, $valorDefault = null){
-        if(isset($this->$nombreVariable)){
-            return $this->$nombreVariable;
+        if(isset($this->$nombreVariable) ){
+            if(!empty($valorDefault) and empty($this->$nombreVariable)){
+                return $valorDefault;
+            }else{
+                return $this->$nombreVariable;
+            }
         }
         return $valorDefault;
     }

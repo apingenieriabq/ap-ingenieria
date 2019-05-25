@@ -9,18 +9,22 @@ class Personas extends ModeloDatos {
     }
   }
 
-  function crear($tipoIdentificacionID, $personaIDENTIFICACION, $personaNOMBRES,$personaAPELLIDOS,$personaEMAIL,$personaFCHNACIMIENTO, $personaSEXO, $personaTIPOSANGRE, $personaIMAGEN){
+  function crear($tipoIdentificacionID, $personaIDENTIFICACION, $personaNOMBRES, $personaAPELLIDOS, $personaMUNICIPIO, $personaDIRECCION, $personaEMAIL,
+  $personaNIT = null, $personaIMAGEN = null, $personaSEXO = null, $personaFCHNACIMIENTO = null, $personaTIPOSANGRE = null){
     return $this->personaID = $this->insertar([
       'tipoIdentificacionID' => $tipoIdentificacionID,
       'personaIDENTIFICACION' => $personaIDENTIFICACION,
+      'personaNIT' => $personaNIT,
       'personaRAZONSOCIAL' => $personaNOMBRES." ".$personaAPELLIDOS,
       'personaNOMBRES' => $personaNOMBRES,
       'personaAPELLIDOS' => $personaAPELLIDOS,
+      'personaMUNICIPIO' => $personaMUNICIPIO,
+      'personaDIRECCION' => $personaDIRECCION,
+      'personaEMAIL' => $personaEMAIL,
+      'personaIMAGEN' => $personaIMAGEN,
       'personaFCHNACIMIENTO' => $personaFCHNACIMIENTO,
       'personaSEXO' => $personaSEXO,
       'personaTIPOSANGRE' => $personaTIPOSANGRE,
-      'personaEMAIL' => $personaEMAIL,
-      'personaIMAGEN' => $personaIMAGEN
    ]);
   }
 

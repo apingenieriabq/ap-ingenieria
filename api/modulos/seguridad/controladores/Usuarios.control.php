@@ -3,6 +3,8 @@
 class UsuariosControlador extends Controladores {
 
 
+
+
     /**
      * @api {post} seguridad/usuarios/perfil Solicitud de datos del perfil de usuario
      * @apiName perfilUsuario
@@ -80,7 +82,6 @@ class UsuariosControlador extends Controladores {
         return Respuestassistema::error("Los datos no son validos");;
 
     }
-
 
     public function perfil(){
         // print_r($_SESSION);

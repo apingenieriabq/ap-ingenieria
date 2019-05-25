@@ -56,25 +56,98 @@ class APISAPI {
     const USERNAME = 'superusuario';
     const PASSWORD = 'superusuario';
 
+    private $recursosCURL = array();
     private $conexionApi = null;
     private static $instancia;
+    private $curl_multiple;
 
     // Singleton
-    public static function getIstance() {
-        if (!isset(self::$instancia)) {
-            $obj = __CLASS__;
-            self::$instancia = new $obj;
-        }
-        return self::$instancia;
-    }
+    // public static function getIstance() {
+    //     if (!isset(self::$instancia)) {
+    //         $obj = __CLASS__;
+    //         self::$instancia = new $obj;
+    //     }
+    //     return self::$instancia;
+    // }
 
     public function __construct() {
-
+        $this->curl_multiple = curl_multi_init();
     }
 
     private function __clone() {
         throw new Exception("Este objeto no se puede clonar");
     }
+
+
+
+    public function preparaConsultas($componente, $controlador, $operacion, array $parametros = null, $soloMENSAJE = true) {
+        $nombreUsuarioAPI = Cliente::estaLogueado() ? Cliente::usuarioNOMBRE() : self::USERNAME;
+        $claveUsuarioAPI = Cliente::estaLogueado() ? (Cliente::usuarioCLAVE()) : self::PASSWORD;
+        $JSONRespuesta = null;
+        $estadoConexion = false;
+
+        // echo "Cadena de conexion >>>  ".$nombreUsuarioAPI . ":" . $claveUsuarioAPI." <br />";
+        // print_r($_SESSION);
+        $conexionApi = curl_init();
+        curl_setopt($conexionApi, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($conexionApi, CURLOPT_USERPWD, $nombreUsuarioAPI . ":" . $claveUsuarioAPI);
+        curl_setopt($conexionApi, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($conexionApi, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($conexionApi, CURLOPT_RETURNTRANSFER, true);
+
+        $urlCompleta = self::URL . $componente . "/" . $controlador . "/" . $operacion;
+        $parametros_string = "";
+        curl_setopt($conexionApi, CURLOPT_URL, $urlCompleta);
+        if (!is_null($parametros)) {
+            // foreach ($parametros as $parametro) {
+            //     $urlCompleta .= "/" . $parametro;
+            // }
+            foreach($parametros as $key=>$value) {
+                if(is_array($value)){
+                    foreach($value as $dato){
+                        $parametros_string .= $key.'[]='.$dato.'&';
+                    }
+                }else{
+                    $parametros_string .= $key.'='.$value.'&';
+                }
+            }
+            rtrim($parametros_string, '&');
+        }
+        curl_setopt($conexionApi,CURLOPT_POST, count($parametros));
+        curl_setopt($conexionApi,CURLOPT_POSTFIELDS, $parametros_string);
+
+        array_push($this->recursosCURL, $conexionApi);
+        curl_multi_add_handle($this->curl_multiple,$conexionApi);
+
+
+    }
+
+
+    public function ejecutarTodas(){
+
+        $active = null;
+        // Ejecuta los recursos
+        do {
+            $mrc = curl_multi_exec($this->curl_multiple, $active);
+        } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+
+        while ($active && $mrc == CURLM_OK) {
+            if (curl_multi_select($this->curl_multiple) != -1) {
+                do {
+                    $mrc = curl_multi_exec($this->curl_multiple, $active);
+                    curl_multi_select($this->curl_multiple);
+                } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+            }
+        }
+        print_r($mrc);
+        // Cierra los recursos
+        foreach($this->recursosCURL as $CURLactivo){
+            curl_multi_remove_handle($this->curl_multiple, $CURLactivo);
+            curl_multi_remove_handle($this->curl_multiple, $CURLactivo);
+        }
+        curl_multi_close($this->curl_multiple);
+    }
+
 
     public function ejecutar($componente, $controlador, $operacion, array $parametros = null, $soloMENSAJE = true) {
         $nombreUsuarioAPI = Cliente::estaLogueado() ? Cliente::usuarioNOMBRE() : self::USERNAME;
@@ -113,10 +186,10 @@ class APISAPI {
         curl_setopt($this->conexionApi,CURLOPT_POSTFIELDS, $parametros_string);
 
         $resultado = curl_exec($this->conexionApi);
-        // print_r($resultado);
         // print_r(json_decode($resultado));
         if($soloMENSAJE){
             $JSONRespuesta =  $this->procesarRESPUESTA($resultado);
+        // print_r($resultado);
             return $JSONRespuesta;
         }else{
             try{
@@ -131,7 +204,6 @@ class APISAPI {
             }
             //  return ($resultado);
         }
-        usleep(1234);
     }
 
 
@@ -164,19 +236,24 @@ class APISAPI {
         $paraEnviar = array();
         if (!is_null($parametros)) {
             foreach($parametros as $clave => $valor ) {
-                $paraEnviar[$clave] = $valor;
+                // if(!empty($valor)){
+                    $paraEnviar[$clave] = $valor;
+                // }
             }
         }
 
         if (!is_null($archivos)) {
             foreach ($archivos as $clave => $valor) {
-                $paraEnviar[$clave] = $this->cearArchivoCURL($valor);
+                if(!empty($valor)){
+                    $paraEnviar[$clave] = $this->cearArchivoCURL($valor);
+                }
             }
         }
         curl_setopt($this->conexionApi,CURLOPT_POST, count($paraEnviar));
         curl_setopt($this->conexionApi,CURLOPT_POSTFIELDS, $paraEnviar);
 
         $resultado = curl_exec($this->conexionApi);
+        // print_r($resultado);die();
         if($soloMENSAJE){
             return $JSONRespuesta =  $this->procesarRESPUESTA($resultado);
         }else{
@@ -202,7 +279,8 @@ class APISAPI {
                     $info = curl_getinfo($this->conexionApi);
                     return $JSONRespuesta = $respuesta->DATOS;
                 }else{
-                    return $JSONRespuesta = $respuesta->MENSAJE;
+                    // return $JSONRespuesta = $respuesta->MENSAJE;
+                    echo $resultado;die();
                 }
             }else{
             // var_dump($respuesta);

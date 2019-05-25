@@ -2,6 +2,16 @@
 
 class MenuOperaciones {
 
+    public function arbolCompleto(){
+        $menuComponente = Componentes::todos();
+        foreach ($menuComponente as $componentes):
+            $componentes->Operaciones = MenuOperaciones::padresDelComponente($componentes->componenteID);
+            foreach($componentes->Operaciones as $OperacionMenu){
+                $OperacionMenu->SubOperaciones = MenuOperaciones::deLaOperacion($OperacionMenu->menuID);
+            }
+        endforeach;
+        return $menuComponente;
+    }
 
     public static function porCombinacion($componenteCODIGO, $menuOPERACION ){
         $sqlQuery = ControlAccesoSQL::DATOS_COMPLETOS .

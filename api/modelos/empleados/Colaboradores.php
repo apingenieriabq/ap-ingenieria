@@ -3,6 +3,16 @@
 class Colaboradores extends ModeloDatos {
 
 
+  function todosCompletos(){
+    $Colaboradores = $this->todos();
+    $ColaboradoresCompletos = array();
+    foreach($Colaboradores as $i => $Colaborador){
+    $NewColaborador = new Colaboradores();
+      $ColaboradoresCompletos[$i] = $NewColaborador->datosCompletos($Colaborador->colaboradorID);
+    }
+    return $ColaboradoresCompletos;
+   }
+
   function conCargo($cargoID){
     $Colaboradores = $this->todos(['cargoID' => $cargoID]);
     foreach($Colaboradores as $i => $Colaborador){
@@ -47,22 +57,36 @@ class Colaboradores extends ModeloDatos {
     }
     $Colaborador = $this->porID($colaboradorID);
     if(!empty($Colaborador)){
-      $this->Persona = new Personas($this->personaID);
-      $this->JefeInmediato = new Colaboradores($this->colaboradorJEFEINMEDIATO);
+      $this->Persona = new Personas($Colaborador->personaID);
+      $this->Cargo = new Cargos($Colaborador->cargoID);
+      $this->JefeInmediato = new Colaboradores($Colaborador->colaboradorJEFEINMEDIATO);
+      $this->Aprobador = new Colaboradores($Colaborador->colaboradorAPROBADOR);
+      $this->Usuario = new Usuarios();
+      $this->Usuario->porColaboradorID($colaboradorID);
     }
     return $this;
    }
 
   public function __construct($colaboradorID = null) {
-    parent::__construct('Colaboradores', 'colaboradorID', $colaboradorID);
+    if(filter_var($colaboradorID, FILTER_VALIDATE_EMAIL)){
+      parent::__construct('Colaboradores', 'colaboradorID', null);
+      $this->datos(['colaboradorEMAIL' => $colaboradorID]);
+      $colaboradorID = $this->colaboradorID;
+    }else{
+      if(filter_var($colaboradorID, FILTER_VALIDATE_INT)){
+        parent::__construct('Colaboradores', 'colaboradorID', $colaboradorID);
+      }else{
+        parent::__construct('Colaboradores', 'colaboradorID', null);
+      }
+    }
+
     if(!is_null($colaboradorID)){
-      if(isset($this->cargoID)) $this->Cargo = new Cargos($this->cargoID);
-      if(isset($this->personaID)) $this->Persona = new Personas($this->personaID);
+      // $this->datosCompletos($colaboradorID);
     }
     return $this;
   }
 
-  public function crear($cargoID, $personaID, $tipoColaboradorID, $colaboradorEMAIL, $colaboradorFCHINGRESO, $colaboradorEXTENSION, $colaboradorCELULAR, $colaboradorFIRMA, $colaboradorFOTO, $colaboradorJEFEINMEDIATO, $colaboradorAPROBADOR){
+  public function crear($cargoID, $personaID, $tipoColaboradorID, $colaboradorEMAIL, $colaboradorEXTENSION, $colaboradorCELULAR, $colaboradorFCHINGRESO, $colaboradorFOTO, $colaboradorFIRMA, $colaboradorJEFEINMEDIATO, $colaboradorAPROBADOR){
 
     if(!empty($personaID)){
       $this->colaboradorID = $this->insertar([
@@ -70,22 +94,15 @@ class Colaboradores extends ModeloDatos {
         'cargoID' => $cargoID,
         'tipoColaboradorID' => $tipoColaboradorID,
         'colaboradorEMAIL' => $colaboradorEMAIL,
-        'colaboradorFCHINGRESO' => $colaboradorFCHINGRESO,
         'colaboradorEXTENSION' => $colaboradorEXTENSION,
         'colaboradorCELULAR' => $colaboradorCELULAR,
-        'colaboradorFIRMA' => $colaboradorFIRMA,
+        'colaboradorFCHINGRESO' => $colaboradorFCHINGRESO,
         'colaboradorFOTO' => $colaboradorFOTO,
+        'colaboradorFIRMA' => $colaboradorFIRMA,
         'colaboradorJEFEINMEDIATO' => $colaboradorJEFEINMEDIATO,
         'colaboradorAPROBADOR' => $colaboradorAPROBADOR
       ]);
 
-      if( !empty($this->colaboradorID) ){
-        $colaboradorCLAVETEMPORAL =  hash('crc32', $colaboradorEMAIL);
-        $Usuario = new Usuarios();
-        $Usuario->nuevo( $colaboradorEMAIL, $colaboradorCLAVETEMPORAL, $this->colaboradorID );
-        $this->datosCompletos($this->colaboradorID);
-        $this->colaboradorCLAVETEMPORAL = $colaboradorCLAVETEMPORAL;
-      }
     }
   }
 
