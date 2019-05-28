@@ -126,7 +126,7 @@ class UsuariosControlador extends Controladores {
             foreach ($menuComponente as $componentes):
                 $componentes->Operaciones = MenuOperaciones::menuPadresComponentePorUsuario($idUsuario,$componentes->componenteID);
                 foreach($componentes->Operaciones as $OperacionMenu){
-                    $OperacionMenu->SubOperaciones = MenuOperaciones::delMenuPorUsuario($idUsuario,$componentes->componenteID);
+                    $OperacionMenu->SubOperaciones = MenuOperaciones::delMenuPorUsuario($idUsuario,$OperacionMenu->menuID);
                 }
             endforeach;
         endif;

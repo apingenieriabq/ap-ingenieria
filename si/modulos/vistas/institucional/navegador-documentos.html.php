@@ -1,7 +1,8 @@
 {% if Documentos|length %}
 {% for Documento in Documentos %}
 <div class="col-12 col-sm-6 col-lg-4">
-  <div id="{{Documento.documentoID}}" class="gestor_documentos_procesos file-manager__item card card-small mb-4" title="{{Documento.documentoNOMBRE}}" >
+  <div id="{{Documento.documentoID}}" onclick="mostrarModalDetallesDocumentoAP({{Documento.documentoID}});"
+      class="gestor_documentos_procesos file-manager__item card card-small mb-4" title="{{Documento.documentoNOMBRE}}" >
     <div class="file-manager__item-preview card-body px-0 pb-0 pt-4">
       <img src="{% if Documento.documentoIMAGEN %}{{Documento.documentoIMAGEN}}{% else %}plantilla/basica/images/file-manager/document-preview-1.jpg{% endif %}" alt="{{Documento.documentoNOMBRE}}">
     </div>

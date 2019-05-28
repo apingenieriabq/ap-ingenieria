@@ -50,7 +50,7 @@
           <span class="d-none d-md-inline-block">{{Usuario.Colaborador.Persona.personaNOMBRES}} {{Usuario.Colaborador.Persona.personaAPELLIDOS}}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-small">
-          <a class="dropdown-item" href="javascript:void(0);" data-modulo="Perfil" data-operacion="perfil" onclick="abrirItemMenu(this);" ><i class="material-icons">&#xE7FD;</i> Perfil
+          <a class="dropdown-item" href="javascript:void(0);" data-modulo="Perfil" data-operacion="delUsuario" onclick="abrirItemMenu(this);" ><i class="material-icons">&#xE7FD;</i> Perfil
           </a>
           <!--<a class="dropdown-item" href="edit-user-profile.html"><i class="material-icons">&#xE8B8;</i> Modificar</a>-->
           <a class="dropdown-item nav-link" href="javascript:void(0);" data-modulo="ListadoMaestroDocumento" data-operacion="mostrarNavegador" onclick="abrirItemMenu(this);" target="_self">

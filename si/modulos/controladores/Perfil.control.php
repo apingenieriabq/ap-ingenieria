@@ -2,27 +2,44 @@
 
 class PerfilControlador extends Controladores {
 
-  function perfil(){
+  function delUsuario(){
 
     global $Api;
-    $Usuario = $Api->ejecutar(
-      'seguridad', 'usuarios', 'perfil',
+    $Listados = $Api->ejecutar(
+      'listados', 'Formularios', 'formularioPerfilUsuario'
+      // ,null , false
+    );
+    // print_r($Listados);
+    $getUsuario = $Api->ejecutar(
+      'seguridad', 'perfil', 'delUsuario',
       array( 'usuarioID' => Cliente::datos()->usuarioID )
     );
+    // print_r($Usuario);
+    Vistas::mostrar('usuarios', 'form-mini-perfil', [ 'Listados' => $Listados, 'DatosUsuario' => $getUsuario ] );
+  }
 
-    Vistas::mostrar('usuarios', 'perfil', [ 'Usuario' => $Usuario ] );
+  function actualizarDatosPersonales(){
+     global $Api;
+    $NuevoColaborador = $Api->ejecutar(
+      'seguridad', 'perfil', 'actualizarDatosPersonales',[
+        'personaID' => $this->personaID,
+        'personaNOMBRES'  => $this->personaNOMBRES,
+        'personaAPELLIDOS'  => $this->personaAPELLIDOS,
+        'personaMUNICIPIO'  => $this->personaMUNICIPIO,
+        'personaDIRECCION'  => $this->personaDIRECCION,
+        'personaEMAIL' => $this->personaEMAIL,
+        'usuarioCLAVE' => $this->usuarioCLAVE,
+      ]
+      , false
+    );
+      // var_dump($NuevoColaborador);
+    if($NuevoColaborador->RESPUESTA == 'EXITO'){
+      echo RespuestasSistema::exito( $NuevoColaborador->MENSAJE,$NuevoColaborador->DATOS);
+    }else{
+      echo RespuestasSistema::error( $NuevoColaborador->MENSAJE );
+    }
   }
 
 
-  function mostrarFormularioEditar(){
-
-    global $Api;
-    $Usuario = $Api->ejecutar(
-      'seguridad', 'usuarios', 'perfil',
-      array( 'usuarioID' => Cliente::datos()->usuarioID )
-    );
-
-    Vistas::mostrar('usuarios', 'form-perfil', [ 'Usuario' => $Usuario ] );
-  }
 
 }

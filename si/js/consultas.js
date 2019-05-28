@@ -15,6 +15,7 @@
  * Consulte la Licencia para los permisos y Limitaciones bajo la Licencia.
  */
 var modo_pruebas = true;
+
 function isJson(data) {
     try {
         JSON.parse(data);
@@ -24,6 +25,7 @@ function isJson(data) {
     }
     return true;
 }
+
 function crearFormData(idElementoForm) {
     var formElement = document.getElementById(idElementoForm);
     var formdata = new FormData(formElement);
@@ -32,15 +34,14 @@ function crearFormData(idElementoForm) {
     // }
     return formdata;
 }
+
 function activarPlugins() {
     $("form").attr('onsubmit', 'return false;');
 }
 
-
-
-function cargarModal(tituloModal, modulo, operacion, datos = '', funcionEjecutable = function(){}) {
+function cargarModal(tituloModal, modulo, operacion, datos = '', funcionEjecutable = function() {}) {
     bloquearPantalla();
-    var datosOperacion = "modulo=" + modulo +  "&operacion=" + operacion + "&" + datos;
+    var datosOperacion = "modulo=" + modulo + "&operacion=" + operacion + "&" + datos;
     ajaxApi(datosOperacion, function(data) {
         bloquearPantalla();
         if (funcionEjecutable) {
@@ -51,37 +52,34 @@ function cargarModal(tituloModal, modulo, operacion, datos = '', funcionEjecutab
     });
 }
 
-function crearModalVista(tituloModal, dataHTML){
+function crearModalVista(tituloModal, dataHTML) {
     var idModal = crearHASH();
-
-    var html =  '<div id="modal_'+idModal+'"  class="modal" tabindex="-1" role="dialog">';
-        html += '<div class="modal-dialog modal-lg modal-dialog-centered" role="document">';
-            html += '<div class="modal-content">';
-                html += '<div class="modal-header">';
-                    html += '<h5 class="modal-title">'+tituloModal+'</h5>';
-                    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>';
-                html += '</div>';
-                html += '<div class="modal-body">';
-                    html += dataHTML;
-                html += '</div>';
-                // html += '<div class="modal-footer">';
-                //     html += '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
-                //     html += '<button type="button" class="btn btn-primary">Save changes</button>';
-                // html += '</div>';
-            html += '</div>';
-        html += '</div>';
-    html += '</div>';  // modalWindow
-
+    var html = '<div id="modal_' + idModal + '"  class="modal" tabindex="-1" role="dialog">';
+    html += '<div class="modal-dialog modal-lg modal-dialog-centered" role="document">';
+    html += '<div class="modal-content">';
+    html += '<div class="modal-header">';
+    html += '<h5 class="modal-title">' + tituloModal + '</h5>';
+    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>';
+    html += '</div>';
+    html += '<div class="modal-body">';
+    html += dataHTML;
+    html += '</div>';
+    // html += '<div class="modal-footer">';
+    //     html += '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
+    //     html += '<button type="button" class="btn btn-primary">Save changes</button>';
+    // html += '</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>'; // modalWindow
     $("#area-modales").html(html);
-    $('#modal_'+idModal+'').modal();
+    $('#modal_' + idModal + '').modal();
 }
-
-
 
 function cargarVista(modulo, operacion, datos = '', nombreTabMenu = '', idTabMenu = '') {
     bloquearPantalla();
     var datosOperacion = "modulo=" + modulo + "&operacion=" + operacion + "&" + datos;
     ajaxApi(datosOperacion, function(dataVISTA) {
+        bloquearPantalla();
         if (isJson(dataVISTA)) {
             bloquearPantalla();
             controlRespuesta(dataVISTA);
@@ -99,44 +97,38 @@ function cargarVista(modulo, operacion, datos = '', nombreTabMenu = '', idTabMen
 function cargaHTMLVistaAreaPlantilla(modulo, operacion, htmlVISTA, nombreTabMenu = '', idTabMenu = '') {
     bloquearPantalla();
     // ejecutarOperacion("seguridad", "datosOperacion", "modulo=" + modulo + "&operacion=" + operacion, function(datos) {
-
-        // crearTabs(
-        //   '<i class="' + datos.Operacion.operacionMENUICONO + ' fa-xs" aria-hidden="true"></i> ' +
-        //   datos.Operacion.operacionNOMBRETAB + '' + nombreTabMenu,
-        //   (datos.Operacion.operacionCODIGO + "" + idTabMenu).toLowerCase(),
-        //   htmlVISTA
-        // );
-        // activarPlugins();
-        $("#contenido-vista" ).html(htmlVISTA);
-
-        desbloquearPantalla();
+    // crearTabs(
+    //   '<i class="' + datos.Operacion.operacionMENUICONO + ' fa-xs" aria-hidden="true"></i> ' +
+    //   datos.Operacion.operacionNOMBRETAB + '' + nombreTabMenu,
+    //   (datos.Operacion.operacionCODIGO + "" + idTabMenu).toLowerCase(),
+    //   htmlVISTA
+    // );
+    // activarPlugins();
+    $("#contenido-vista").html(htmlVISTA);
+    // desbloquearPantalla();
     // });
 }
 
 function crearTabs(nameTabMenu, idTabMenu, html) {
     // if (!$("#" + idTabMenu).length) {
-        $("#contenido-vista" ).html(html);
+    $("#contenido-vista").html(html);
     // } else {
     // }
 }
 
-
-
-
 function cargandoDivision(idDivision) {
-    var top = $("#"+idDivision).css('top');
-    var left = $("#"+idDivision).css('left');
-    var width = $("#"+idDivision).css('width');
-    var height = $("#"+idDivision).css('height');
-
-    $("#" + idDivision).append('<div id="' + idDivision + '-load" class="cargando-division" style="z-index: ' + (zIndex() - 1) + ';position: absolute; top:' + top +'; left: ' + left +'; min-width: 100%; min-height:120px; width: ' + width +'; height: ' + height +';background: rgba(255,255,255,0.7);border-radius: 3px;" ><i class="fa fa-cog fa-spin" style="position: absolute; top: 50%; left: 50%; margin-left: -15px; margin-top: -15px; color: #000; font-size: 30px;"></i><div style="clear:both;" ></div></div>');
+    var top = $("#" + idDivision).css('top');
+    var left = $("#" + idDivision).css('left');
+    var width = $("#" + idDivision).css('width');
+    var height = $("#" + idDivision).css('height');
+    $("#" + idDivision).append('<div id="' + idDivision + '-load" class="cargando-division" style="z-index: ' + (zIndex() - 1) + ';position: absolute; top:' + top + '; left: ' + left + '; min-width: 100%; min-height:120px; width: ' + width + '; height: ' + height + ';background: rgba(255,255,255,0.7);border-radius: 3px;" ><i class="fa fa-cog fa-spin" style="position: absolute; top: 50%; left: 50%; margin-left: -15px; margin-top: -15px; color: #000; font-size: 30px;"></i><div style="clear:both;" ></div></div>');
 }
 
 function quitarCargandoDivision(idDivision) {
     $('#' + idDivision + '-load').remove();
 }
 
-function cargarDivision(idDivision, modulo, operacion, datos, functionEjecutable = function(){}) {
+function cargarDivision(idDivision, modulo, operacion, datos, functionEjecutable = function() {}) {
     cargandoDivision(idDivision);
     var datosOperacion = "modulo=" + modulo + "&operacion=" + operacion + "&" + datos;
     ajaxApi(datosOperacion, function(data) {
@@ -148,7 +140,6 @@ function cargarDivision(idDivision, modulo, operacion, datos, functionEjecutable
         // quitarCargandoDivision(idDivision);
     });
 }
-
 // function ejecutarOperacionEnDivision(idDivision, modulo, controlador, operacion, datos, funcionEjecutable = null, bloquear = true) {
 //     cargandoDivision(idDivision);
 //     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
@@ -157,20 +148,11 @@ function cargarDivision(idDivision, modulo, operacion, datos, functionEjecutable
 //         quitarCargandoDivision(idDivision);
 //     });
 // }
-
-
-
-
-
-
-
-
-
-function ejecutarOperacion(modulo, operacion, datos, funcionEjecutable = function(){}, bloquear = true) {
+function ejecutarOperacion(modulo, operacion, datos, funcionEjecutable = function() {}, bloquear = true) {
     bloquearPantalla();
     var datosOperacion = "modulo=" + modulo + "&operacion=" + operacion + "&" + datos;
     if (modo_pruebas) console.log('%c Datos Enviados____', 'color: #bada55;  font-size:120%;');
-    if (modo_pruebas){
+    if (modo_pruebas) {
         console.log(datosOperacion);
     }
     ajaxApi(datosOperacion, function(data) {
@@ -180,54 +162,48 @@ function ejecutarOperacion(modulo, operacion, datos, funcionEjecutable = functio
     });
 }
 
-function ejecutarOperacionFormData(modulo, operacion, formData, funcionEjecutable = function(){}) {
+function ejecutarOperacionFormData(modulo, operacion, formData, funcionEjecutable = function() {}) {
     bloquearPantalla();
     formData.append("modulo", modulo);
     formData.append("operacion", operacion);
-
     if (modo_pruebas) console.log('%c Datos Enviados____', 'color: #bada55;  font-size:120%;');
-    if (modo_pruebas){
+    if (modo_pruebas) {
         console.log(formData);
         for (var key of formData.entries()) {
             console.log(key[0] + ', ' + key[1]);
         }
     }
-
     ajaxApi(formData, function(data) {
+        bloquearPantalla();
         controlRespuesta(data, funcionEjecutable);
         desbloquearPantalla();
     }, false, false);
-//     $.ajax({
-//         url: '/api.php',
-//         type: 'post',
-//         dataType: "html",
-//         data: formData,
-//         cache: false,
-//         contentType: false,
-//         processData: false
-//     }).done(function(response) {
-//         //console.log(response);
-//         functionEjecutable(response);
-//     });
+    //     $.ajax({
+    //         url: '/api.php',
+    //         type: 'post',
+    //         dataType: "html",
+    //         data: formData,
+    //         cache: false,
+    //         contentType: false,
+    //         processData: false
+    //     }).done(function(response) {
+    //         //console.log(response);
+    //         functionEjecutable(response);
+    //     });
 }
 
-function ejecutarOperacionArchivo(modulo, operacion, archivoFormData, funcionEjecutable = function(){}) {
+function ejecutarOperacionArchivo(modulo, operacion, archivoFormData, funcionEjecutable = function() {}) {
     bloquearPantalla();
     archivoFormData.append("modulo", modulo);
     archivoFormData.append("operacion", operacion);
     ajaxApi(archivoFormData, function(data) {
+        bloquearPantalla();
         controlRespuesta(data, funcionEjecutable);
         desbloquearPantalla();
     }, false, false);
 }
 
-
-
-
-
 function ajaxApi(datosOperacion, funcionEjecutable, procesarDatos = false, tipoContenidoEnviado = 'application/x-www-form-urlencoded; charset=UTF-8') {
-
-
     $.ajax({
         type: 'POST',
         url: 'index.php',
@@ -236,7 +212,7 @@ function ajaxApi(datosOperacion, funcionEjecutable, procesarDatos = false, tipoC
         processData: procesarDatos,
         data: datosOperacion,
         success: function(response) {
-          if(typeof funcionEjecutable === 'function') { funcionEjecutable(response); }
+            if (typeof funcionEjecutable === 'function') { funcionEjecutable(response); }
         },
         error: function(error) {
             alertaError("Ocurrio un error en la comunicacion con el sistema.\r\n Contacte con el Centro TICS.");
@@ -247,7 +223,7 @@ function ajaxApi(datosOperacion, funcionEjecutable, procesarDatos = false, tipoC
     });
 }
 
-function controlRespuesta(data, funcionEjecutable = function(){}) {
+function controlRespuesta(data, funcionEjecutable = function() {}) {
     if (isJson(data)) {
         var response = JSON.parse(data);
         if (modo_pruebas) console.log('%c Datos Recibidos____', 'color: #F00; font-size:120%;');
@@ -287,23 +263,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
         console.log(data);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // function cargarModal(modulo, operacion, datos = '', funcionEjecutable = null) {
 //     bloquearPantalla();
 //     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
@@ -316,21 +275,18 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         desbloquearPantalla();
 //     });
 // }
-
 // function ejecutarOperacionOculta(modulo, controlador, operacion, datos, funcionEjecutable = null) {
 //     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
 //     ajaxApi(datosOperacion, function(data) {
 //         controlRespuesta(data, funcionEjecutable);
 //     });
 // }
-
 // function ejecutarOperacionPersonalizada(modulo, operacion, datos, funcionEjecutable = null) {
 //     var datosOperacion = "modulo=" + modulo +  "&operacion=" + operacion + "&" + datos;
 //     ajaxApi(datosOperacion, function(data) {
 //         funcionEjecutable(data);
 //     });
 // }
-
 // function ejecutarOperacionArchivo(modulo, operacion, formData, funcionEjecutable) {
 //     bloquearPantalla();
 //     formData.append("modulo", modulo);
@@ -340,8 +296,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         desbloquearPantalla();
 //     }, false, false);
 // }
-
-
 // function activarInactividad() {
 //     ejecutarOperacion('usuarios', 'Sesion', 'activarInactividad', null, function(data) {
 //         //actualizarNavagador();
@@ -349,7 +303,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         //console.log("No se puede recargar porque se pierde el trabajo en memoria.\r\nPor ahora solo bloquer la pantalla como cuando se carga una vista.");
 //     });
 // }
-
 // function controlVista(modulo, controlador, operacion, datos, idDivision = null, functionEjecutable = null) {
 //     if (idDivision == null) {
 //         cargarVista(modulo, controlador, operacion, datos);
@@ -358,7 +311,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         cargarDivisionSicam(idDivision, modulo, controlador, operacion, datos, functionEjecutable);
 //     }
 // }
-
 // function ejecutarOperacionHTML(modulo, controlador, operacion, datos, funcionEjecutable = null, bloquear = true) {
 //     bloquearPantalla();
 //     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
@@ -367,7 +319,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         desbloquearPantalla();
 //     });
 // }
-
 // function ejecutarOperacionOcultaJSON(controlador, operacion, datos, functionEjecutable) {
 //     var datosOperacion = "controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
 //     $.post("/api.php", datosOperacion, function(data) {
@@ -382,7 +333,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         }
 //     });
 // }
-
 // function ejecutarOperacionJSON(controlador, operacion, datos = null, functionEjecutable = null) {
 //     var datosOperacion = "controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
 //     bloquearPantalla();
@@ -401,7 +351,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         }
 //     });
 // }
-
 // function ejecutarOperacionFormData(formData, functionEjecutable) {
 //     $.ajax({
 //         url: '/api.php',
@@ -416,7 +365,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         functionEjecutable(response);
 //     });
 // }
-
 // function popUp(mypage, myname, w, h, scroll, pos) {
 //     if (pos == "random") {
 //         LeftPosition = (screen.width) ? Math.floor(Math.random() * (screen.width - w)) : 100;
@@ -433,17 +381,12 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //     settings = 'width=' + w + ',height=' + h + ',top=' + TopPosition + ',left=' + LeftPosition + ',scrollbars=' + scroll + ',location=no,directories=no,status=no,menubar=no,toolbar=no,resizable=no';
 //     win = window.open(mypage, myname, settings);
 // }
-
-
-
 // function cargandoDivision(idDivision) {
 //     $('<div id="' + idDivision + '-load" class="cargando-division" style="z-index: ' + (zIndex() - 1) + ';" ><i class="fa fa-refresh fa-spin"></i></div>').insertAfter("#" + idDivision);
 // }
-
 // function quitarCargandoDivision(idDivision) {
 //     $('#' + idDivision + '-load').remove();
 // }
-
 // function cargarDivisionSicam(idDivision, modulo, controlador, operacion, datos, functionEjecutable = null) {
 //     cargandoDivision(idDivision);
 //     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
@@ -456,7 +399,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         quitarCargandoDivision(idDivision);
 //     });
 // }
-
 // function cargarDivision(idDivision, modulo, controlador, operacion, datos, functionEjecutable = null) {
 //     cargandoDivision(idDivision);
 //     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
@@ -469,7 +411,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         quitarCargandoDivision(idDivision);
 //     });
 // }
-
 // function ejecutarOperacionEnDivision(idDivision, modulo, controlador, operacion, datos, funcionEjecutable = null, bloquear = true) {
 //     cargandoDivision(idDivision);
 //     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
@@ -478,12 +419,7 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         quitarCargandoDivision(idDivision);
 //     });
 // }
-
-
-
-
 // // function encriptarDatosUsuario() {
-
 // //   var txtUsuario = document.getElementById("nombre_usuario").value.trim();
 // //   var txtClave = document.getElementById("clave_usuario").value.trim();
 // //   if (txtClave != "") {
@@ -533,8 +469,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //     }
 //   });
 // }
-
-
 // // function cargarVista(modulo, operacion){
 // //   bloquearPantalla();
 // //   var datos = new FormData();
@@ -548,7 +482,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 // //     desbloquearPantalla();
 // //   });
 // // }
-
 // function cargarVista(modulo, controlador, operacion, datos = '', nombreTabMenu = '', idTabMenu = '') {
 //     bloquearPantalla();
 //     var datosOperacion = "modulo=" + modulo + "&controlador=" + controlador + "&operacion=" + operacion + "&" + datos;
@@ -564,7 +497,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         }
 //     });
 // }
-
 // function cargaHTMLVistaAreaPlantilla(modulo, controlador, operacion, htmlVISTA, nombreTabMenu = '', idTabMenu = '') {
 //     bloquearPantalla();
 //     ejecutarOperacion("sistema", "OperacionesSistema", "datosParaTab", "operacionmodulo=" + modulo + "&operacionControlador=" + controlador + "&operacionOperacion=" + operacion, function(datos) {
@@ -575,19 +507,12 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //         desbloquearPantalla();
 //     });
 // }
-
 // function cargandoDivision(idDivision) {
 //     $('<div id="' + idDivision + '-load" class="cargando-division" style="z-index: ' + (zIndex() - 1) + ';" ><i class="fa fa-refresh fa-spin"></i></div>').insertAfter("#" + idDivision);
 // }
-
 // function quitarCargandoDivision(idDivision) {
 //     $('#' + idDivision + '-load').remove();
 // }
-
-
-
-
-
 // function ejecutarOperacionHTML(modulo, operacion, datos, functionDespuesEnvio){
 //   bloquearPantalla();
 //   if(datos === null){
@@ -603,9 +528,7 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //     desbloquearPantalla();
 //   });
 // }
-
 // function traerVistaHTML(  datosFormulario = null , functionExito = null , functionError = null ){
-
 // $.ajax({
 //         url: 'index.php',
 //         type: 'post',
@@ -626,7 +549,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //   .always(function() {
 //     // alert( "finished" );
 //   });
-
 //   // fetch('index.php', {
 //   // 	method: 'post',
 //   // 	body: datosFormulario
@@ -642,10 +564,6 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //   //     functionError(ERROR);
 //   //   }
 //   // });
-
-
-
-
 //   // then(function(response) {
 //   //   console.log("      1      ");
 //   //   console.log(response);
@@ -664,4 +582,3 @@ function controlRespuesta(data, funcionEjecutable = function(){}) {
 //   //   }
 //   // });
 // }
-

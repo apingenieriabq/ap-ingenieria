@@ -158,11 +158,12 @@ class APISAPI {
         // echo "Cadena de conexion >>>  ".$nombreUsuarioAPI . ":" . $claveUsuarioAPI." <br />";
         // print_r($_SESSION);
         $this->conexionApi = curl_init();
+        curl_setopt($this->conexionApi, CURLOPT_POST, true);
         curl_setopt($this->conexionApi, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->conexionApi, CURLOPT_USERPWD, $nombreUsuarioAPI . ":" . $claveUsuarioAPI);
         curl_setopt($this->conexionApi, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($this->conexionApi, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($this->conexionApi, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->conexionApi, CURLOPT_FRESH_CONNECT, true);
 
         $urlCompleta = self::URL . $componente . "/" . $controlador . "/" . $operacion;
         $parametros_string = "";
@@ -227,7 +228,7 @@ class APISAPI {
         curl_setopt($this->conexionApi, CURLOPT_USERPWD, self::USERNAME . ":" . self::PASSWORD);
         curl_setopt($this->conexionApi, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($this->conexionApi, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($this->conexionApi, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->conexionApi, CURLOPT_FRESH_CONNECT, true);
         $urlCompleta = self::URL . $componente . "/" . $controlador . "/" . $operacion;
         curl_setopt($this->conexionApi, CURLOPT_URL, $urlCompleta);
 
@@ -255,13 +256,21 @@ class APISAPI {
         $resultado = curl_exec($this->conexionApi);
         // print_r($resultado);die();
         if($soloMENSAJE){
-            return $JSONRespuesta =  $this->procesarRESPUESTA($resultado);
+            $JSONRespuesta =  $this->procesarRESPUESTA($resultado);
+        // print_r($resultado);
+            return $JSONRespuesta;
         }else{
             try{
-                return json_decode($resultado);
+                $respuesta = json_decode($resultado);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    return ($respuesta);
+                }else{
+                    return ($resultado);
+                }
             }catch(Exception $ex){
              return ($resultado);
             }
+            //  return ($resultado);
         }
 
     }

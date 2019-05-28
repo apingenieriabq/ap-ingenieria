@@ -16,7 +16,7 @@ class DocumentosAP extends ModeloDatos
     if(is_null($documentoID)){
       $documentoID =  $this->documentoID;
     }
-    $Documento = $this->consultaUNO(  DocumentosAPSQL::DATOS_COMPLETOS." WHERE `DocumentosAP`.documentoID = :documentoID ", [':documentoID' => $documentoID] );
+    $Documento = $this->consultaUNO(  DocumentosAPSQL::DATOS_COMPLETOS." WHERE DocumentosAP.documentoID = :documentoID ", [':documentoID' => $documentoID] );
     return $Documento;
   }
 
@@ -80,11 +80,20 @@ class DocumentosAP extends ModeloDatos
     return $this->todos([ 'procesoID' => $procesoID]);
   }
 
-  public function todosConProcesoDelUsuario($procesoID, $documentoPUBLICADO = null){
+  public function todosDelProcesoDelUsuario($procesoID, $documentoPUBLICADO = null){
     if(!is_null($documentoPUBLICADO)){
-      return $this->todos([ 'procesoID' => $procesoID, 'documentoPUBLICADO' => $documentoPUBLICADO ]);
+      $sql = "SELECT DocumentosAP.* , DocumentosUsuarios.* FROM DocumentosUsuarios "
+      ." LEFT JOIN DocumentosAP ON (DocumentosUsuarios.documentoID = DocumentosAP.documentoID) "
+      ." WHERE DocumentosUsuarios.usuarioID = :usuarioID AND DocumentosAP.procesoID = :procesoID AND DocumentosAP.documentoPUBLICADO = :documentoPUBLICADO   ";
+      $Documentos = $this->consultaMUCHOS($sql, [':procesoID' => $procesoID, ':documentoPUBLICADO' => $documentoPUBLICADO, ':usuarioID' => Usuario::id() ] );
+      return $Documentos;
     }
-    return $this->todos([ 'procesoID' => $procesoID]);
+
+    return $Documentos = $this->consultaMUCHOS(
+      "SELECT DocumentosAP.* , DocumentosUsuarios.* FROM DocumentosUsuarios "
+      ." LEFT JOIN DocumentosAP ON (DocumentosUsuarios.documentoID = DocumentosAP.documentoID) "
+      ." WHERE DocumentosUsuarios.usuarioID = :usuarioID AND DocumentosAP.procesoID = :procesoID ",
+      [ ':procesoID' => $procesoID, ':usuarioID' => Usuario::id() ] );
   }
 
   private function generarCodigo($procesoID){

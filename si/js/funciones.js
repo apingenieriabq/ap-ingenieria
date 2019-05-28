@@ -1,15 +1,16 @@
 var __BLOQUEO_RECARGAR_SALIR = true;
-function bloquearSalidaSistema(){
-    window.onbeforeunload = function () {
+
+function bloquearSalidaSistema() {
+    window.onbeforeunload = function() {
         if (__BLOQUEO_RECARGAR_SALIR) {
             return 'Esta Saliendo de SICAM32';
         }
     };
 }
-function desbloquearSalidaSistema(){
+
+function desbloquearSalidaSistema() {
     __BLOQUEO_RECARGAR_SALIR = false;
 }
-
 //Guarda una COOKIE en el navegador del usuario
 function cocinarGalleta(cname, cvalue, exdays) {
     var d = new Date();
@@ -37,45 +38,45 @@ function comerGalleta(cname) {
 function borrarGalleta(cname) {
     var d = new Date();
     d.setTime(0);
-    var expires = "expires="+ d.toUTCString();
+    var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=;" + expires + ";path=/";
 }
-
-
 //Guarda en el LocalStorage del NAvegador
-function guardarEnNavegador( nombreVariable, valorVariable){
-    if( window.localStorage ){
-        return localStorage.setItem( nombreVariable, valorVariable);
-    }else{
+function guardarEnNavegador(nombreVariable, valorVariable) {
+    if (window.localStorage) {
+        return localStorage.setItem(nombreVariable, valorVariable);
+    }
+    else {
         alert("no se pudo guardar en el navegador")
     }
 }
 //Saca el Valor guardado en el LocalStorage del NAvegador
-function valorEnNavegador( nombreVariable ){
-    if( window.localStorage ){
+function valorEnNavegador(nombreVariable) {
+    if (window.localStorage) {
         return localStorage.getItem(nombreVariable);
-    }else{
+    }
+    else {
         alert("no se pudo guardar en el navegador")
     }
 }
 //borrar una valiablre del LocalStorage del NAvegador
-function borrarValorEnNavegador( nombreVariable ){
-    if( window.localStorage ){
+function borrarValorEnNavegador(nombreVariable) {
+    if (window.localStorage) {
         return localStorage.removeItem(nombreVariable);
-    }else{
+    }
+    else {
         alert("no se pudo guardar en el navegador")
     }
 }
 //Borra todo en el LocalStorage del Nvegador
-function limpiarDatosEnNavegador(){
-    if( window.localStorage ){
+function limpiarDatosEnNavegador() {
+    if (window.localStorage) {
         return localStorage.clear();
-    }else{
+    }
+    else {
         alert("no se pudo guardar en el navegador")
     }
 }
-
-
 //Devuelve el ZIndex mas alto entre todos los objecto que este en el DOM
 function zIndex() {
     var allElems = document.getElementsByTagName ? document.getElementsByTagName("*") : document.all; // or test for that too
@@ -103,7 +104,6 @@ function zIndex() {
     return maxZIndex + 1;
 }
 
-
 function esJson(str) {
     try {
         JSON.parse(str);
@@ -113,35 +113,31 @@ function esJson(str) {
     }
     return true;
 }
-
-
 //SCROLL - Mover el scroll a un punto en la interface
 function irArriba() {
     if (window.jQuery) {
         $('html, body').animate({
             scrollTop: 0
         }, 179);
-    } else {
+    }
+    else {
         window.scrollTo(0, 0);
     }
 }
+
 function scrollAlObjeto(ObjetoID) {
     if (window.jQuery) {
-
-    $('html,body').animate({
-        scrollTop: $("#" + ObjetoID).offset().top
-    }, 'slow');
-
-
-    } else {
-       var e = document.getElementById(ObjetoID);
-       if (!!e && e.scrollIntoView) {
-           e.scrollIntoView();
-       }
+        $('html,body').animate({
+            scrollTop: $("#" + ObjetoID).offset().top
+        }, 'slow');
+    }
+    else {
+        var e = document.getElementById(ObjetoID);
+        if (!!e && e.scrollIntoView) {
+            e.scrollIntoView();
+        }
     }
 }
-
-
 
 function popUp(mypage, myname, w, h, scroll, pos) {
     if (w == null) {
@@ -176,122 +172,100 @@ function descargarURL(uri, name) {
     link.click();
 }
 
-
-
 function bloqueoCargando() {
-    var cargando = '<div id="fondoCargando"  style=" z-index:ZINDEXMASALTO; position:fixed; top:0; left:0; width:110%; height:110%; background-color:transparent; background-position:center center; background-repeat:repeat; overflow:hidden; opacity: 0.8;" ></div>' +
-            '<div style=" z-index:ZINDEXMASALTO; position:fixed; top:0; left:0px; width:100%; height:110%; background-color: rgba(0, 0, 10, 0.65); background-position:center center; background-repeat:repeat; overflow:hidden;" >' +
-            '<div style="margin: 10% auto; text-align: center;">' +
-            '<div class="col-middle">' +
-            '<div class="text-center text-center">' +
-            '<div id="stage" >' +
-            '<div class="logo-cargando" >' +
-            '<img src="images/ap-ingenieria-logo-blanco-2018.svg" style="max-width: 100%; width: 210px;" /><br />' +
-            '<img src="images/mini-cargando-2.gif" style="max-width: 35%; width: 64px;" />' +
-            '</div>' +
-            '</div>' +
-            '<div class="texto-cargando">cargando</div>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '';
+    var cargando = '<div id="fondoCargando"  style=" z-index:ZINDEXMASALTO; position:fixed; top:0; left:0; width:110%; height:110%; background-color:transparent; background-position:center center; background-repeat:repeat; overflow:hidden; opacity: 0.8;" ></div>' + '<div style=" z-index:ZINDEXMASALTO; position:fixed; top:0; left:0px; width:100%; height:110%; background-color: rgba(0, 0, 10, 0.65); background-position:center center; background-repeat:repeat; overflow:hidden;" >' + '<div style="margin: 10% auto; text-align: center;">' + '<div class="col-middle">' + '<div class="text-center text-center">' + '<div id="stage" >' + '<div class="logo-cargando" >' + '<img src="images/ap-ingenieria-logo-blanco-2018.svg" style="max-width: 100%; width: 210px;" /><br />' + '<img src="images/mini-cargando-2.gif" style="max-width: 35%; width: 64px;" />' + '</div>' + '</div>' + '<div class="texto-cargando">cargando</div>' + '</div>' + '</div>' + '</div>' + '</div>' + '</div>' + '';
     var posicion = zIndex();
     cargandoHtml = cargando.replace('ZINDEXMASALTO', posicion);
     cargandoHtml = cargandoHtml.replace('ZINDEXMASALTO', posicion + 1);
     $('#cargando').html(cargandoHtml);
 }
+
 function desbloqueoCargando() {
     $('#cargando').html('');
 }
+
 function bloquearPantalla() {
+    // console.log('bloquenado pantalla...........');
     bloqueoCargando();
 }
+
 function desbloquearPantalla() {
+    // console.log('desbloquenado pantalla...........');
     desbloqueoCargando();
 }
 
 function pantallaCompleta(element) {
     if (element.requestFullscreen) {
         element.requestFullscreen();
-    } else if (element.mozRequestFullScreen) {
+    }
+    else if (element.mozRequestFullScreen) {
         element.mozRequestFullScreen();
-    } else if (element.webkitRequestFullscreen) {
+    }
+    else if (element.webkitRequestFullscreen) {
         element.webkitRequestFullscreen();
-    } else if (element.msRequestFullscreen) {
+    }
+    else if (element.msRequestFullscreen) {
         element.msRequestFullscreen();
     }
 }
+
 function salirPantallaCompleta() {
     if (document.exitFullscreen) {
         document.exitFullscreen();
-    } else if (document.mozCancelFullScreen) {
+    }
+    else if (document.mozCancelFullScreen) {
         document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
+    }
+    else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
     }
 }
 
-
 function crearHASH(length) {
-   var result           = '';
-   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-   var charactersLength = characters.length;
-   for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   }
-   return result;
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }
 
-
-
-function alerta(mensaje){
+function alerta(mensaje) {
     Swal.fire({
-      title: 'Advertencia',
-      html: mensaje,
-      type: 'warning',
+        title: 'Advertencia',
+        html: mensaje,
+        type: 'warning',
     });
 }
-var frasesExito = [
-    'Felicidades!',
-    'Lo hicimos....',
-    'Divertido y friki:',
-    'Genial!!!',
-    'Exito',
-    'Bien Hecho!',
-    'Correcto!'
-];
-function alertaExito(mensaje){
+var frasesExito = ['Felicidades!', 'Lo hicimos....', 'Divertido y friki:', 'Genial!!!', 'Exito', 'Bien Hecho!', 'Correcto!'];
+
+function alertaExito(mensaje) {
     Swal.fire({
-      title: "" + frasesExito[Math.round(Math.random()*frasesExito.length)] + "" ,
-      html: mensaje,
-      type: 'success',
-      timer: 97531,
-    });
-}
-function alertaError(mensaje){
-    Swal.fire({
-      title: 'Error',
-      html: mensaje,
-      type: 'error',
+        title: "" + frasesExito[Math.round(Math.random() * frasesExito.length)] + "",
+        html: mensaje,
+        type: 'success',
+        timer: 97531,
     });
 }
 
-
-
-
-function abrirCuadroConfirmacion(TEXTO_CONFIRMACION, functionAceptar = function(){}){
+function alertaError(mensaje) {
     Swal.fire({
-      title: '¿Estas segur@?',
-      html: TEXTO_CONFIRMACION,
-      type: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Estoy Segur@',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {if (result.value) { functionAceptar(); }});
+        title: 'Error',
+        html: mensaje,
+        type: 'error',
+    });
+}
 
-
+function abrirCuadroConfirmacion(TEXTO_CONFIRMACION, functionAceptar = function() {}) {
+    Swal.fire({
+        title: '¿Estas segur@?',
+        html: TEXTO_CONFIRMACION,
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Estoy Segur@',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => { if (result.value) { functionAceptar(); } });
 }

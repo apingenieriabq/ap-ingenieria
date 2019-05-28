@@ -6,7 +6,8 @@
 {% block area_central %}
 <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
     {% include 'basica/includes/barra-arriba.html.php' %}
-    <div id="contenido-vista" class="main-content-container container-fluid px-4"></div>
+    <div id="contenido-vista" class="main-content-container container-fluid px-4">
+    </div>
     <footer class="main-footer d-flex p-2 px-3 bg-white border-top">
       <!--<ul class="nav">-->
       <!--  <li class="nav-item">-->
@@ -162,10 +163,10 @@
 <script src="js/configs.js"></script>
 
 
-<script src="js/modulos/login.js"></script>
-<script src="js/modulos/menu.js"></script>
-<script src="js/modulos/institucional.js"></script>
-<script src="js/modulos/colaboradores.js"></script>
+<script src="modulos/js/login.js"></script>
+<script src="modulos/js/menu.js"></script>
+<script src="modulos/js/institucional.js"></script>
+<script src="modulos/js/colaboradores.js"></script>
 {% endblock %}
 
 {% block scripts_al_pie %}

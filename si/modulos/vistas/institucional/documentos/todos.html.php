@@ -96,8 +96,8 @@
   $(document).ready(function() {
     $('#tbl-todos-documentosAP').DataTable();
     $("#botonera_sobreTablaAP.botonera").html(
-      '<button type="submit" onclick="mostrarFormularioNuevoDocumentoAP();" class="btn btn-sm btn-accent btn-primary"><i class="material-icons">add</i> Nuevo </button>'
-      + '<button type="submit" onclick="abrirGestorDocumentosAP();" class="btn btn-sm btn-gray"><i class="material-icons">refresh</i> Actualizar </button>'
+      '<button type="button" onclick="mostrarFormularioNuevoDocumentoAP();" class="btn btn-sm btn-accent btn-primary"><i class="material-icons">add</i> Nuevo </button>'
+      + '<button type="button" onclick="abrirGestorDocumentosAP();" class="btn btn-sm btn-gray"><i class="material-icons">refresh</i> Actualizar </button>'
       );
 } );
 </script>

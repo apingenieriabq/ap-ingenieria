@@ -1,6 +1,5 @@
 <?php
-class ProcesosAP extends ModeloDatos
-{
+class ProcesosAP extends ModeloDatos {
 
 public $documentos ;
   public function __construct($procesoID = null) {
@@ -36,6 +35,11 @@ public $documentos ;
   function documentos($procesoID){
       $DocumentosAP = new DocumentosAP();
       return $this->documentos = $DocumentosAP->todosDelProceso($procesoID);
+   }
+
+  function delUsuario(){
+      $sql = "SELECT `ProcesosAP`.* FROM `DocumentosAP` INNER JOIN `ProcesosAP` ON (`DocumentosAP`.`procesoID` = `ProcesosAP`.`procesoID`) INNER JOIN `DocumentosUsuarios` ON (`DocumentosUsuarios`.`documentoID` = `DocumentosAP`.`documentoID`) WHERE (`DocumentosUsuarios`.`usuarioID` = :usuarioID ) GROUP BY `ProcesosAP`.`procesoID`; ";
+      return $Procesos = $this->consultaMUCHOS($sql,[ ':usuarioID' => Usuario::id()] );
    }
 
 

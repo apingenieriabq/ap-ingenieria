@@ -20,11 +20,10 @@
       <th scope="col">Correo Personal</th>
       <th scope="col">Correo Corporativo</th>
       <th scope="col">Cargo</th>
-      <th scope="col">Jefe Inmediato</th>
       <th scope="col" class="td-dato-usuario">Nombre de Usuario </th>
       <th scope="col" class="td-dato-usuario">Último Inicio </th>
       <th scope="col" class="td-dato-usuario">Admin</th>
-      <th scope="col" title="Firma" ><i class="material-icons">note</i></th>
+      <th scope="col" title="Firma" ><i class="fa fas fa-signature"></i></th>
       <th scope="col" title="Foto" ><i class="material-icons">photo</i></th>
       <!--<th scope="col" title="Permisos" ><i class="material-icons">lock</i></th>-->
       <!--<th scope="col" title="Publicado" ><i class="material-icons">visibility</i></th>-->
@@ -36,9 +35,9 @@
     <tr>
       <td scope="col" class="btn-operaciones-tablas" >
         <div class="btn-group btn-group-sm btn-group-toggle " data-toggle="buttons">
-          <button class="btn btn-xs btn-info" onclick="mostrarModalDetallesUsuarioColaborador({{Colaborador.documentoID}});" ><i class="fas fa-eye"></i></button>
-          <button class="btn  btn-xs btn-success" onclick="mostrarFormularioEditarUsuarioColaborador({{Colaborador.documentoID}});" ><i class="fas fa-edit"></i></button>
-          <button class="btn btn-xs btn-danger" onclick="mostrarConfirmacionEliminarUsuarioColaborador({{Colaborador.documentoID}});"><i class="fas fa-trash"></i></button>
+          <button class="btn btn-xs btn-info" onclick="mostrarModalDetallesUsuarioColaborador({{Colaborador.colaboradorID}});" ><i class="fas fa-eye"></i></button>
+          <button class="btn  btn-xs btn-success" onclick="mostrarFormularioEditarUsuarioColaborador({{Colaborador.colaboradorID}});" ><i class="fas fa-edit"></i></button>
+          <button class="btn btn-xs btn-danger" onclick="mostrarConfirmacionEliminarUsuarioColaborador({{Colaborador.colaboradorID}}, verListadoUsuarioColaborador);"><i class="fas fa-trash"></i></button>
         </div>
       </td>
       <td scope="col" title="{{Colaborador.Persona.tipoIdentificacionTITULO}}" style="font-size:70%" >{{Colaborador.Persona.personaIDENTIFICACION}}</td>
@@ -49,8 +48,6 @@
       <td scope="col">{{Colaborador.Persona.personaEMAIL}}</td>
       <td scope="col">{{Colaborador.colaboradorEMAIL}}</td>
       <td scope="col">{{Colaborador.Cargo.cargoTITULO}}</td>
-      <td scope="col">{{Colaborador.JefeInmediato.cargoTITULO}}</td>
-
       <td scope="col" class="td-dato-usuario">{{Colaborador.Usuario.usuarioNOMBRE}}</td>
       <td scope="col" class="td-dato-usuario">{{Colaborador.Usuario.usuarioULTIMAVISITA}} - [{{Colaborador.Usuario.usuarioULTIMALATITUD}},{{Colaborador.Usuario.usuarioULTIMALONGITUD}}]</td>
       <td scope="col" class="td-dato-usuario">{{Colaborador.Usuario.usuarioADMINISTRADOR}}</td>
@@ -58,11 +55,11 @@
       <!--<td scope="col">{{Colaborador.colaboradorFCHINGRESO|date('Y-m-d')}}</td>-->
       <td scope="col">
         {% if Colaborador.colaboradorFIRMA %}
-        <a href="{{Colaborador.colaboradorFIRMA}}" target="_blank" class="btn btn-xs btn-outline-royal-blue"><i class="fas fa-link"></i></a>
+        <a href="{{Colaborador.colaboradorFIRMA}}" target="_blank" class="btn btn-xs btn-outline-royal-blue"><i class="fa fas fa-signature"></i></a>
 
         <small style="font-size: 0px;">{{Colaborador.colaboradorFIRMA}}</small>
         {% else %}
-        <button title="NO TIENE UN ARCHIVO ASOCIADO." class="btn btn-xs btn-outline-salmon" disabled ><i class="fas fa-unlink"></i></button>
+        <button title="NO TIENE UN ARCHIVO ASOCIADO." class="btn btn-xs btn-outline-salmon" disabled ><i class="fas fa-signature"></i></button>
         {% endif %}
       </td>
       <td scope="col">
@@ -90,15 +87,14 @@
       <!--  <small style="font-size: 0px;">{{Colaborador.documentoPUBLICADO}}</small>-->
       <!--</td>-->
       <td scope="col">
-        {% if Colaborador.Usuario.usuarioESTADO == 'ACTIVO' %}
-        <button onclick="mostrarConfirmacionCambiarEstadoUsuarioColaborador({{Colaborador.colaboradorID}}, abrirGestorDocumentosAP);" class="btn btn-xs btn-outline-java"><i class="fas fa-thumbs-up"></i></button>
-        {% elseif Colaborador.Usuario.usuarioESTADO == 'SUSPENDIDO' %}
-        <button onclick="mostrarConfirmacionCambiarEstadoUsuarioColaborador({{Colaborador.colaboradorID}}, abrirGestorDocumentosAP);" class="btn btn-xs btn-outline-salmon"><i class="fas fa-thumbs-down"></i></button>
-        {% elseif Colaborador.Usuario.usuarioESTADO == 'DESACTIVO' %}
-        <button onclick="mostrarConfirmacionRecuperarUsuarioColaborador({{Colaborador.colaboradorID}}, abrirGestorDocumentosAP);" class="btn btn-xs btn-outline-dark"><i class="fas fa-trash-alt"></i></button>
+        {% if Colaborador.colaboradorESTADO == 'ACTIVO' %}
+        <button onclick="mostrarConfirmacionCambiarEstadoUsuarioColaborador({{Colaborador.colaboradorID}}, verListadoUsuarioColaborador);" class="btn btn-xs btn-outline-java"><i class="fas fa-thumbs-up"></i></button>
+        {% elseif Colaborador.colaboradorESTADO == 'SUSPENDIDO' %}
+        <button onclick="mostrarConfirmacionCambiarEstadoUsuarioColaborador({{Colaborador.colaboradorID}}, verListadoUsuarioColaborador);" class="btn btn-xs btn-outline-salmon"><i class="fas fa-thumbs-down"></i></button>
+        {% elseif Colaborador.colaboradorESTADO == 'DESACTIVO' %}
+        <button onclick="mostrarConfirmacionCambiarEstadoUsuarioColaborador({{Colaborador.colaboradorID}},verListadoUsuarioColaborador);" class="btn btn-xs btn-outline-dark"><i class="fas fa-trash-alt"></i></button>
         {% endif %}
-        <small style="font-size: 0px;">{{Colaborador.Usuario.usuarioESTADO}}</small>
-
+        <small style="font-size: 0px;">{{Colaborador.colaboradorESTADO}}</small>
       </td>
     </tr>
     {% endfor %}
@@ -111,8 +107,8 @@
   $(document).ready(function() {
     $('#tbl-todos-documentosAP').DataTable();
     $("#botonera_sobreTablaAP.botonera").html(
-      '<button type="submit" onclick="mostrarFormularioNuevoUsuarioColaborador();" class="btn btn-sm btn-accent btn-primary"><i class="material-icons">add</i> Nuevo </button>'
-      + '<button type="submit" onclick="abrirGestorDocumentosAP();" class="btn btn-sm btn-gray"><i class="material-icons">refresh</i> Actualizar </button>'
+      '<button type="button" onclick="mostrarFormularioNuevoUsuarioColaborador();" class="btn btn-sm btn-accent btn-primary"><i class="material-icons">add</i> Nuevo </button>'
+      + '<button type="button" onclick="verListadoUsuarioColaborador();" class="btn btn-sm btn-gray"><i class="material-icons">refresh</i> Actualizar </button>'
       );
 } );
 </script>

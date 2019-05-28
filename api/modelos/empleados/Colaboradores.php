@@ -3,6 +3,91 @@
 class Colaboradores extends ModeloDatos {
 
 
+  public function actualizarFOTO($colaboradorFOTO, $colaboradorID = null){
+    if(is_null($colaboradorID)){
+      $colaboradorID = $this->colaboradorID;
+    }
+    return $this->actualiza([ 'colaboradorFOTO' => $colaboradorFOTO], [ 'colaboradorID' => $colaboradorID] );
+  }
+  public function actualizarFIRMA($colaboradorFIRMA, $colaboradorID = null){
+    if(is_null($colaboradorID)){
+      $colaboradorID = $this->colaboradorID;
+    }
+    return $this->actualiza([ 'colaboradorFIRMA' => $colaboradorFIRMA], [ 'colaboradorID' => $colaboradorID] );
+  }
+
+
+
+
+
+  public function actualizarESTADO($colaboradorESTADO , $colaboradorID = null){
+    if(is_null($colaboradorID)){
+      $colaboradorID = $this->colaboradorID;
+    }
+    return $this->actualiza([ 'colaboradorESTADO' => $colaboradorESTADO], [ 'colaboradorID' => $colaboradorID] );
+  }
+  public function actualizarVISIBILIDAD($colaboradorPUBLICADO , $colaboradorID = null){
+    if(is_null($colaboradorID)){
+      $colaboradorID = $this->colaboradorID;
+    }
+    return $this->actualiza([ 'colaboradorPUBLICADO' => $colaboradorPUBLICADO], [ 'colaboradorID' => $colaboradorID] );
+  }
+  public function actualizarSEGURIDAD($colaboradorPUBLICADO , $colaboradorID = null){
+    if(is_null($colaboradorID)){
+      $colaboradorID = $this->colaboradorID;
+    }
+    return $this->actualiza([ 'colaboradorPUBLICO' => $colaboradorPUBLICADO], [ 'colaboradorID' => $colaboradorID] );
+  }
+
+
+
+
+
+
+
+
+
+
+  function datosUsuario($colaboradorID = null){
+    if(is_null($colaboradorID)){
+      $colaboradorID =  $this->colaboradorID;
+    }
+    $this->Usuario = new Usuarios();
+    $this->Usuario->porColaboradorID($colaboradorID);
+    return $this->Usuario;
+   }
+
+
+
+  function datosCompletos($colaboradorID = null){
+    if(is_null($colaboradorID)){
+      $colaboradorID =  $this->colaboradorID;
+    }
+    $Colaborador = $this->porID($colaboradorID);
+    if(!empty($Colaborador)){
+      $this->Persona = new Personas($Colaborador->personaID);
+      $this->Cargo = new Cargos($Colaborador->cargoID);
+      $this->JefeInmediato = new Colaboradores($Colaborador->colaboradorJEFEINMEDIATO);
+      $this->Aprobador = new Colaboradores($Colaborador->colaboradorAPROBADOR);
+      $this->Usuario = new Usuarios();
+      $this->Usuario->porColaboradorID($colaboradorID);
+    }
+    return $this;
+   }
+  function datosCompletosConPermisos($colaboradorID = null){
+    if(is_null($colaboradorID)){
+      $colaboradorID =  $this->colaboradorID;
+    }
+    $Colaborador = $this->datosCompletos($colaboradorID);
+    if(!empty($Colaborador)){
+      $Confidencial = new DocumentosUsuarios();
+      $this->Confidencialidad = $Confidencial->delUsuario($Colaborador->Usuario->usuarioID);
+      $Menus = new MenuOperacionesUsuarios();
+      $this->Menus = $Menus->delUsuario($Colaborador->Usuario->usuarioID);
+    }
+    return $this;
+   }
+
   function todosCompletos(){
     $Colaboradores = $this->todos();
     $ColaboradoresCompletos = array();
@@ -51,21 +136,6 @@ class Colaboradores extends ModeloDatos {
     return $Colaborador;
    }
 
-  function datosCompletos($colaboradorID = null){
-    if(is_null($colaboradorID)){
-      $colaboradorID =  $this->colaboradorID;
-    }
-    $Colaborador = $this->porID($colaboradorID);
-    if(!empty($Colaborador)){
-      $this->Persona = new Personas($Colaborador->personaID);
-      $this->Cargo = new Cargos($Colaborador->cargoID);
-      $this->JefeInmediato = new Colaboradores($Colaborador->colaboradorJEFEINMEDIATO);
-      $this->Aprobador = new Colaboradores($Colaborador->colaboradorAPROBADOR);
-      $this->Usuario = new Usuarios();
-      $this->Usuario->porColaboradorID($colaboradorID);
-    }
-    return $this;
-   }
 
   public function __construct($colaboradorID = null) {
     if(filter_var($colaboradorID, FILTER_VALIDATE_EMAIL)){
@@ -106,26 +176,30 @@ class Colaboradores extends ModeloDatos {
     }
   }
 
-  function modificar($cargoID, $personaID, $tipoColaboradorID, $colaboradorEMAIL, $colaboradorFCHINGRESO, $colaboradorEXTENSION, $colaboradorCELULAR, $colaboradorFIRMA, $colaboradorFOTO, $colaboradorJEFEINMEDIATO, $colaboradorAPROBADOR){
+  function modificar($cargoID, $personaID, $tipoColaboradorID, $colaboradorEMAIL, $colaboradorEXTENSION, $colaboradorCELULAR, $colaboradorFCHINGRESO, $colaboradorFOTO, $colaboradorFIRMA, $colaboradorJEFEINMEDIATO, $colaboradorAPROBADOR, $colaboradorID = null){
+    if(is_null($colaboradorID)){
+      $colaboradorID = $this->colaboradorID;
+    }
+
     $actualizo = $this->actualiza([
         'personaID' => $personaID,
         'cargoID' => $cargoID,
         'tipoColaboradorID' => $tipoColaboradorID,
         'colaboradorEMAIL' => $colaboradorEMAIL,
-        'colaboradorFCHINGRESO' => $colaboradorFCHINGRESO,
         'colaboradorEXTENSION' => $colaboradorEXTENSION,
         'colaboradorCELULAR' => $colaboradorCELULAR,
-        'colaboradorFIRMA' => $colaboradorFIRMA,
+        'colaboradorFCHINGRESO' => $colaboradorFCHINGRESO,
         'colaboradorFOTO' => $colaboradorFOTO,
+        'colaboradorFIRMA' => $colaboradorFIRMA,
         'colaboradorJEFEINMEDIATO' => $colaboradorJEFEINMEDIATO,
         'colaboradorAPROBADOR' => $colaboradorAPROBADOR
-        ] , ['colaboradorID' => $this->colaboradorID]
+        ] , ['colaboradorID' => $colaboradorID]
       );
 
       if( $actualizo ){
-        $Usuario = new Usuarios();
-        $Usuario->cambiarNombreParaColaborador( $colaboradorEMAIL, $this->colaboradorID );
-        $this->datosCompletos($this->colaboradorID);
+        // $Usuario = new Usuarios();
+        // $Usuario->cambiarNombreParaColaborador( $colaboradorEMAIL, $colaboradorID );
+        $this->datosCompletos($colaboradorID);
       }
 
       return $actualizo;

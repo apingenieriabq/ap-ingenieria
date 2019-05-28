@@ -4,9 +4,8 @@
       <div class="form-group col-md-12">
         <label for="cargoID">Cargo</label>
         <select class="custom-select" name="cargoID" id="cargoID" required >
-          <option value="" selected >Seleccione</option>
           {% for Cargo in Listados.Cargos %}
-          <option value="{{Cargo.cargoID}}">{{Cargo.cargoTITULO}}</option>
+          <option {% if Cargo.cargoID == UsuarioColaborador.cargoID %}selected{% endif %} value="{{Cargo.cargoID}}">{{Cargo.cargoTITULO}}</option>
           {% endfor %}
         </select>
       </div>
@@ -15,7 +14,7 @@
         {% for TipoColaborador in Listados.TiposColaboradores %}
         <div class="custom-control custom-radio mb-1">
           <input type="radio" id="TipoColaborador{{TipoColaborador.tipoColaboradorID}}" class="custom-control-input"
-            name="tipoColaboradorID" value="{{TipoColaborador.tipoColaboradorID}}" required {% if UsuarioColaborador and UsuarioColaborador.tipoColaboradorID ==  TipoColaborador.tipoColaboradorID %}checked{% endif %}  >
+            name="tipoColaboradorID" value="{{TipoColaborador.tipoColaboradorID}}" required {% if UsuarioColaborador %} {% if UsuarioColaborador.tipoColaboradorID ==  TipoColaborador.tipoColaboradorID %}checked{% endif %}{%else%}checked{% endif %} >
           <label class="custom-control-label" for="TipoColaborador{{TipoColaborador.tipoColaboradorID}}">{{TipoColaborador.tipoColaboradorTITULO}}</label>
         </div>
         {% endfor %}
@@ -25,7 +24,7 @@
   <div class="col-lg-4">
     <label for="img_colaboradorFOTO" class="text-center w-100 mb-4">Foto del Colaborador</label>
     <div class="edit-user-details__avatar m-auto">
-      <img id="img_colaboradorFOTO" src="images/usuario-invitado.jpg" alt="User Avatar">
+      <img id="img_colaboradorFOTO" src="{% if UsuarioColaborador %}{{UsuarioColaborador.colaboradorFOTO}}{%else%}images/usuario-invitado.jpg{% endif %}" alt="User Avatar">
       <label class="edit-user-details__avatar__change">
         <i class="material-icons mr-1">&#xE439;</i>
         <input type="file" id="colaboradorFOTO" name="colaboradorFOTO" class="d-none">
@@ -43,7 +42,7 @@
               <i class="fas fa-calendar"></i>
             </div>
           </div>
-          <input type="date" class="form-control" id="colaboradorFCHINGRESO" name="colaboradorFCHINGRESO" value="">
+          <input type="date" class="form-control" id="colaboradorFCHINGRESO" name="colaboradorFCHINGRESO" value="{{UsuarioColaborador.colaboradorFCHINGRESO}}">
         </div>
       </div>
       <div class="form-group col-md-7">
@@ -54,7 +53,7 @@
               <i class="material-icons">&#xE0CD;</i>
             </div>
           </div>
-          <input type="tel" class="form-control" id="colaboradorCELULAR" name="colaboradorCELULAR" value="" >
+          <input type="tel" class="form-control" id="colaboradorCELULAR" name="colaboradorCELULAR" value="{{UsuarioColaborador.colaboradorCELULAR}}" >
         </div>
       </div>
       <div class="form-group col-md-12">
@@ -65,7 +64,7 @@
               <i class="material-icons">&#xE0BE;</i>
             </div>
           </div>
-          <input type="email" class="form-control" id="colaboradorEMAIL" name="colaboradorEMAIL">
+          <input type="email" class="form-control" id="colaboradorEMAIL" name="colaboradorEMAIL" value="{{UsuarioColaborador.colaboradorEMAIL}}">
         </div>
       </div>
     </div>
@@ -84,7 +83,7 @@
     <select class="custom-select" id="colaboradorJEFEINMEDIATO" name="colaboradorJEFEINMEDIATO" >
       <option value="" selected >Seleccione</option>
     {% for Colaborador in Listados.Colaboradores %}>
-      <option value="{{Colaborador.colaboradorID}}">{{Colaborador.Persona.personaNOMBRES}} {{Colaborador.Persona.personaAPELLIDOS}} - {{Colaborador.Persona.personaIDENTIFICACION}}</option>
+      <option {% if Colaborador.colaboradorID == UsuarioColaborador.colaboradorJEFEINMEDIATO %}selected{% endif %} value="{{Colaborador.colaboradorID}}">{{Colaborador.Persona.personaNOMBRES}} {{Colaborador.Persona.personaAPELLIDOS}} - {{Colaborador.Persona.personaIDENTIFICACION}}</option>
     {% endfor %}
     </select>
   </div>
@@ -93,7 +92,7 @@
     <select class="custom-select" id="colaboradorAPROBADOR" name="colaboradorAPROBADOR" >
       <option value="" selected >Seleccione</option>
     {% for Colaborador in Listados.Colaboradores %}>
-      <option value="{{Colaborador.colaboradorID}}">{{Colaborador.Persona.personaNOMBRES}} {{Colaborador.Persona.personaAPELLIDOS}} - {{Colaborador.Persona.personaIDENTIFICACION}}</option>
+      <option {% if Colaborador.colaboradorID == UsuarioColaborador.colaboradorAPROBADOR %}selected{% endif %} value="{{Colaborador.colaboradorID}}">{{Colaborador.Persona.personaNOMBRES}} {{Colaborador.Persona.personaAPELLIDOS}} - {{Colaborador.Persona.personaIDENTIFICACION}}</option>
     {% endfor %}
     </select>
   </div>
@@ -106,10 +105,17 @@
   </div>
 </div>
 <div class="form-row">
-  <div class="form-group col-md-12">
+  <div class="form-group col-md-4">
     <div id="cargarFirmaColaborador" class="dropzone"></div>
     <input type="hidden" id="colaboradorFIRMA_RUTA"  name="colaboradorFIRMA_RUTA" value=""/>
   </div>
+  <div class="form-group col-md-8">
+    <img src="{% if UsuarioColaborador %}{{UsuarioColaborador.colaboradorFIRMA}}{%else%}images/firma-muestra.png{% endif %}"></img>
+  </div>
+  <div class="col-md-12" >
+    <iframe src="https://onlinesignature.com/draw-a-signature-online" style="width: 100%;height: 640px;"></iframe>
+  </div>
+
 </div>
 
 <script type="text/javascript" >
@@ -119,7 +125,7 @@
     myDropzone = new Dropzone("div#cargarFirmaColaborador", {
       paramName: "colaboradorFIRMA",
       params: {
-        modulo: "Usuarios",
+        modulo: "Colaboradores",
         operacion: "recibirFirmaColaborador",
       },
       maxFilesize: 1,
@@ -156,7 +162,7 @@ $('#colaboradorFOTO').on('change', function () {
       formData.append('colaboradorFOTO', file, file.name);
     }
 
-    ejecutarOperacionArchivo('Usuarios','recibirFotoColaborador', formData, function(ruta){
+    ejecutarOperacionArchivo('Colaboradores','recibirFotoColaborador', formData, function(ruta){
       bloquearPantalla();
       $("#img_colaboradorFOTO").attr('src', ruta );
       $("#colaboradorFOTO_RUTA").val( ruta );

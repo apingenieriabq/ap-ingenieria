@@ -60,5 +60,11 @@ class Cliente {
         }
         return null;
     }
+    static function usuarioID(){
+        if( SesionCliente::valor('Usuario') ){
+            return SesionCliente::valor('Usuario')->usuarioID;
+        }
+        return null;
+    }
 
 }

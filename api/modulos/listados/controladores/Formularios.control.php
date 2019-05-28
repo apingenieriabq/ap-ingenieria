@@ -25,4 +25,16 @@ class FormulariosControlador extends Controladores {
     ]);
   }
 
+  function formularioPerfilUsuario(){
+    $Paises = new Paises();
+    $Departamentos = new Departamentos();
+    $Municipios = new Municipios();
+    return Respuestassistema::exito("Listados",[
+      'Paises' => $Paises->todos(),
+      'Departamentos' => $Departamentos->todos(),
+      'Municipios' => $Municipios->todos(),
+    ]);
+
+  }
+
 }

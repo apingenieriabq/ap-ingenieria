@@ -1,6 +1,61 @@
 <?php
 class Usuarios extends ModeloDatos {
 
+
+  public function asignarConfidencialidad($documentosIDS = array(), $usuarioID = null){
+    if(is_null($usuarioID)){
+      $usuarioID = $this->usuarioID;
+    }
+    if(count($documentosIDS)){
+      $DocumentosUsuarios = new DocumentosUsuarios();
+      $DocumentosUsuarios->eliminarParaUsuario($usuarioID);
+      foreach($documentosIDS as $documentoID){
+        $DocumentosUsuarios->nuevo($documentoID, $usuarioID);
+      }
+    }
+  }
+
+
+  public function asignarPermisos($menuIDS = array(), $usuarioID = null){
+    if(is_null($usuarioID)){
+      $usuarioID = $this->usuarioID;
+    }
+    if(count($menuIDS)){
+      $MenuOperacionesUsuarios = new MenuOperacionesUsuarios();
+      $MenuOperacionesUsuarios->eliminarParaUsuario($usuarioID);
+      foreach($menuIDS as $menuID){
+        $MenuOperacionesUsuarios->nuevo($menuID, $usuarioID);
+      }
+    }
+  }
+
+
+  public function actualizarESTADO($usuarioESTADO , $usuarioID = null){
+    if(is_null($usuarioID)){
+      $usuarioID = $this->usuarioID;
+    }
+    return $this->actualiza([ 'usuarioESTADO' => $usuarioESTADO], [ 'usuarioID' => $usuarioID] );
+  }
+  public function actualizarVISIBILIDAD($usuarioPUBLICADO , $usuarioID = null){
+    if(is_null($usuarioID)){
+      $usuarioID = $this->usuarioID;
+    }
+    return $this->actualiza([ 'usuarioPUBLICADO' => $usuarioPUBLICADO], [ 'usuarioID' => $usuarioID] );
+  }
+  public function actualizarSEGURIDAD($usuarioPUBLICADO , $usuarioID = null){
+    if(is_null($usuarioID)){
+      $usuarioID = $this->usuarioID;
+    }
+    return $this->actualiza([ 'usuarioPUBLICO' => $usuarioPUBLICADO], [ 'usuarioID' => $usuarioID] );
+  }
+
+
+
+
+
+
+
+
   function datosCompletos($usuarioID = null){
     if(is_null($usuarioID)){
       $usuarioID =  $this->usuarioID;
@@ -30,6 +85,17 @@ class Usuarios extends ModeloDatos {
         	"colaboradorID" => $colaboradorID
         ));
     }
+  function modificar( $nombre, $contrasena, $colaboradorID = null, $usuarioID = null){
+        if(is_null($usuarioID)){
+          $usuarioID =  $this->usuarioID;
+        }
+        return $this->actualiza([
+        	"usuarioNOMBRE" =>$nombre,
+        	"usuarioHASH" => password_hash($contrasena, PASSWORD_DEFAULT),
+        	"colaboradorID" => $colaboradorID
+        	], ['usuarioID' => $usuarioID]
+        );
+    }
 
   function comprobar( $nombre, $contrasena){
     $datos = $this->datos(array("usuarioNOMBRE" =>$nombre));
@@ -55,7 +121,6 @@ class Usuarios extends ModeloDatos {
   }
 
   function registrarUltimaVisita( $usuarioIP, $usuarioLATITUD, $usuarioLONGITUD, $usuarioID = null){
-
     if(is_null($usuarioID)){
       $usuarioID = $this->usuarioID;
     }

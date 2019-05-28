@@ -38,8 +38,7 @@ class Main {
         self::twigConfigPlantilla();
     }
 
-    public static function twigConfigPlantilla($dirPlantilla)
-    {
+    public static function twigConfigPlantilla($dirPlantilla)    {
         $loader = new Twig_Loader_Filesystem(array($dirPlantilla));
         $twig = new Twig_Environment(
             $loader,
@@ -48,12 +47,35 @@ class Main {
             )
         );
         $twig->addExtension(new Twig_Extension_Debug());
-        // // $twig->addGlobal('Params', new Parametros());
-        // // $twig->addGlobal('Parametros', new Parametros());
-        // $filter = new Twig_Filter('Parametro', function ($PARAMETRO) {
-        //     return Parametros::valor($PARAMETRO);
-        // });
-        // $twig->addFilter($filter);
+        // $twig->addGlobal('Params', new Parametros());
+        $function = new Twig_SimpleFunction('encabezadosVistas', function (
+                $titulo, $subtitulo = '', $ObjetoDatos = null, $btn_eliminar = '', $btn_guardar = true, $btn_limpiar = true
+            ) {
+
+            $botonera = '';
+            $botonera .= '<div class="page-header row no-gutters py-4"> ';
+            $botonera .= '<div class="col-12 col-sm-8 text-center text-sm-left mb-0"> ';
+            $botonera .= '<span class="text-uppercase page-subtitle">'.$subtitulo.'</span> ';
+            $botonera .= '<h3 class="page-title">'.$titulo.'</h3> ';
+            $botonera .= '</div> ';
+            $botonera .= '<div class="col-12 col-sm-4 align-items-right"> ';
+            if($btn_limpiar){
+            $botonera .= '<button type="reset" class="btn btn-sm btn-warning ml-auto"><i class="fas fa-broom"></i> Limpiar</button> ';
+            }
+            if($btn_guardar){
+            $botonera .= '<button type="submit" class="btn btn-sm btn-accent ml-auto"><i class="material-icons">save</i> Guardar</button>';
+            }
+            if(!is_null($ObjetoDatos)){
+                if(!empty($btn_eliminar)){
+                $botonera .= '<button type="button" onclick="'.$btn_eliminar.'" class="btn btn-sm btn-danger"><i class="material-icons">delete</i> Eliminar</button>';
+                }
+            }
+            $botonera .= '</div> ';
+            $botonera .= '</div>';
+
+            return $botonera;
+        },['is_safe' => array('html')]);
+        $twig->addFunction($function);
         return $twig;
     }
 

@@ -8,15 +8,16 @@
     <div id="arbol_confidencialidad"></div>
 </div>
 <script type="text/javascript">
+var arbol_confidencialidad;
 $(document).ready(function () {
-    var tree = $('#arbol_confidencialidad').tree({
+    arbol_confidencialidad = $('#arbol_confidencialidad').tree({
         primaryKey: 'id',
         uiLibrary: 'bootstrap4',
         dataSource:
         [
           {% for Proceso in Listados.Institucional %}
            {
-              // "id":"Proceso_{{Proceso.procesoID}}",
+              "id":"Proceso_{{Proceso.procesoID}}",
               "text":"{{Proceso.procesoTITULO}}",
               "children":[
                 {% for Documento in Proceso.Documentos %}
@@ -25,6 +26,13 @@ $(document).ready(function () {
                     "value":{{Documento.documentoID}},
                     "text":"{{Documento.documentoNOMBRE}}",
                     "flagUrl":"{{Documento.documentoIMAGEN}}",
+                    {% set seleccionado = 'false' %}
+                    {% for Confidencial in UsuarioColaborador.Confidencialidad %}
+                    {% if Confidencial.documentoID == Documento.documentoID %}
+                    {% set seleccionado = 'true' %}
+                    {% endif %}
+                    {% endfor %}
+                    "checked":{{seleccionado}},
                  },
                 {% endfor %}
               ]

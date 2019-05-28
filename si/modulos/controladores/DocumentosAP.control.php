@@ -50,12 +50,14 @@ class DocumentosAPControlador extends Controladores {
     );
   }
   function mostrarDocumentoEnModal(){
+    // print_r($this);
     global $Api;
     $DocumentoAP = $Api->ejecutar(
       'institucional', 'documentos', 'datosCompletos'
       , ['documentoID' => $this->documentoID ]
       // , false
     );
+    print_r($DocumentoAP);
     Vistas::mostrar('institucional/documentos', 'modal-documento' ,
       [ 'DocumentoAP' => $DocumentoAP ]
     );

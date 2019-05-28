@@ -32,7 +32,7 @@ class Vistas {
         foreach ($datos as $key => $value) {
             $$key = $value;
         }
-        require_once DIR_VISTAS . DS . $componente . DS . 'vistas' . DS . $vista . EXT_VISTA;
+        require_once DIR_VISTAS . DS . $componente . DS . $vista . EXT_VISTA;
     }
 
 }

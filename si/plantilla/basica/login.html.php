@@ -215,7 +215,7 @@
 
 
 {% block archivos_script %}
-<script src="js/modulos/login.js"></script>
+<script src="modulos/js/login.js"></script>
 {% endblock %}
 
 {% block scripts_al_pie %}

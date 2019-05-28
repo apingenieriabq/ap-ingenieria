@@ -1,4 +1,4 @@
-<!--{{ dump(DocumentoAP) }}-->
+{{ dump(DocumentoAP) }}
 {% if DocumentoAP.documentoURL %}
 
 <div class="row">
@@ -85,7 +85,7 @@
       <div class="card-body">
         <hr class="m-0 mb-2 p-0" />
       <span class="float-right">
-        <span scope="col" title="{{DocumentoAP.documentoPUBLICO}}">
+        <span scope="col" title="Visible para Cualquiera: {{DocumentoAP.documentoPUBLICO}}">
           {% if DocumentoAP.documentoPUBLICO == 'SI' %}
           <button  class="btn btn-xs btn-outline-java"><i class="fas fa-lock-open"></i></button>
           {% else %}
@@ -93,7 +93,7 @@
           {% endif %}
           <small style="font-size: 0px;">{{DocumentoAP.documentoPUBLICO}}</small>
         </span>
-        <span scope="col" title="{{DocumentoAP.documentoPUBLICADO}}">
+        <span scope="col" title="Publicado: {{DocumentoAP.documentoPUBLICADO}}">
           {% if DocumentoAP.documentoPUBLICADO == 'SI' %}
           <button class="btn btn-xs btn-outline-java"><i class="fas fa-eye"></i></button>
           {% else %}

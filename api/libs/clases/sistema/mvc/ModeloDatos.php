@@ -140,6 +140,11 @@ class ModeloDatos {
         $datos = $BD_AP_PRINCIPAL->update($this->nombreTabla, $datos, $donde );
         return $datos->rowCount();
     }
+    function elimina($donde){
+        global $BD_AP_PRINCIPAL;
+        $datos = $BD_AP_PRINCIPAL->delete($this->nombreTabla,$donde );
+        return $datos->rowCount();
+    }
 
 
 }

@@ -10,36 +10,44 @@
   </div>
 </div>
 <script type="text/javascript">
+var arbol_permisos;
 $(document).ready(function () {
-    var tree = $('#tree{{hash_vista}}').tree({
+    arbol_permisos = $('#tree{{hash_vista}}').tree({
         primaryKey: 'id',
         uiLibrary: 'bootstrap4',
         dataSource:
         [
           {% for Componente in Listados.Permisos %}
            {
-              // "id":{{Componente.componenteID}},
+              "id": 'Componente_{{Componente.componenteID}}',
               "text":"{{Componente.componenteTITULO}}",
               "flagUrl":"{{Componente.componenteMENUICONO}}",
-              "checked":false,
-              "hasChildren":false,
               "children":[
                 {% for Operacion in Componente.Operaciones %}
                 {
                     "id":{{Operacion.menuID}},
                     "text":"{{Operacion.menuTITULO}}",
                     "flagUrl":"{{Operacion.menuMENUICONO}}",
-                    "checked":false,
-                    "hasChildren":false,
+                    {% set seleccionado = 'false' %}
+                    {% for Menu in UsuarioColaborador.Menus %}
+                    {% if Menu.menuID == Operacion.menuID %}
+                    {% set seleccionado = 'true' %}
+                    {% endif %}
+                    {% endfor %}
+                    "checked":{{seleccionado}},
                     "children":[
                       {% for SubOperacion in Operacion.SubOperaciones %}
                       {
                           "id":{{SubOperacion.menuID}},
                           "text":"{{SubOperacion.menuTITULO}}",
                           "flagUrl":"{{SubOperacion.menuMENUICONO}}",
-                          "checked":false,
-                          "hasChildren":false,
-                          "children":[]
+                          {% set seleccionado = 'false' %}
+                          {% for Menu in UsuarioColaborador.Menus %}
+                          {% if Menu.menuID == SubOperacion.menuID %}
+                          {% set seleccionado = 'true' %}
+                          {% endif %}
+                          {% endfor %}
+                          "checked":{{seleccionado}},
                        },
                       {% endfor %}
                     ]

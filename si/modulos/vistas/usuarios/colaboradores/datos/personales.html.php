@@ -1,3 +1,4 @@
+
 <div class="form-row mx-4 pt-2">
   <div class="col-lg-12">
     <div class="form-row">
@@ -6,7 +7,7 @@
         <label for="displayEmail">Tipo de ID</label>
         <select class="custom-select" name="tipoIdentificacionID">
           {% for TipoID in Listados.TiposIdentificacion %}
-          <option value="{{TipoID.tipoIdentificacionID}}">{{TipoID.tipoIdentificacionCODIGO}} {{TipoID.tipoIdentificacionTITULO}}</option>
+          <option {% if TipoID.tipoIdentificacionID == UsuarioColaborador.Persona.tipoIdentificacionID %}selected{% endif %} value="{{TipoID.tipoIdentificacionID}}" >{{TipoID.tipoIdentificacionCODIGO}} {{TipoID.tipoIdentificacionTITULO}}</option>
           {% endfor %}
         </select>
       </div>
@@ -18,7 +19,7 @@
               <i class="fas fa-id-card"></i>
             </div>
           </div>
-          <input type="text" class="form-control" id="personaIDENTIFICACION" name="personaIDENTIFICACION">
+          <input type="text" class="form-control" id="personaIDENTIFICACION" name="personaIDENTIFICACION" value="{{UsuarioColaborador.Persona.personaIDENTIFICACION}}">
         </div>
       </div>
       <div class="form-group col-md-4">
@@ -29,7 +30,7 @@
               <i class="fab fa-wpforms"></i>
             </div>
           </div>
-          <input type="email" class="form-control" id="personaNIT" name="personaNIT">
+          <input type="text" class="form-control" id="personaNIT" name="personaNIT"  value="{{UsuarioColaborador.Persona.personaNIT}}">
         </div>
       </div>
 
@@ -38,11 +39,11 @@
 
       <div class="form-group col-md-6">
         <label for="firstName">Nombres</label>
-        <input type="text" class="form-control" id="personaNOMBRES" name="personaNOMBRES" value="">
+        <input type="text" class="form-control" id="personaNOMBRES" name="personaNOMBRES" value="{{UsuarioColaborador.Persona.personaNOMBRES}}">
       </div>
       <div class="form-group col-md-6">
         <label for="lastName">Apellidos</label>
-        <input type="text" class="form-control" id="personaAPELLIDOS" name="personaAPELLIDOS" value="">
+        <input type="text" class="form-control" id="personaAPELLIDOS" name="personaAPELLIDOS" value="{{UsuarioColaborador.Persona.personaAPELLIDOS}}">
       </div>
 
     </div>
@@ -79,7 +80,7 @@
         <select class="custom-select" id="personaMUNICIPIO" name="personaMUNICIPIO" >
           <option class="seleccione" value="" selected >Seleccione un departamento</option>
           {% for Municipio in Listados.Municipios %}
-          <option  class="departamento_{{Municipio.departamentoID}}"  value="{{Municipio.municipioID}}">{{Municipio.municipioNOMBRE}} {{Municipio.municipioCODIGO}} </option>
+          <option {% if Municipio.municipioID == UsuarioColaborador.Persona.personaMUNICIPIO %}selected{% endif %} class="departamento_{{Municipio.departamentoID}}"  value="{{Municipio.municipioID}}">{{Municipio.municipioNOMBRE}} {{Municipio.municipioCODIGO}} </option>
           {% endfor %}
         </select>
       </div>
@@ -91,7 +92,7 @@
               <i class="material-icons">&#xE0C8;</i>
             </div>
           </div>
-          <input type="text" class="form-control" id="personaDIRECCION" name="personaDIRECCION"  value="">
+          <input type="text" class="form-control" id="personaDIRECCION" name="personaDIRECCION"  value="{{UsuarioColaborador.Persona.personaDIRECCION}}">
         </div>
       </div>
 
@@ -106,7 +107,7 @@
               <i class="material-icons">&#xE0CD;</i>
             </div>
           </div>
-          <input type="tel" class="form-control" id="personaTELEFONO" name="personaTELEFONO" value="">
+          <input type="tel" class="form-control" id="personaTELEFONO" name="personaTELEFONO" value="{{UsuarioColaborador.Persona.personaTELEFONO}}">
         </div>
       </div>
       <div class="form-group col-md-3">
@@ -117,7 +118,7 @@
               <i class="material-icons">&#xE0CD;</i>
             </div>
           </div>
-          <input type="tel" class="form-control" id="personaCELULAR" name="personaCELULAR" value="">
+          <input type="tel" class="form-control" id="personaCELULAR" name="personaCELULAR" value="{{UsuarioColaborador.Persona.personaCELULAR}}">
         </div>
       </div>
       <div class="form-group col-md-6">
@@ -128,7 +129,7 @@
               <i class="material-icons">&#xE0BE;</i>
             </div>
           </div>
-          <input type="email" class="form-control" id="personaEMAIL" name="personaEMAIL" value=""  >
+          <input type="email" class="form-control" id="personaEMAIL" name="personaEMAIL" value="{{UsuarioColaborador.Persona.personaEMAIL}}"  >
         </div>
       </div>
 

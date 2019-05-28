@@ -11,7 +11,7 @@
           <span class="input-group-text">@</span>
         </div>
         <input type="text" class="form-control" id="usuarioNOMBRE" name="usuarioNOMBRE"
-          placeholder="nombre_usuario" aria-label="Username" value="usuario{{random()}}" aria-describedby="basic-addon1">
+          placeholder="nombre_usuario" aria-label="Username" value="{% if UsuarioColaborador %}{{UsuarioColaborador.Usuario.usuarioNOMBRE}}{% else %}usuario{{random()}}{% endif %}" aria-describedby="basic-addon1">
       </div>
     </div>
     <div class="form-row mx-4">
