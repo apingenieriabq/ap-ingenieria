@@ -1,4 +1,4 @@
-
+<!--{{dump(DatosUsuario)}}-->
 <div class="page-header row no-gutters py-4">
   <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
     <span class="text-uppercase page-subtitle">Seguridad</span>
@@ -13,7 +13,8 @@
           <img class="rounded-circle" src="{{DatosUsuario.Colaborador.Persona.personaIMAGEN}}" alt="User Avatar" width="110"> </div>
         <h4 class="mb-0">{{DatosUsuario.Colaborador.Persona.personaNOMBRES}} {{DatosUsuario.Colaborador.Persona.personaAPELLIDOS}}</h4>
         <p class="text-center text-light m-0 mb-2">Soy {{DatosUsuario.Colaborador.Cargo.cargoTITULO}}.</p>
-        <span class="text-muted d-block mb-2">Mi jefe inmediato es {{DatosUsuario.Colaborador.JefeInmediato.Persona.personaNOMBRES}} {{DatosUsuario.Colaborador.JefeInmediato.Persona.personaAPELLIDOS}}</span>
+        <span class="text-muted d-block mb-0">Mi jefe inmediato es {{DatosUsuario.Colaborador.JefeInmediato.Persona.personaNOMBRES}} {{DatosUsuario.Colaborador.JefeInmediato.Persona.personaAPELLIDOS}} [{{DatosUsuario.Colaborador.JefeInmediato.Cargo.cargoTITULO}}]</span>
+        <span class="text-muted d-block mb-2">su correo es <a href="mailto:{{DatosUsuario.Colaborador.JefeInmediato.colaboradorEMAIL}}" >{{DatosUsuario.Colaborador.JefeInmediato.colaboradorEMAIL}}</a></span>
       </div>
       <ul class="list-group list-group-flush">
         <!--<li class="list-group-item px-4">-->
@@ -120,10 +121,11 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="personaEMAIL">Correo Personal</label>
-                    <input type="email" class="form-control" id="personaEMAIL" name="personaEMAIL" placeholder="Email" value="{{DatosUsuario.Colaborador.Persona.personaEMAIL}}"> </div>
+                    <input type="email" class="form-control"   autocomplete="username"  id="personaEMAIL" name="personaEMAIL" placeholder="Email" value="{{DatosUsuario.Colaborador.Persona.personaEMAIL}}"> </div>
                   <div class="form-group col-md-6">
                     <label for="usuarioCLAVE">Clave Nueva</label>
-                    <input type="password" class="form-control" id="usuarioCLAVE" name="usuarioCLAVE" placeholder=""> </div>
+                    <input type="password" class="form-control" autocomplete="current-password"
+                        id="usuarioCLAVE" name="usuarioCLAVE" placeholder=""> </div>
                 </div>
                 <div class="form-group">
                   <label for="personaDIRECCION">Dirección</label>
@@ -152,7 +154,7 @@
                     <select class="custom-select" id="personaMUNICIPIO" name="personaMUNICIPIO" >
                       <option class="seleccione" value="" selected >Seleccione un departamento</option>
                       {% for Municipio in Listados.Municipios %}
-                      <option {% if Municipio.municipioID == Usuario.Colaborador.Persona.personaMUNICIPIO %}selected{% endif %} class="departamento_{{Municipio.departamentoID}}"  value="{{Municipio.municipioID}}">{{Municipio.municipioNOMBRE}} {{Municipio.municipioCODIGO}} </option>
+                      <option {% if Municipio.municipioID == DatosUsuario.Colaborador.Persona.personaMUNICIPIO %}selected{% endif %} class="departamento_{{Municipio.departamentoID}}"  value="{{Municipio.municipioID}}">{{Municipio.municipioNOMBRE}} {{Municipio.municipioCODIGO}} </option>
                       {% endfor %}
                     </select>
                   </div>
@@ -171,6 +173,7 @@
         </li>
       </ul>
     </div>
+
   </div>
 </div>
 

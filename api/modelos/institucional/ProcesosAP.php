@@ -38,7 +38,7 @@ public $documentos ;
    }
 
   function delUsuario(){
-      $sql = "SELECT `ProcesosAP`.* FROM `DocumentosAP` INNER JOIN `ProcesosAP` ON (`DocumentosAP`.`procesoID` = `ProcesosAP`.`procesoID`) INNER JOIN `DocumentosUsuarios` ON (`DocumentosUsuarios`.`documentoID` = `DocumentosAP`.`documentoID`) WHERE (`DocumentosUsuarios`.`usuarioID` = :usuarioID ) GROUP BY `ProcesosAP`.`procesoID`; ";
+     $sql = "SELECT `ProcesosAP`.* FROM `DocumentosAP` LEFT JOIN `ProcesosAP` ON (`DocumentosAP`.`procesoID` = `ProcesosAP`.`procesoID`) LEFT JOIN `DocumentosUsuarios` ON (`DocumentosUsuarios`.`documentoID` = `DocumentosAP`.`documentoID`) WHERE (  `DocumentosAP`.`documentoPUBLICO` = 'SI' OR `DocumentosUsuarios`.`usuarioID` = :usuarioID ) GROUP BY `ProcesosAP`.`procesoID`; ";
       return $Procesos = $this->consultaMUCHOS($sql,[ ':usuarioID' => Usuario::id()] );
    }
 

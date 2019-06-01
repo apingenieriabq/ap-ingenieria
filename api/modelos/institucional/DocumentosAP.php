@@ -82,15 +82,15 @@ class DocumentosAP extends ModeloDatos
 
   public function todosDelProcesoDelUsuario($procesoID, $documentoPUBLICADO = null){
     if(!is_null($documentoPUBLICADO)){
-      $sql = "SELECT DocumentosAP.* , DocumentosUsuarios.* FROM DocumentosUsuarios "
-      ." LEFT JOIN DocumentosAP ON (DocumentosUsuarios.documentoID = DocumentosAP.documentoID) "
-      ." WHERE DocumentosUsuarios.usuarioID = :usuarioID AND DocumentosAP.procesoID = :procesoID AND DocumentosAP.documentoPUBLICADO = :documentoPUBLICADO   ";
+     $sql = "SELECT DocumentosAP.* , DocumentosUsuarios.documentoUsuarioID , DocumentosUsuarios.documentoUsuarioFCHASIGNACION FROM DocumentosAP "
+      ." LEFT JOIN DocumentosUsuarios ON (DocumentosAP.documentoID = DocumentosUsuarios.documentoID ) "
+      ." WHERE (`DocumentosAP`.`documentoPUBLICO` = 'SI' OR  DocumentosUsuarios.usuarioID = :usuarioID ) AND DocumentosAP.procesoID = :procesoID AND DocumentosAP.documentoPUBLICADO = :documentoPUBLICADO   ";
       $Documentos = $this->consultaMUCHOS($sql, [':procesoID' => $procesoID, ':documentoPUBLICADO' => $documentoPUBLICADO, ':usuarioID' => Usuario::id() ] );
       return $Documentos;
     }
 
     return $Documentos = $this->consultaMUCHOS(
-      "SELECT DocumentosAP.* , DocumentosUsuarios.* FROM DocumentosUsuarios "
+      "SELECT DocumentosAP.* , DocumentosUsuarios.documentoUsuarioID , DocumentosUsuarios.documentoUsuarioFCHASIGNACION FROM DocumentosUsuarios "
       ." LEFT JOIN DocumentosAP ON (DocumentosUsuarios.documentoID = DocumentosAP.documentoID) "
       ." WHERE DocumentosUsuarios.usuarioID = :usuarioID AND DocumentosAP.procesoID = :procesoID ",
       [ ':procesoID' => $procesoID, ':usuarioID' => Usuario::id() ] );
@@ -130,7 +130,6 @@ class DocumentosAP extends ModeloDatos
     $documentoURL , $documentoRESPONSABLE , $documentoOBSERVACIONES){
 
     $actualizado = $this->actualiza([ 'procesoID' => $procesoID ,
-          'documentoCODIGO' => $this->generarCodigo($procesoID) ,
           'documentoVERSION' => $documentoVERSION ,
           'documentoPUBLICADO' => $documentoPUBLICADO ,
           'documentoNOMBRE' => $documentoNOMBRE ,

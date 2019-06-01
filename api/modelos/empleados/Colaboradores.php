@@ -59,6 +59,20 @@ class Colaboradores extends ModeloDatos {
 
 
 
+  function datosBasicos($colaboradorID = null){
+    if(is_null($colaboradorID)){
+      $colaboradorID =  $this->colaboradorID;
+    }
+    $Colaborador = $this->porID($colaboradorID);
+    if(!empty($Colaborador)){
+      $this->Persona = new Personas($Colaborador->personaID);
+      $this->Cargo = new Cargos($this->cargoID);
+      $this->Usuario = new Usuarios();
+      $this->Usuario->porColaboradorID($colaboradorID);
+    }
+    return $this;
+   }
+
   function datosCompletos($colaboradorID = null){
     if(is_null($colaboradorID)){
       $colaboradorID =  $this->colaboradorID;
@@ -67,6 +81,7 @@ class Colaboradores extends ModeloDatos {
     if(!empty($Colaborador)){
       $this->Persona = new Personas($Colaborador->personaID);
       $this->Cargo = new Cargos($Colaborador->cargoID);
+      $this->TipoColaborador = new TiposColaboradores($Colaborador->tipoColaboradorID);
       $this->JefeInmediato = new Colaboradores($Colaborador->colaboradorJEFEINMEDIATO);
       $this->Aprobador = new Colaboradores($Colaborador->colaboradorAPROBADOR);
       $this->Usuario = new Usuarios();
@@ -101,8 +116,9 @@ class Colaboradores extends ModeloDatos {
   function conCargo($cargoID){
     $Colaboradores = $this->todos(['cargoID' => $cargoID]);
     foreach($Colaboradores as $i => $Colaborador){
-      $Colaboradores[$i] = $this->datosCompletos($Colaborador->colaboradorID);
+      $Colaboradores[$i] = new Colaboradores($Colaborador->colaboradorID);
     }
+    // print_r($Colaboradores);
     return $Colaboradores;
    }
 
@@ -141,7 +157,9 @@ class Colaboradores extends ModeloDatos {
     if(filter_var($colaboradorID, FILTER_VALIDATE_EMAIL)){
       parent::__construct('Colaboradores', 'colaboradorID', null);
       $this->datos(['colaboradorEMAIL' => $colaboradorID]);
-      $colaboradorID = $this->colaboradorID;
+      if(!is_null($this->colaboradorID)){
+        $colaboradorID = $this->colaboradorID;
+      }
     }else{
       if(filter_var($colaboradorID, FILTER_VALIDATE_INT)){
         parent::__construct('Colaboradores', 'colaboradorID', $colaboradorID);
@@ -151,7 +169,8 @@ class Colaboradores extends ModeloDatos {
     }
 
     if(!is_null($colaboradorID)){
-      // $this->datosCompletos($colaboradorID);
+      $this->datosBasicos($this->colaboradorID);
+      $colaboradorID = $this->colaboradorID;
     }
     return $this;
   }

@@ -62,8 +62,8 @@ class Usuarios extends ModeloDatos {
     }
     $Usuario = $this->datos(['usuarioID'=> $usuarioID]);
     if(!empty($Usuario)){
-      $Usuario->Colaborador = new Colaboradores($this->colaboradorID);
-      $Usuario->Colaborador->datosCompletos();
+      $Usuario->Colaborador = new Colaboradores();
+      $Usuario->Colaborador->datosCompletos($this->colaboradorID);
     }
     return $Usuario;
    }

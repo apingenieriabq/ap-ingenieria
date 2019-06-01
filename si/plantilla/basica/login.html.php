@@ -13,11 +13,11 @@
             <form id="frm-login-siapi" onsubmit=" return false;" >
               <div class="form-group">
                 <label for="nombre_usuario">Cédula del Colaborador</label>
-                <input type="text" class="form-control" id="nombre_usuario" name="cedulaDelColaborador" required  aria-describedby="emailHelp" placeholder="digite su cédula">
+                <input type="text" class="form-control"  autocomplete="username" id="nombre_usuario" name="cedulaDelColaborador" required  aria-describedby="emailHelp" placeholder="digite su cédula">
               </div>
               <div class="form-group">
                 <label for="clave_usuario">Contraseña</label>
-                <input type="password" class="form-control" id="clave_usuario" name="claveDelColaborador" required  placeholder="contraseña">
+                <input type="password" class="form-control" autocomplete="current-password" id="clave_usuario" name="claveDelColaborador" required  placeholder="contraseña">
               </div>
               <div class="form-group mb-3 d-table mx-auto">
                 <!--<div class="custom-control custom-checkbox mb-1">-->

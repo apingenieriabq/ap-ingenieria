@@ -24,9 +24,9 @@ class DocumentosAPControlador extends Controladores {
       $Colaboradores = $Api->ejecutar(
         'directorios', 'colaboradores', 'porCargo'
         , array( 'cargoID' => $this->cargoID )
-        // , null
         // , false
       );
+      // print_r($Colaboradores);
       if(count($Colaboradores)){
         foreach($Colaboradores as $Colaborador){
           echo '<option value="'.$Colaborador->colaboradorID.'" >'.$Colaborador->Persona->personaIDENTIFICACION.' - '.$Colaborador->Persona->personaNOMBRES.' '.$Colaborador->Persona->personaAPELLIDOS.'</option>';
@@ -57,7 +57,7 @@ class DocumentosAPControlador extends Controladores {
       , ['documentoID' => $this->documentoID ]
       // , false
     );
-    print_r($DocumentoAP);
+    // print_r($DocumentoAP);
     Vistas::mostrar('institucional/documentos', 'modal-documento' ,
       [ 'DocumentoAP' => $DocumentoAP ]
     );
@@ -158,6 +158,7 @@ class DocumentosAPControlador extends Controladores {
         // , null
         // , false
       );
+      // print_r($DocumentoAP);
       if(is_object($DocumentoAP) and !empty($DocumentoAP->documentoID) ){
         if(!empty($this->documentoIMAGEN_RUTA)){
           $miniatura = $Api->enviar(

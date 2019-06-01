@@ -7,6 +7,7 @@ class ListadoMaestroDocumentoControlador extends Controladores {
     $Documentos = $Api->ejecutar(
       'institucional', 'documentos', 'delProcesoDelUsuario'
       , array( 'procesoID' => $this->procesoID )
+      // ,false
     );
     // print_r($Documentos);
     Vistas::mostrar('institucional', 'navegador-documentos' ,[ 'Documentos' => $Documentos, ] );

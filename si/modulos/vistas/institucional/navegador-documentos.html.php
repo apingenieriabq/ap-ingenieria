@@ -40,8 +40,4 @@ $( document ).ready(function() {
   });
 });
 
-
-
-function abrirVisorDocumentoIntitucional(procesoID){
-}
 </script>
