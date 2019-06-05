@@ -78,7 +78,7 @@ class ColaboradoresControlador extends Controladores {
 
     global $Api;
     $Colaboradores = $Api->ejecutar(
-      'Directorios', 'Colaboradores', 'todosCompletos'
+      'Seguridad', 'Colaboradores', 'mostrarTodos'
       // ,null , false
     );
     // print_r($Colaboradores);
@@ -191,7 +191,6 @@ class ColaboradoresControlador extends Controladores {
       ]
       , false
     );
-      // var_dump($NuevoColaborador);
     if($NuevoColaborador->RESPUESTA == 'EXITO'){
       echo RespuestasSistema::exito( $NuevoColaborador->MENSAJE,$NuevoColaborador->DATOS);
     }else{

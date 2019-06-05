@@ -7,9 +7,9 @@
 
       <div class="card-post__image" style="background-image: url('{{DocumentoAP.documentoIMAGEN}}');">
         <a href="#" class="card-post__category badge badge-pill badge-info">{{DocumentoAP.procesoTITULO}}</a>
-      <div class="card-post__author d-flex">
-        <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('{{DocumentoAP.colaboradorFOTO}}');">Responsable: {{DocumentoAP.personaNOMBRES}} {{DocumentoAP.personaAPELLIDOS}}</a>
-      </div>
+      <!--<div class="card-post__author d-flex">-->
+      <!--  <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('{{DocumentoAP.colaboradorFOTO}}');">Responsable: {{DocumentoAP.personaNOMBRES}} {{DocumentoAP.personaAPELLIDOS}}</a>-->
+      <!--</div>-->
     </div>
 
       <div class="card-body">

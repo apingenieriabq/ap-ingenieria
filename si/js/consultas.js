@@ -95,7 +95,6 @@ function cargarVista(modulo, operacion, datos = '', nombreTabMenu = '', idTabMen
 }
 
 function cargaHTMLVistaAreaPlantilla(modulo, operacion, htmlVISTA, nombreTabMenu = '', idTabMenu = '') {
-    bloquearPantalla();
     // ejecutarOperacion("seguridad", "datosOperacion", "modulo=" + modulo + "&operacion=" + operacion, function(datos) {
     // crearTabs(
     //   '<i class="' + datos.Operacion.operacionMENUICONO + ' fa-xs" aria-hidden="true"></i> ' +
@@ -105,7 +104,6 @@ function cargaHTMLVistaAreaPlantilla(modulo, operacion, htmlVISTA, nombreTabMenu
     // );
     // activarPlugins();
     $("#contenido-vista").html(htmlVISTA);
-    // desbloquearPantalla();
     // });
 }
 
@@ -224,6 +222,7 @@ function ajaxApi(datosOperacion, funcionEjecutable, procesarDatos = false, tipoC
 }
 
 function controlRespuesta(data, funcionEjecutable = function() {}) {
+    bloquearPantalla();
     if (isJson(data)) {
         var response = JSON.parse(data);
         if (modo_pruebas) console.log('%c Datos Recibidos____', 'color: #F00; font-size:120%;');

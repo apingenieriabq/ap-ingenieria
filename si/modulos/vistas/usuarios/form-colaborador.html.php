@@ -81,7 +81,8 @@
         function(Colaborador){
           bloquearPantalla();
           console.log(Colaborador);
-          mostrarFormularioEditarUsuarioColaborador(Colaborador.colaboradorID);
+          // mostrarFormularioEditarUsuarioColaborador(Colaborador.colaboradorID);
+          bloquearPantalla();
         }
       );
 

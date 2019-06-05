@@ -1,24 +1,23 @@
-<!-- Page Header -->
 <div class="page-header row no-gutters py-4">
-  <div class="col col-sm-8 text-center text-sm-left mb-0">
-    <span class="text-uppercase page-subtitle">Información Intitución</span>
-    <h3 class="page-title">Libreria de Documentos</h3>
+  <div class="col  text-center text-sm-left mb-0">
+    <span class="text-uppercase page-subtitle">Directorios</span>
+    <h3 class="page-title">Colaboradores <small>[empleados y contratistas]</small></h3>
   </div>
-  <div class="col col-sm-4 d-flex align-items-center">
+  <div class="col  d-flex align-items-center">
 
   	<nav aria-label="" class="add_top_20 right">
   		<ul class="pagination pagination-sm btn-group">
   			<li class="page-item">
   				<a class=" page-link" href="javascript:void(0);" target="_self" onclick="anteriorPaginaDirectorioColaboradores();">Anterior</a>
   			</li>
+  			{% if Directorio.Navegador > 0 %}
+  			{% for i in range(0, Directorio.Navegador - 1) %}
+  			<li class="page-item {% if i == Directorio.PaginaActual %}active{% endif %}">
+  				<a class=" page-link" href="javascript:void(0);" target="_self" onclick="cambiarPaginaDirectorioColaboradores({{i}});">{{i+1}}</a>
+  			</li>
+				{% endfor %}
+				{% endif %}
 
-  			<li class="page-item active">
-  				<a class=" page-link" href="javascript:void(0);" target="_self" onclick="cambiarPaginaDirectorioColaboradores(1);">1</a>
-  			</li>
-  			<li class="page-item">
-  				<a class=" page-link" href="javascript:void(0);" target="_self" onclick="cambiarPaginaDirectorioColaboradores(2);">2</a>
-  			</li>
-  			<li class="page-item"><a class="page-link" href="javascript:void(0);" target="_self">3</a></li>
 
   			<li class="page-item">
   				<a class=" page-link" href="javascript:void(0);" target="_self" onclick="siguientePaginaDirectorioColaboradores();">Siguiente</a>
@@ -29,87 +28,92 @@
   </div>
 </div>
 
-<div class="row">
-	<div class="col-md-6">
-		<div class="box_list wow fadeIn">
-			<a href="#0" class="wish_bt"></a>
-			<figure>
-				<a href="detail-page.html"><img src="img/doctor_listing_1.jpg" class="img-fluid" alt="">
-					<div class="preview"><span>Read more</span></div>
-				</a>
-			</figure>
-			<div class="wrapper">
-				<small>Psicologist</small>
-				<h3>Dr. Sickman</h3>
+<div class="card-deck directorio">
+	{% set pCmitad = (Directorio.Colaboradores|length/2) %}
+	{% for Colaborador in Directorio.Colaboradores %}
 
-				<p>Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....</p>
-				<span class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i> <small>(145)</small></span>
-				<a href="badges.html" data-toggle="tooltip" data-placement="top" data-original-title="Badge Level" class="badge_list_1"><img src="img/badges/badge_1.svg" width="15" height="15" alt=""></a>
-			</div>
-			<ul>
-				<li><a href="#0" onclick="onHtmlClick('Doctors', 0)"><i class="icon_pin_alt"></i>View on map</a></li>
-				<li><a href="https://www.google.com/maps/dir//Assistance+%E2%80%93+H%C3%B4pitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x0:0xa6a9af76b1e2d899!2sAssistance+%E2%80%93+H%C3%B4pitaux+De+Paris!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361" target="_blank"><i class="icon_pin_alt"></i>Directions</a></li>
-				<li><a href="detail-page.html">Book now</a></li>
-			</ul>
-		</div>
-	</div>
-	<!-- /box_list -->
+	<div class="card">
+		<a href="javascript:void(0);" onclick="mostrarModalDatosContactoColaborador({{Colaborador.colaboradorID}});">
+    <img class="card-img-top" src="{{Colaborador.colaboradorFOTO}}" alt="Card image cap">
+    </a>
+    <div class="card-body">
+    	<p class="card-text"><strong>{{Colaborador.Cargo.cargoTITULO}}</strong> <small class="text-muted">- {{Colaborador.Cargo.unidadTITULO}}</small></p>
+      <p class="card-title"><a href="javascript:void(0);" onclick="mostrarModalDatosContactoColaborador({{Colaborador.colaboradorID}});" class="preview">{{Colaborador.Persona.personaNOMBRES}} {{Colaborador.Persona.personaAPELLIDOS}}</a></p>
+      <p class="card-text">
 
-	<div class="col-md-6">
-		<div class="box_list wow fadeIn">
-			<a href="#0" class="wish_bt"></a>
-			<figure>
-				<a href="detail-page.html"><img src="img/doctor_listing_2.jpg" class="img-fluid" alt="">
-					<div class="preview"><span>Read more</span></div>
-				</a>
-			</figure>
-			<div class="wrapper">
-				<small>Psicologist</small>
-				<h3>Dr. Will Griever</h3>
-				<p>Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....</p>
-				<span class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i> <small>(145)</small></span>
-				<a href="badges.html" data-toggle="tooltip" data-placement="top" data-original-title="Badge Level" class="badge_list_1"><img src="img/badges/badge_2.svg" width="15" height="15" alt=""></a>
-			</div>
-			<ul>
-				<li><a href="#0" onclick="onHtmlClick('Doctors', 1)"><i class="icon_pin_alt"></i>View on map</a></li>
-				<li><a href="https://www.google.com/maps/dir//Assistance+%E2%80%93+H%C3%B4pitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x0:0xa6a9af76b1e2d899!2sAssistance+%E2%80%93+H%C3%B4pitaux+De+Paris!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361" target="_blank"><i class="icon_pin_alt"></i>Directions</a></li>
-				<li><a href="detail-page.html">Book now</a></li>
-			</ul>
-		</div>
-	</div>
-	<!-- /box_list -->
+<div class="row mb-1">
+  <div class="col">
+    <small><strong>Vinculación</strong></small>
+    <span>{{Colaborador.TipoColaborador.tipoColaboradorTITULO}}</span>
+  </div>
+</div>
+<div class="row mb-1">
+  <div class="col">
+    <small><strong>Correo </strong></small>
+    <span>{{Colaborador.colaboradorEMAIL}}</span>
+  </div>
+</div>
+<div class="row mb-1">
+  <div class="col">
+    <small><strong>Celular</strong></small>
+    <span>{{Colaborador.colaboradorCELULAR}}</span>
+  </div>
+</div>
+<!--<div class="row mb-1">-->
+<!--  <div class="col">-->
+<!--    <strong>Teléfono</strong>-->
+<!--    <span>{{Colaborador.Persona.personaTELEFONO}}</span>-->
+<!--  </div>-->
+<!--  <div class="col">-->
+<!--    <strong>Celular</strong>-->
+<!--    <span>{{Colaborador.Persona.personaCELULAR}}</span>-->
+<!--  </div>-->
+<!--</div>-->
 
-	<div class="col-md-6">
-		<div class="box_list wow fadeIn">
-			<a href="#0" class="wish_bt"></a>
-			<figure>
-				<a href="detail-page.html"><img src="img/doctor_listing_3.jpg" class="img-fluid" alt="">
-					<div class="preview"><span>Read more</span></div>
-				</a>
-			</figure>
-			<div class="wrapper">
-				<small>Pediatrician</small>
-				<h3>Dr. Jhoanna Steel</h3>
-				<p>Id placerat tacimates definitionem sea, prima quidam vim no. Duo nobis persecuti cuodo....</p>
-				<span class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i> <small>(145)</small></span>
-				<a href="badges.html" data-toggle="tooltip" data-placement="top" data-original-title="Badge Level" class="badge_list_1"><img src="img/badges/badge_3.svg" width="15" height="15" alt=""></a>
-			</div>
-			<ul>
-				<li><a href="#0" onclick="onHtmlClick('Doctors', 2)"><i class="icon_pin_alt"></i>View on map</a></li>
-				<li><a href="https://www.google.com/maps/dir//Assistance+%E2%80%93+H%C3%B4pitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x0:0xa6a9af76b1e2d899!2sAssistance+%E2%80%93+H%C3%B4pitaux+De+Paris!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361" target="_blank"><i class="icon_pin_alt"></i>Directions</a></li>
-				<li><a href="detail-page.html">Book now</a></li>
-			</ul>
-		</div>
-	</div>
-	<!-- /box_list -->
+      </p>
+      <!--<small class="text-muted">-->
+{% if Usuario.usuarioADMINISTRADOR == 'SI' %}
+<ul class="nav flex-column">
+  <li class="nav-item">Usuario: <span class="badge badge-primary badge-pill">{{Colaborador.Usuario.usuarioNOMBRE}}</span></li>
+  <li class="nav-item">Último inicio: <span class="badge badge-primary badge-pill">{{Colaborador.Usuario.usuarioULTIMAVISITA}}</span></li>
+  <li class="nav-item"><a href="https://www.google.com/maps/search/?api=1&query={{Colaborador.Usuario.usuarioULTIMALATITUD}},{{Colaborador.Usuario.usuarioULTIMALONGITUD}}" target="_blank"><i class="fa fa-maps"></i>Última ubicación: <span class="badge badge-primary badge-pill">@{{Colaborador.Usuario.usuarioULTIMALATITUD|round(4)}},{{Colaborador.Usuario.usuarioULTIMALONGITUD|round(4)}}</span></a></li>
+</ul>
+{% endif %}
+
+
+      <!--</small>-->
+
+    </div>
+  </div>
+  {% set pCi = pCi + 1 %}
+  {% if pCi is divisible by(6) %}
+</div>
+<div class="card-deck">
+  {% endif %}
+	{% endfor %}
 </div>
 
-
-
 <script type="text/javascript" >
-
-
+	var pagina = {{Directorio.PaginaActual}};
+	var paginasTotales = {{Directorio.Navegador - 1}};
 	function siguientePaginaDirectorioColaboradores(){
-		colaboradoresCambiarPagina
+		var sigPagina = ( pagina + 1);
+		if(paginasTotales >= sigPagina ){
+			cambiarPaginaDirectorioColaboradores(sigPagina);
+		}
 	}
+	function anteriorPaginaDirectorioColaboradores(){
+		var antPagina = ( pagina - 1);
+		if(antPagina >= 0 ){
+			cambiarPaginaDirectorioColaboradores(antPagina);
+		}
+	}
+	function cambiarPaginaDirectorioColaboradores(pagina){
+		if(pagina >= 0 && pagina <= paginasTotales ){
+			cargarVista('Directorios', 'cambiarPaginaColaboradores','pagina='+pagina);
+		}
+	}
+function mostrarModalDatosContactoColaborador(colaboradorID) {
+    cargarModal('Datos de Contacto', 'Directorios', 'mostrarDatosContactoColaboradorEnModal', 'colaboradorID=' + colaboradorID, function(respuesta) {});
+}
 </script>

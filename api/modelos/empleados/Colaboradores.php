@@ -2,6 +2,28 @@
 
 class Colaboradores extends ModeloDatos {
 
+  public function navegador($Paginado){
+    $sql = 'SELECT ROUND( COUNT(`colaboradorID`) / :paginas, 0 ) AS colaboradoresPAGINAS FROM  `apingeni_flat`.`Colaboradores` ';
+    $Colaborador = $this->consultaUNO(
+      $sql, [ ':paginas' => $Paginado]
+    );
+    if(!is_null($Colaborador)){
+      return $Colaborador->colaboradoresPAGINAS;
+    }
+    return null;
+  }
+
+  public function limiteDesdeHasta($desde = 0, $hasta = 12){
+    $Colaboradores = $this->todos(['LIMIT' => [$desde, $hasta]]);
+    foreach($Colaboradores as $i => $Colaborador){
+      $Colaboradores[$i] = new Colaboradores();
+      $Colaboradores[$i]->datosBasicos($Colaborador->colaboradorID);
+    }
+    return $Colaboradores;
+  }
+
+
+
 
   public function actualizarFOTO($colaboradorFOTO, $colaboradorID = null){
     if(is_null($colaboradorID)){
@@ -41,7 +63,15 @@ class Colaboradores extends ModeloDatos {
 
 
 
-
+  public function todosParaLaTablaGestion(){
+    $SQL = 'SELECT `Colaboradores`.* , `Cargos`.`cargoCODIGO` , `Cargos`.`cargoTITULO` , `Personas`.`personaIDENTIFICACION` , `Personas`.`personaNOMBRES` , `Personas`.`personaAPELLIDOS` , `Personas`.`personaTELEFONO` , `Personas`.`personaCELULAR` , `Personas`.`personaEMAIL` , `Usuarios`.`usuarioTIPO` , `Usuarios`.`usuarioNOMBRE` , `Usuarios`.`usuarioESTADO` , `Usuarios`.`usuarioADMINISTRADOR` , `Usuarios`.`usuarioULTIMAVISITA` , `Usuarios`.`usuarioULTIMAIP` , `Usuarios`.`usuarioULTIMALATITUD` , `Usuarios`.`usuarioULTIMALONGITUD` '
+      .'FROM `Colaboradores`  '
+      .'INNER JOIN `Cargos` ON (`Colaboradores`.`cargoID` = `Cargos`.`cargoID`)  '
+      .'INNER JOIN `Personas` ON (`Colaboradores`.`personaID` = `Personas`.`personaID`)  '
+      .'INNER JOIN `Usuarios` ON (`Usuarios`.`colaboradorID` = `Colaboradores`.`colaboradorID`);';
+    $Colaboradores = $this->consultaMUCHOS($SQL);
+    return $Colaboradores;
+  }
 
 
 

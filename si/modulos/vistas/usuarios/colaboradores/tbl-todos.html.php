@@ -40,17 +40,17 @@
           <button class="btn btn-xs btn-danger" onclick="mostrarConfirmacionEliminarUsuarioColaborador({{Colaborador.colaboradorID}}, verListadoUsuarioColaborador);"><i class="fas fa-trash"></i></button>
         </div>
       </td>
-      <td scope="col" title="{{Colaborador.Persona.tipoIdentificacionTITULO}}" style="font-size:70%" >{{Colaborador.Persona.personaIDENTIFICACION}}</td>
-      <td scope="col" >{{Colaborador.Persona.personaNOMBRES}}</td>
-      <td scope="col">{{Colaborador.Persona.personaAPELLIDOS}}</td>
-      <td scope="col">{{Colaborador.Persona.personaCELULAR}}</td>
+      <td scope="col" title="{{Colaborador.tipoIdentificacionTITULO}}" style="font-size:70%" >{{Colaborador.personaIDENTIFICACION}}</td>
+      <td scope="col" >{{Colaborador.personaNOMBRES}}</td>
+      <td scope="col">{{Colaborador.personaAPELLIDOS}}</td>
+      <td scope="col">{{Colaborador.personaCELULAR}}</td>
       <td scope="col">{{Colaborador.colaboradorCELULAR}}</td>
-      <td scope="col">{{Colaborador.Persona.personaEMAIL}}</td>
+      <td scope="col">{{Colaborador.personaEMAIL}}</td>
       <td scope="col">{{Colaborador.colaboradorEMAIL}}</td>
       <td scope="col">{{Colaborador.Cargo.cargoTITULO}}</td>
-      <td scope="col" class="td-dato-usuario">{{Colaborador.Usuario.usuarioNOMBRE}}</td>
-      <td scope="col" class="td-dato-usuario">{{Colaborador.Usuario.usuarioULTIMAVISITA}} - [{{Colaborador.Usuario.usuarioULTIMALATITUD}},{{Colaborador.Usuario.usuarioULTIMALONGITUD}}]</td>
-      <td scope="col" class="td-dato-usuario">{{Colaborador.Usuario.usuarioADMINISTRADOR}}</td>
+      <td scope="col" class="td-dato-usuario">{{Colaborador.usuarioNOMBRE}}</td>
+      <td scope="col" class="td-dato-usuario">{{Colaborador.usuarioULTIMAVISITA}} - [{{Colaborador.usuarioULTIMALATITUD}},{{Colaborador.usuarioULTIMALONGITUD}}]</td>
+      <td scope="col" class="td-dato-usuario">{{Colaborador.usuarioADMINISTRADOR}}</td>
 
       <!--<td scope="col">{{Colaborador.colaboradorFCHINGRESO|date('Y-m-d')}}</td>-->
       <td scope="col">

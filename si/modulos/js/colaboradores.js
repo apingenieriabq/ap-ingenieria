@@ -13,6 +13,7 @@ function mostrarFormularioNuevoUsuarioColaborador() {
 function mostrarFormularioEditarUsuarioColaborador(colaboradorID) {
     bloquearPantalla();
     cargarVista('Colaboradores', 'mostrarFormularioEditar', 'colaboradorID=' + colaboradorID, function(respuesta) {});
+    bloquearPantalla();
 }
 
 function mostrarConfirmacionEliminarUsuarioColaborador(colaboradorID, funcionDespues = function() {}) {

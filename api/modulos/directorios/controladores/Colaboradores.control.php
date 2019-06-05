@@ -1,5 +1,24 @@
 <?php
 class ColaboradoresControlador extends Controladores {
+  public $paginado = 6;
+
+  public function datosParaNavegador(){
+    $Colaboradores = new Colaboradores();
+    $Navegador = $Colaboradores->navegador($this->paginado);
+    $validacion = $this->validarDatosEnviados(['pagina']);
+    if(empty($validacion)){
+      $ini = $this->pagina * $this->paginado;
+      $fin = $ini + $this->paginado;
+      $Pagina1 = $Colaboradores->limiteDesdeHasta($ini, $this->paginado );
+    }else{
+      $this->pagina = 0;
+      $Pagina1 = $Colaboradores->limiteDesdeHasta(0,$this->paginado);
+    }
+    return Respuestassistema::exito("Datos para El Directorio de Colaboradores",
+      [ 'Navegador' => $Navegador, 'Paginado' => $this->paginado, 'Colaboradores' =>$Pagina1, 'PaginaActual' => $this->pagina ]
+    );
+
+  }
 
   public function enviarPapelera(){
     $validacion = $this->validarDatosEnviados(['colaboradorID']);
@@ -228,24 +247,29 @@ class ColaboradoresControlador extends Controladores {
 
   private function actualizar()
   {
+
     $validacion = $this->validarDatosEnviados(
       ['colaboradorID', 'tipoIdentificacionID','cargoID','tipoColaboradorID', 'tipoIdentificacionID', 'personaIDENTIFICACION', 'colaboradorEMAIL', 'personaNOMBRES', 'personaAPELLIDOS' ]
     );
     if(empty($validacion)){
 
 
-      $URL_FOTO = null;
+      $URL_FOTO_COLABORADOR = null;
       if(isset($this->colaboradorFOTO)){
-        $DIR_FOTOS_COLABORADORES = 'colaboradores'.DS.$this->personaIDENTIFICACION.DS.'fotos'.DS;
-        $NOMBRE_FOTO = "".uniqid().".".Archivos::extension($this->colaboradorFOTO);
+
+
+
+         $DIR_FOTOS_COLABORADORES = 'colaboradores'.DS.$this->personaIDENTIFICACION.DS.'fotos'.DS;
+         $NOMBRE_FOTO = "".uniqid().".".Archivos::extension($this->colaboradorFOTO);
         $movido = Archivos::moverArchivoRecibido(
           $this->colaboradorFOTO, DIR_ARCHIVOS.$DIR_FOTOS_COLABORADORES, $NOMBRE_FOTO
         );
         if($movido){
-          $URL_FOTO = URL_ARCHIVOS.$DIR_FOTOS_COLABORADORES.$NOMBRE_FOTO;
+          $URL_FOTO_COLABORADOR = URL_ARCHIVOS.$DIR_FOTOS_COLABORADORES.$NOMBRE_FOTO;
         }
-      }
 
+
+      }
       $URL_FIRMA =  null;
       if(isset($this->colaboradorFIRMA)){
         $DIR_FIRMAS_COLABORADORES = 'colaboradores'.DS.$this->personaIDENTIFICACION.DS.'fotos'.DS;
@@ -259,7 +283,7 @@ class ColaboradoresControlador extends Controladores {
       }
 
       $Persona =  new Personas($this->tipoIdentificacionID, $this->personaIDENTIFICACION);
-      $URL_FOTO = is_null($URL_FOTO) ? $Persona->personaIMAGEN : $Persona->personaIMAGEN;
+      $URL_FOTO = is_null($URL_FOTO_COLABORADOR) ? $Persona->personaIMAGEN : $URL_FOTO_COLABORADOR;
       if(empty($Persona->personaID)){
         $Persona->personaID = $Persona->crear(
           $this->tipoIdentificacionID,$this->personaIDENTIFICACION,
@@ -279,7 +303,7 @@ class ColaboradoresControlador extends Controladores {
 
       if(!empty($Persona->personaID)){
         $Colaborador = new Colaboradores($this->colaboradorID);
-        $URL_FOTO = is_null($URL_FOTO) ? $Colaborador->colaboradorFOTO : $URL_FOTO;
+        $URL_FOTO = is_null($URL_FOTO_COLABORADOR) ? $Colaborador->colaboradorFOTO : $URL_FOTO_COLABORADOR;
         $URL_FIRMA = is_null($URL_FIRMA) ? $Colaborador->colaboradorFIRMA : $URL_FIRMA;
         $actualizoColaborador = $Colaborador->modificar(
            $this->cargoID, $Persona->personaID, $this->tipoColaboradorID,
@@ -317,7 +341,7 @@ class ColaboradoresControlador extends Controladores {
             $Usuario->asignarPermisos(explode(",",$this->listadoPERMISOS));
 
 
-            return Respuestassistema::exito('Se ha ACTUALIZADO Usuario/Colaborador creado Exitosamente. Los nuevos datos de inicio son: <br /> Usuario: <b>'.$Usuario->usuarioNOMBRE.'</b><br /> Clave: <b>'.$usuarioHASH.'</b>', $Colaborador);
+            return Respuestassistema::exito('Se ha ACTUALIZADO Usuario/Colaborador creado Exitosamente. Los nuevos datos de inicio son: <br /> Usuario: <b>'.$Usuario->usuarioNOMBRE.'</b><br /> Clave: <b>'.$usuarioHASH.'</b>', [ 'colaboradorID' => $Colaborador->colaboradorID ]);
           } else {
               return Respuestassistema::error("No se pudo actualizar los datos de USUARIO para el COLABORADOR");
           }

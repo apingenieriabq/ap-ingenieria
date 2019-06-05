@@ -53,7 +53,7 @@
           <a class="dropdown-item" href="javascript:void(0);" data-modulo="Perfil" data-operacion="delUsuario" onclick="abrirItemMenu(this);" ><i class="material-icons">&#xE7FD;</i> Perfil
           </a>
           <!--<a class="dropdown-item" href="edit-user-profile.html"><i class="material-icons">&#xE8B8;</i> Modificar</a>-->
-          <a class="dropdown-item nav-link" href="javascript:void(0);" data-modulo="ListadoMaestroDocumento" data-operacion="mostrarNavegador" onclick="abrirItemMenu(this);" target="_self">
+          <a class="dropdown-item" href="javascript:void(0);" data-modulo="ListadoMaestroDocumento" data-operacion="mostrarNavegador" onclick="abrirItemMenu(this);" target="_self">
             <!--<i class="material-icons">&#xE917;</i>-->
             <i class="fa fa-folder-open"></i><span>Información Institucional</span>
           </a>

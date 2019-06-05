@@ -11,16 +11,16 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
   <link href="plantilla/basica/styles/fonts.googleapis.com/icone91f.css?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="plantilla/basica/styles/stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <link rel="stylesheet" id="main-stylesheet" data-version="1.3.1" href="plantilla/basica/styles/shards-dashboards.1.3.1.min.css">
-  <link rel="stylesheet" href="plantilla/basica/styles/extras.1.3.1.min.css">
-  <link rel="stylesheet" href="plantilla/basica/styles/personalizado.css">
-  <script async defer src="plantilla/basica/styles/buttons.github.io/buttons.js"></script>
 
+  <script async defer src="plantilla/basica/styles/buttons.github.io/buttons.js"></script>
   <!-- https://cdnjs.com/libraries/crypto-js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 
 
+  <link rel="stylesheet" id="main-stylesheet" data-version="1.3.1" href="plantilla/basica/styles/shards-dashboards.1.3.1.min.css">
   {% block archivo_cabeza %}{% endblock %}
+  <link rel="stylesheet" href="plantilla/basica/styles/extras.1.3.1.min.css">
+  <link rel="stylesheet" href="plantilla/basica/styles/personalizado.css">
 
 </head>
 <body class="h-100" onload="" >

@@ -12,7 +12,7 @@ class AutoCargaClases{
 
     private static function cargarClasesSistema(){
         $archivos = self::cargarModelos(DIR_LIBRERIA . 'clases'.DS.'sistema'.DS);
-        print_r($archivos);
+        // print_r($archivos);
     }
 
     private static function cargarClasesUtilidades(){

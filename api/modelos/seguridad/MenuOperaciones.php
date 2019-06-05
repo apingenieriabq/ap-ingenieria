@@ -49,20 +49,32 @@ class MenuOperaciones {
     }
 
 
-    public static function delMenuPorUsuario($idUsuario, $componenteID){
-       $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_USUARIO_Y_COMPONENTES . ' WHERE (Usuarios.usuarioID = ? OR UsuariosRol.usuarioID = ? )'
-            . 'AND MenuOperaciones.menuMENU = "SI" AND MenuOperaciones.componenteID = ? '
+    public static function delMenuPorUsuario($idUsuario, $menuID){
+       $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_USUARIO_Y_COMPONENTES
+            . ' WHERE MenuOperaciones.menuMENU = "SI" '
+            . 'AND MenuOperaciones.menuPADRE = ?  '
+            . 'AND ( (Usuarios.usuarioID = ? OR UsuariosRol.usuarioID = ? )'
+            . ' OR MenuOperaciones.menuPUBLICO = "SI" ) '
             .'GROUP BY MenuOperaciones.menuID '
             .'ORDER BY MenuOperaciones.menuORDEN ' ;
-        return BasededatosAP::selectVariasFilas($sqlQuery, array($idUsuario, $idUsuario, $componenteID));
+        return BasededatosAP::selectVariasFilas($sqlQuery, array($menuID, $idUsuario, $idUsuario));
     }
 
     public static function menuPadresComponentePorUsuario($idUsuario, $componenteID){
-       $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_USUARIO_Y_COMPONENTES . ' WHERE (Usuarios.usuarioID = ? OR UsuariosRol.usuarioID = ? )'
-            . 'AND MenuOperaciones.menuMENU = "SI" AND MenuOperaciones.componenteID = ? AND MenuOperaciones.menuPADRE = 0 '
+       $sqlQuery = ControlAccesoSQL::OPERACIONES_POR_USUARIO_Y_COMPONENTES
+            . ' WHERE MenuOperaciones.menuMENU = "SI"  '
+            . 'AND MenuOperaciones.menuPADRE = 0  '
+            . 'AND (  '
+            . ' MenuOperaciones.componenteID = ?  '
+            . ' AND (  '
+            . '     (Usuarios.usuarioID = ? OR UsuariosRol.usuarioID = ? )  '
+            . '     OR MenuOperaciones.menuPUBLICO = "SI"  '
+            . ' ) '
+            . ') '
+            . ' '
             .'GROUP BY MenuOperaciones.menuID '
             .'ORDER BY MenuOperaciones.menuORDEN ' ;
-        return BasededatosAP::selectVariasFilas($sqlQuery, array($idUsuario, $idUsuario, $componenteID));
+        return BasededatosAP::selectVariasFilas($sqlQuery, array( $componenteID, $idUsuario, $idUsuario));
     }
 
 
