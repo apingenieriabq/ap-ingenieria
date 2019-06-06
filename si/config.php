@@ -19,7 +19,7 @@ if (!defined('DIR_BASE')) {
     define('DIR_BASE', __DIR__.DS);
 }
 if (!defined('URL_BASE')) {
-    define('URL_BASE', 'https://si-ap-ingenieria-puroingeniosamario.c9users.io/si/');
+    define('URL_BASE', 'https://si.apingenieria.net/');
 }
 
 if (!defined('DIR_API')) {

@@ -1,7 +1,9 @@
 <?php
 
 require '../config.php';
-require DIR_API.'libs/vendor/autoload.php';
+
+require DIR_API.'vendor/autoload.php';
+
 require DIR_API.'libs/autoload.php';
 require DIR_API.'libs/Motor.php';
 

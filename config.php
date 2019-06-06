@@ -36,13 +36,19 @@ if (!defined('DIR_BASE')) {
     define('DIR_BASE', __DIR__ . DS);
 }
 if (!defined('URL_BASE')) {
-    define('URL_BASE', 'https://si-ap-ingenieria-puroingeniosamario.c9users.io/');
+    define('URL_BASE', 'https://apingenieria.net/');
+}
+if (!defined('DIR_SI')) {
+    define('DIR_SI', DIR_BASE.'si/');
+}
+if (!defined('URL_SI')) {
+    define('URL_SI',  'https://si.apingenieria.net/');
 }
 if (!defined('DIR_API')) {
     define('DIR_API', DIR_BASE.'api/');
 }
 if (!defined('URL_API')) {
-    define('URL_API', URL_BASE.'api/');
+    define('URL_API',  'https://api.apingenieria.net/');
 }
 
 if (!defined('DIR_CONTROLADORES')) {
@@ -61,7 +67,7 @@ if (!defined('DIR_ARCHIVOS')) {
     define('DIR_ARCHIVOS', DIR_BASE.'archivo/');
 }
 if (!defined('URL_ARCHIVOS')) {
-    define('URL_ARCHIVOS', URL_BASE.'archivo/');
+    define('URL_ARCHIVOS',  'https://archivo.apingenieria.net/');
 }
 if (!defined('DIR_PLANTILLAS')) {
     define('DIR_PLANTILLAS', DIR_API . 'uix' . DS);

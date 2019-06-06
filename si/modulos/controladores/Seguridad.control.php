@@ -63,7 +63,7 @@ class SeguridadControlador extends Controladores {
     global $Api;
     $Api->desconectar();
     Cliente::cerrarSesion();
-    echo RespuestasSistema::exito();
+    echo RespuestasSistema::exito("Desconectado correctamente!");
   }
 
 
