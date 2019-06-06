@@ -39,9 +39,11 @@ class SeguridadControlador extends Controladores {
     global $Api;
     $Clave = base64_decode($this->claveDelColaborador);
     $Respuesta = $Api->ejecutar(
-      'seguridad', 'usuarios', 'verificarLoginCedulaColaborador',
-      array( 'personaIDENTIFICACION' => $this->cedulaDelColaborador, 'usuarioCLAVE' => $Clave)
+      'seguridad', 'usuarios', 'verificarLoginCedulaColaborador'
+      , [ 'personaIDENTIFICACION' => $this->cedulaDelColaborador, 'usuarioCLAVE' => $Clave]
+//      , false
     );
+//    print_r($Respuesta);
     if(!is_null($Respuesta)){
       if(is_object($Respuesta)){
         // var_dump($Respuesta);

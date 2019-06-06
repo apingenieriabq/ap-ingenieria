@@ -92,6 +92,11 @@ class Main {
         $estaLogueado = Cliente::estaLogueado();
         if($estaLogueado){
         // echo "--->>>>>>mostrarMenu>>>>>>>>>     <br /><br /><br />";
+            $Api->ejecutar(
+              'seguridad', 'usuarios', 'registrarVisita'
+            //   , array( 'usuarioID' => Cliente::datos()->usuarioID )
+            // , null, false
+            );
             $Menu = $Api->ejecutar(
               'seguridad', 'usuarios', 'mostrarMenu'
             //   , array( 'usuarioID' => Cliente::datos()->usuarioID )
