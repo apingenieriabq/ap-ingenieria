@@ -96,6 +96,16 @@ class Usuarios extends ModeloDatos {
         	], ['usuarioID' => $usuarioID]
         );
     }
+  function modificarSinClave( $nombre, $contrasena, $colaboradorID = null, $usuarioID = null){
+        if(is_null($usuarioID)){
+          $usuarioID =  $this->usuarioID;
+        }
+        return $this->actualiza([
+        	"usuarioNOMBRE" =>$nombre,
+        	"colaboradorID" => $colaboradorID
+        	], ['usuarioID' => $usuarioID]
+        );
+    }
 
   function comprobar( $nombre, $contrasena){
     $datos = $this->datos(array("usuarioNOMBRE" =>$nombre));

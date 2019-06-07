@@ -327,8 +327,12 @@ class ColaboradoresControlador extends Controladores {
 
           }else{
             if($Usuario->usuarioID == $this->usuarioID){
-              $usuarioHASH = empty($this->usuarioCLAVE) ? hash('crc32', $this->usuarioNOMBRE) : $this->usuarioCLAVE;
-              $Usuario->modificar( $this->usuarioNOMBRE, $usuarioHASH , $Colaborador->colaboradorID, $this->usuarioID );
+                if( !empty($this->usuarioCLAVE) ){
+                    $Usuario->modificarSinClave( $this->usuarioNOMBRE,  $Colaborador->colaboradorID, $this->usuarioID );
+                }else{
+                    $usuarioHASH = empty($this->usuarioCLAVE) ? hash('crc32', $this->usuarioNOMBRE) : $this->usuarioCLAVE;
+                    $Usuario->modificar( $this->usuarioNOMBRE, $usuarioHASH , $Colaborador->colaboradorID, $this->usuarioID );
+                }                          
             }else{
              return Respuestassistema::fallo("El nombre de usuario <b>[".$this->usuarioNOMBRE."]</b> ya está registrado en el sistema. Intenta con otro nombre.", $Colaborador);
             }
