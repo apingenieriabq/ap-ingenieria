@@ -133,6 +133,16 @@ class Colaboradores extends ModeloDatos {
     return $this;
    }
 
+  function todosDatosBasicos(){
+    $Colaboradores = $this->todos();
+    $ColaboradoresCompletos = array();
+    foreach($Colaboradores as $i => $Colaborador){
+    $NewColaborador = new Colaboradores();
+      $ColaboradoresCompletos[$i] = $NewColaborador->datosBasicos($Colaborador->colaboradorID);
+    }
+    return $ColaboradoresCompletos;
+   }
+
   function todosCompletos(){
     $Colaboradores = $this->todos();
     $ColaboradoresCompletos = array();

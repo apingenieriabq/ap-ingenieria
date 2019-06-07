@@ -166,6 +166,7 @@
 <script src="modulos/js/login.js"></script>
 <script src="modulos/js/menu.js"></script>
 <script src="modulos/js/institucional.js"></script>
+<script src="modulos/js/procesos.js"></script>
 <script src="modulos/js/colaboradores.js"></script>
 {% endblock %}
 
