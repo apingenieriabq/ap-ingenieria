@@ -5,7 +5,7 @@
   <div class="col-lg-12 col-sm-12 mb-4">
     <div class="card card-small card-post card-post--aside card-post--1">
 
-      <div class="card-post__image" style="background-image: url('{{DocumentoAP.documentoIMAGEN}}');">
+        <div class="card-post__image" style="    min-height: 30px;" > 
         <a href="#" class="card-post__category badge badge-pill badge-info">{{DocumentoAP.procesoTITULO}}</a>
       <!--<div class="card-post__author d-flex">-->
       <!--  <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('{{DocumentoAP.colaboradorFOTO}}');">Responsable: {{DocumentoAP.personaNOMBRES}} {{DocumentoAP.personaAPELLIDOS}}</a>-->
@@ -18,7 +18,7 @@
       <span scope="col" title="{{DocumentoAP.documentoPUBLICO}}">
         {% if DocumentoAP.documentoPUBLICO == 'SI' %}
         <button  class="btn btn-xs btn-outline-java"><i class="fas fa-lock-open"></i></button>
-        {% else %}
+        {% else %} 
         <button  class="btn btn-xs btn-outline-salmon"><i class="fas fa-lock"></i></button>
         {% endif %}
         <small style="font-size: 0px;">{{DocumentoAP.documentoPUBLICO}}</small>
@@ -72,7 +72,7 @@
 <div class="row">
   <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
     <div class="card card-small card-post card-post--1">
-      <div class="card-post__image" style="background-image: url('{{DocumentoAP.documentoIMAGEN}}');">
+      <div class="card-post__image" style="    min-height: 30px;">
         <a href="#" class="card-post__category badge badge-pill badge-dark">{{DocumentoAP.procesoTITULO}}</a>
         <div class="card-post__author d-flex">
           <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('{{DocumentoAP.colaboradorFOTO}}');">Responsable: {{DocumentoAP.personaNOMBRES}} {{DocumentoAP.personaAPELLIDOS}}</a>

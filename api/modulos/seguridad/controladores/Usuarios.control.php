@@ -42,6 +42,9 @@ class UsuariosControlador extends Controladores {
                 case 'COMBINACION':
                     return Respuestassistema::error("La combinación de cédula y clave no coinciden.");
                     break;
+                case 'DESACTIVO':
+                    return Respuestassistema::error("El colaborador de la cédula ".$this->personaIDENTIFICACION." está DESACTIVO.");
+                    break;
                 case 'CORRECTO':
                     $Colaborador = new Colaboradores();
                     $Colaborador->datosPorCedula($this->personaIDENTIFICACION);

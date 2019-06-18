@@ -107,19 +107,23 @@ class Usuario {
         if (!is_null($Colaborador->colaboradorID)) {
             $Usuario = new Usuarios();
             $Usuario->porColaboradorID($Colaborador->colaboradorID);
-            $resultado = $Usuario->comprobar($Usuario->usuarioNOMBRE, $claveUsuario);
-            // print_r($resultado);
-            if (!empty($resultado)) { 
-                try {
+            if ($Usuario->usuarioESTADO == 'ACTIVO') {
+                $resultado = $Usuario->comprobar($Usuario->usuarioNOMBRE, $claveUsuario);
+                // print_r($resultado);
+                if (!empty($resultado)) {
+                    try {
 //                    $Usuario->registrarUltimaVisita(Usuario::ip(), Usuario::latitud(), Usuario::longitud());
-                    // SesionCliente::valor('SESION', self::singleton());
-                    // SesionCliente::valor('Usuario', $Usuario);
-                } catch (Exception $e) {
-                    print_r($e);
+                        // SesionCliente::valor('SESION', self::singleton());
+                        // SesionCliente::valor('Usuario', $Usuario);
+                    } catch (Exception $e) {
+                        print_r($e);
+                    }
+                    return 'CORRECTO';
                 }
-                return 'CORRECTO';
+                return 'COMBINACION';
+            } else {
+                return 'DESACTIVO';
             }
-            return 'COMBINACION';
         } else {
             return 'FALLO CEDULA';
         }

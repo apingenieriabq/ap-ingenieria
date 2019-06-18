@@ -6,6 +6,10 @@ class DocumentosAP extends ModeloDatos
   public function __construct($documentoID = null) {
     return parent::__construct('DocumentosAP', 'documentoID', $documentoID);
   }
+  
+  public function buscarPorPalabras($palabras) {
+      return $this->todos([ 'documentoNOMBRE[~]' => $palabras]);
+  }
 
   public function todosCompletos(){
     $Documentos = $this->consultaMUCHOS(  DocumentosAPSQL::DATOS_COMPLETOS);
@@ -28,7 +32,7 @@ class DocumentosAP extends ModeloDatos
   }
 
 
-
+ 
 
 
   public function actualizarESTADO($documentoESTADO , $documentoID = null){
@@ -179,4 +183,4 @@ class DocumentosAP extends ModeloDatos
     }
 
 
-}
+} 

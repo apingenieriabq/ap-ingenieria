@@ -28,5 +28,17 @@ class ListadoMaestroDocumentoControlador extends Controladores {
       [ 'Procesos' => $Procesos, 'Documentos' => $Documentos, ]
     );
   }
+  
+  function buscarDocumentos(){      
+    global $Api;
+    $Documentos = $Api->ejecutar(
+      'institucional', 'documentos', 'buscarPorPalabras'
+      , array( 'palabras_buscar' => $this->palabras_buscar )
+//       ,false
+    );
+//     print_r($Documentos);
+    Vistas::mostrar('institucional', 'titulo-buscar', ['Palabras' => $this->palabras_buscar ] );
+    Vistas::mostrar('institucional', 'navegador-documentos' , [ 'Documentos' => $Documentos, ] );
+  }
 
 }

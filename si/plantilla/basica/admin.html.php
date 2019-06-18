@@ -114,13 +114,13 @@
 <link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Scroller-2.0.0/css/scroller.dataTables.min.css"/>
 <link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Select-1.3.0/css/select.dataTables.min.css"/>
 
+<link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.snow.css">
+<link href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+<link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.css">
 
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css"/>
 
-<link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.snow.css">
-<link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.css">
 {% endblock %}
-
 
 
 {% block archivos_script %}
@@ -129,8 +129,9 @@
 <script src="plantilla/basica/scripts/shards-dashboards.1.3.1.min.js"></script>
 <!--<script src="plantilla/basica/scripts/app/app-analytics-overview.1.3.1.min.js"></script>-->
 <script src="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.min.js"></script>
-
-<!--<script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>-->
+<script src="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
+<script type="text/javascript" src="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
+<!--<script type="text/javascript" src="plantilla/basica/scripts/app/app-file-manager.1.3.1.min.js"></script>-->
 
 <script type="text/javascript" src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" ></script>
 
@@ -153,12 +154,6 @@
 <script type="text/javascript" src="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Select-1.3.0/js/dataTables.select.min.js"></script>
 
 
-
-
-
-
-<script type="text/javascript" src="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
-<!--<script type="text/javascript" src="plantilla/basica/scripts/app/app-file-manager.1.3.1.min.js"></script>-->
 
 <script src="js/configs.js"></script>
 

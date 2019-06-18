@@ -43,7 +43,7 @@ class SeguridadControlador extends Controladores {
       , [ 'personaIDENTIFICACION' => $this->cedulaDelColaborador, 'usuarioCLAVE' => $Clave]
 //      , false
     );
-//    print_r($Respuesta);
+//  print_r($Respuesta);
     if(!is_null($Respuesta)){
       if(is_object($Respuesta)){
         // var_dump($Respuesta);
