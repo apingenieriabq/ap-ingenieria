@@ -37,7 +37,7 @@ cargarVista(
   );
 }
 function mostrarConfirmacionEliminarProcesoAP( procesoID, funcionDespues = function(){} ){
-    abrirCuadroConfirmacion('Vamos a ENVIAR A LA PAPELERA la publicación. Para continuar de clic en <b>Estoy segur@</b>.',
+    abrirCuadroConfirmacion('Vamos a ENVIAR A LA PAPELERA el proceso. Para continuar de clic en <b>Estoy segur@</b>.',
         function(){
         ejecutarOperacion(
         'ProcesosAP', 'enviarPapelera', 'procesoID='+procesoID,
@@ -66,7 +66,7 @@ function mostrarConfirmacionCambiarVisibilidadProcesoAP( procesoID, funcionDespu
     });
 }
 function mostrarConfirmacionCambiarEstadoProcesoAP( procesoID, funcionDespues = function(){} ){
-    abrirCuadroConfirmacion('Vamos a cambiar el estado de la publicación. Para continuar de clic en <b>Estoy segur@</b>.',
+    abrirCuadroConfirmacion('Vamos a cambiar el estado del Proceso. Para continuar de clic en <b>Estoy segur@</b>.',
         function(){
             ejecutarOperacion(
                 'ProcesosAP', 'cambiarEstado', 'procesoID='+procesoID,

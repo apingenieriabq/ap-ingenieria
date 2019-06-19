@@ -26,7 +26,7 @@
         <div class="btn-group btn-group-sm btn-group-toggle " data-toggle="buttons">
           <button class="btn btn-xs btn-info" onclick="mostrarModalDetallesProcesoAP({{ProcesoAP.procesoID}});" ><i class="fas fa-eye"></i></button>
           <button class="btn  btn-xs btn-success" onclick="mostrarFormularioEditarProcesoAP({{ProcesoAP.procesoID}});" ><i class="fas fa-edit"></i></button>
-          <button class="btn btn-xs btn-danger" onclick="mostrarConfirmacionEliminarProcesoAP({{ProcesoAP.procesoID}});"><i class="fas fa-trash"></i></button>
+          <button class="btn btn-xs btn-danger" onclick="mostrarConfirmacionEliminarProcesoAP({{ProcesoAP.procesoID}}, abrirGestorProcesosAP);"><i class="fas fa-trash"></i></button>
         </div>
       </td>
       <td scope="col" >{{ProcesoAP.procesoCODIGO}}</td>

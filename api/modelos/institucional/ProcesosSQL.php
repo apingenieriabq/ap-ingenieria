@@ -14,13 +14,11 @@ sql;
       procesoCODIGO,
       procesoTITULO,
       procesoDESCRIPCION,
-      procesoVALOR,
-      procesoFCHCREADO,
+      procesoRESPONSABLE,
+      procesoFCHACTUALIZACION,
       procesoUSRCREA
     )
-    VALUES
-      (
-        ?, ?, ?, ?, ?, NOW(), ? );
+    VALUES  ( ?, ?, ?, ?, CURRENT_TIMESTAMP, ? );
 
 sql;
 
@@ -34,8 +32,8 @@ sql;
       procesoCODIGO = ?,
       procesoTITULO = ?,
       procesoDESCRIPCION = ?,
-      procesoVALOR = ?,
-      procesoFCHMODIFICADO = NOW(),
+      procesoRESPONSABLE = ?,
+      procesoFCHACTUALIZACION = NOW(),
       procesoUSRMODIFICA = ?
     WHERE procesoID = ?;
 sql;

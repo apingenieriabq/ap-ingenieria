@@ -10,12 +10,13 @@ class ProcesosAP extends ModeloDatos {
 
     function datosCompletos($procesoID) {
         $Proceso = $this->porID($procesoID);
-       if(!empty($Proceso) ){
+        if (!empty($Proceso)) {
             $Proceso->Responsable = new Colaboradores($Proceso->procesoRESPONSABLE);
             $Proceso->Documentos = $this->documentos($Proceso->procesoID);
         }
         return $Proceso;
     }
+
     function todosConResponsables() {
         $Procesos = $this->todos();
         foreach ($Procesos as $i => $Proceso) {
@@ -76,6 +77,13 @@ class ProcesosAP extends ModeloDatos {
               $procesoCODIGO, $procesoTITULO, $procesoDESCRIPCION, $procesoRESPONSABLE, Usuario::usuarioID(), $procesoID
             )
         );
+    }
+
+    public function actualizarESTADO($procesoESTADO, $procesoID = null) {
+        if (is_null($procesoID)) {
+            $procesoID = $this->procesoID;
+        }
+        return $this->actualiza(['procesoESTADO' => $procesoESTADO], ['procesoID' => $procesoID]);
     }
 
     /**

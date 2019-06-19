@@ -10,7 +10,7 @@
             <button type="submit" onclick="intercambiarModoBorrador('SI');"
                     class="btn btn-sm btn-accent ml-auto"><i class="material-icons">file_copy</i> Publicar</button>
             {% if DocumentoAP %}
-            <button type="button" onclick="confirmarBorrarDocumento();" class="btn btn-sm btn-salmon ml-auto"><i class="material-icons">delete</i> Eliminar</button>
+            <button type="button" onclick="mostrarConfirmacionEliminarDocumentoAP({{DocumentoAP.documentoID}}, abrirGestorProcesosAP);" class="btn btn-sm btn-salmon ml-auto"><i class="material-icons">delete</i> Eliminar</button>
             {% endif %}
         </div>
     </div>
@@ -26,7 +26,7 @@
                             <input class="form-control form-control-lg mb-3" type="url" name="documentoURL" placeholder="URL del Documento" value="{{DocumentoAP.documentoURL}}" >
                         </div>
                         <div class=" col-md-4">
-                            <input class="form-control form-control-lg mb-3" type="text" name="documentoVERSION" placeholder="Versión" value="{{DocumentoAP.documentoVERSION}}" required >
+                            <input class="form-control form-control-lg mb-3 mayusculas" type="text" name="documentoVERSION" placeholder="Versión" value="{{DocumentoAP.documentoVERSION}}" required >
                         </div>
                     </div>
                     <div><textarea id="editor-documento-procesosAP" class="mb-1">{{DocumentoAP.documentoCONTENIDO|raw}}</textarea></div>
@@ -91,7 +91,7 @@
                             </span>
                             <span class="d-flex mb-2">
                                 <i class="material-icons mr-1">score</i><strong class="mr-1">Responsable: </strong>
-                                <span class="text-warning">{% if DocumentoAP %}{{DocumentoAP.personaNOMBRES}} {{DocumentoAP.personaPAELLIDOS}}<br/><strong>{{DocumentoAP.cargoTITULO}}</strong>{% else %}-{% endif %}</span>
+                                <span class="text-warning">{% if DocumentoAP %}{{DocumentoAP.personaNOMBRES}} {{DocumentoAP.personaAPELLIDOS}}<br/><strong>{{DocumentoAP.cargoTITULO}}</strong>{% else %}-{% endif %}</span>
                             </span>
                             <span class="d-flex mb-2">
                                 <i class="material-icons mr-1">lock</i>

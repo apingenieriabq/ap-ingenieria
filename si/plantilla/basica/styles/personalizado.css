@@ -12,6 +12,20 @@ select:focus {
     font-weight: bold;
 }
 
+
+
+
+.mayusculas {
+    text-transform: uppercase;
+}
+.minusculas{
+    text-transform: lowercase;
+}
+.tipoTitulo {
+    text-transform: capitalize;
+}
+
+
 .main-navbar .navbar {
     height: 40px!important;
 }
