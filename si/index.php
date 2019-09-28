@@ -10,3 +10,4 @@ if(isset($_POST) and count($_POST)){
   echo $twig->render('index.tmpl', Main::parametros());
 }
 // session_write_close();
+//fasiufo aisodfihoas idf
