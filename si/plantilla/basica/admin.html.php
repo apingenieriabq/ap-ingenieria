@@ -115,10 +115,12 @@
 <link rel="stylesheet" type="text/css" href="plantilla/basica/scripts/cdn.datatables.net/1.10.18/Select-1.3.0/css/select.dataTables.min.css"/>
 
 <link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.snow.css">
-<link href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+<link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css">
 <link rel="stylesheet" href="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.css">
 
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css"/>
+
+<link rel="stylesheet" type="text/css" href="js/getorgchart/getorgchart.css"/>
 
 {% endblock %}
 
@@ -132,6 +134,7 @@
 <script src="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
 <script type="text/javascript" src="plantilla/basica/scripts/cdnjs.cloudflare.com/ajax/libs/dropzone/5.2.0/min/dropzone.min.js"></script>
 <!--<script type="text/javascript" src="plantilla/basica/scripts/app/app-file-manager.1.3.1.min.js"></script>-->
+
 
 <script type="text/javascript" src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" ></script>
 
@@ -155,6 +158,8 @@
 
 
 
+<script type="text/javascript" src="js/getorgchart/getorgchart.js" ></script>
+
 <script src="js/configs.js"></script>
 
 
@@ -163,6 +168,7 @@
 <script src="modulos/js/institucional.js"></script>
 <script src="modulos/js/procesos.js"></script>
 <script src="modulos/js/colaboradores.js"></script>
+<script src="modulos/js/unidadesAP.js"></script>
 {% endblock %}
 
 {% block scripts_al_pie %}

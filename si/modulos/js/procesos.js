@@ -5,6 +5,13 @@
  */
 
 
+function pruebaAPI( functionEXITO = function(){} ){
+  cargarVista(
+    'ProcesosAP', 'probarAPI', null,
+    function(respuesta){ functionEXITO(respuesta); }
+  );
+}
+
 function abrirGestorProcesosAP( functionEXITO = function(){} ){
   cargarVista(
     'ProcesosAP', 'mostrarTodos', null,

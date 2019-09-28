@@ -36,7 +36,7 @@ $app->add(function ($request, $response, $next) {
     $uri = $request->getUri();
     $ruta = $uri->getPath();
     $response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
-    // $response = $response->withHeader('Content-type', 'text/html; charset=utf-8');
+//     $response = $response->withHeader('Content-type', 'text/html; charset=utf-8');
 
     if ( $ruta === '/') {
     //     if( !$errorAPI ){

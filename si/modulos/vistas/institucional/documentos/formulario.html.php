@@ -83,11 +83,15 @@
                             <span class="d-flex mb-2">
                                 <i class="material-icons mr-1">fiber_pin</i>
                                 <strong class="mr-1">Código: </strong>
-                                {% if DocumentoAP %}{{DocumentoAP.documentoCODIGO}}{% else %}-{% endif %}
+                                {% if DocumentoAP %}
+                                <input type="text" name="documentoCODIGO" value="{{DocumentoAP.documentoCODIGO}}" />
+                                {% else %}-{% endif %}
                             </span>
                             <span class="d-flex mb-2">
                                 <i class="material-icons mr-1">calendar_today</i><strong class="mr-1">Actualización: </strong>
-                                {% if DocumentoAP %}{{DocumentoAP.documentoFCHACTUALIZACION}}{% else %}{{ "now"|date("Y-m-d h:i.s") }}{% endif %}
+                                {% if DocumentoAP %}
+                                <input type="text" name="documentoFCHACTUALIZACION" value="{{DocumentoAP.documentoFCHACTUALIZACION}}" />
+                                {% else %}{{ "now"|date("Y-m-d h:i.s") }}{% endif %}
                             </span>
                             <span class="d-flex mb-2">
                                 <i class="material-icons mr-1">score</i><strong class="mr-1">Responsable: </strong>

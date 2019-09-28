@@ -238,11 +238,11 @@ function alerta(mensaje) {
         type: 'warning',
     });
 }
-var frasesExito = ['Felicidades!', 'Lo hicimos....', 'Divertido y friki:', 'Genial!!!', 'Exito', 'Bien Hecho!', 'Correcto!'];
+var frasesExito = ['Felicidades!', 'Lo hicimos....', 'Genial!!!', 'Exito', 'Bien Hecho!', 'Correcto!'];
 
 function alertaExito(mensaje) {
     Swal.fire({
-        title: "" + frasesExito[Math.round(Math.random() * frasesExito.length)] + "",
+        title: "" + frasesExito[Math.round(Math.random() * (frasesExito.length - 1) )] + "",
         html: mensaje,
         type: 'success',
         timer: 97531,

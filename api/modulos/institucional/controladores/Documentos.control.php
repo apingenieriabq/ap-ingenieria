@@ -211,7 +211,11 @@ class DocumentosControlador extends Controladores {
 
             $Doc = new DocumentosAP();
             $Doc->cambios(
-              $this->documentoID, $this->procesoID, $this->documentoVERSION, $this->documentoPUBLICADO, $this->documentoNOMBRE, $this->documentoCONTENIDO, $this->documentoURL,
+              $this->documentoID, $this->procesoID, 
+              $this->documentoVERSION,
+              $this->documentoCODIGO , 
+              $this->documentoFCHACTUALIZACION ,$this->documentoPUBLICADO, 
+              $this->documentoNOMBRE, $this->documentoCONTENIDO, $this->documentoURL,
               $this->documentoRESPONSABLE, $this->documentoOBSERVACIONES
             );
             if (!empty($Doc->documentoID)) {

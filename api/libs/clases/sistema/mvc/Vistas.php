@@ -8,7 +8,7 @@ class Vistas {
         }else{
           $datos['hash_vista'] = uniqid();
         }
-        $datos['session'] = Cliente::getUsuario();
+//        $datos['session'] = Cliente::getUsuario();
         $datos['URL_ARCHIVOS'] = URL_ARCHIVOS;
         try{
             echo $twig->render( $componente . DS . 'vistas' . DS . $vista . EXT_VISTA,

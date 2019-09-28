@@ -130,18 +130,19 @@ class DocumentosAP extends ModeloDatos
         ]);
     return $this->porID($nuevo);
   }
-  public function cambios( $documentoID, $procesoID, $documentoVERSION , $documentoPUBLICADO , $documentoNOMBRE , $documentoCONTENIDO ,
+  public function cambios( $documentoID, $procesoID, $documentoVERSION , $documentoCODIGO, $documentoFCHACTUALIZACION,  $documentoPUBLICADO , $documentoNOMBRE , $documentoCONTENIDO ,
     $documentoURL , $documentoRESPONSABLE , $documentoOBSERVACIONES){
 
     $actualizado = $this->actualiza([ 'procesoID' => $procesoID ,
           'documentoVERSION' => $documentoVERSION ,
+        'documentoCODIGO' => $documentoCODIGO,
           'documentoPUBLICADO' => $documentoPUBLICADO ,
           'documentoNOMBRE' => $documentoNOMBRE ,
           'documentoCONTENIDO' => $documentoCONTENIDO ,
           'documentoURL' => $documentoURL ,
           'documentoRESPONSABLE' => $documentoRESPONSABLE ,
           'documentoOBSERVACIONES' => $documentoOBSERVACIONES,
-          'documentoUSRCREACION' => Usuario::id(),
+          'documentoFCHACTUALIZACION' => $documentoFCHACTUALIZACION,
           'documentoUSRACTUALIZACION' => Usuario::id()
         ], ['documentoID' => $documentoID ]);
     return $this->porID($documentoID);

@@ -59,6 +59,7 @@
     $("#botonera_sobreTablaAP.botonera").html(
       '<button type="button" onclick="mostrarFormularioNuevoProcesoAP();" class="btn btn-sm btn-accent btn-primary"><i class="material-icons">add</i> Nuevo </button>'
       + '<button type="button" onclick="abrirGestorProcesosAP();" class="btn btn-sm btn-gray"><i class="material-icons">refresh</i> Actualizar </button>'
+      + '<button type="button" onclick="pruebaAPI(alert);" class="btn btn-sm btn-gray"><i class="material-icons">refresh</i> Prueba API </button>'
       );
 } );
 </script>

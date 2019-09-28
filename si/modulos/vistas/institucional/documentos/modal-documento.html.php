@@ -62,7 +62,7 @@
   </div>
   <div class="col-lg-12 col-sm-12 mb-4">
     <div class="embed-responsive embed-responsive-16by9">
-      <iframe class="embed-responsive-item" src="{{DocumentoAP.documentoURL}}&pid=explorer&efh=false&a=v&chrome=false&embedded=true" width="800" height="600" style="border: none;" allowfullscreen ></iframe>
+      <iframe class="embed-responsive-item" src="{{DocumentoAP.documentoURL}}" width="800" height="600" style="border: none;" allowfullscreen ></iframe>
     </div>
   </div>
 </div>

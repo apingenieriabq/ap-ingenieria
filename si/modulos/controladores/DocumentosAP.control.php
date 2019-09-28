@@ -154,6 +154,8 @@ class DocumentosAPControlador extends Controladores {
           'documentoURL' => $this->documentoURL ,
           'documentoRESPONSABLE' => $this->documentoRESPONSABLE ,
           'documentoOBSERVACIONES' => $this->documentoOBSERVACIONES ,
+          'documentoFCHACTUALIZACION' => $this->documentoFCHACTUALIZACION ,
+          'documentoCODIGO' => $this->documentoCODIGO ,
         ]
         // , null
         // , false

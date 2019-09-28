@@ -1,6 +1,33 @@
 <?php
 
 class ProcesosAPControlador extends Controladores {
+    
+    function probarAPI() {
+         global $Api;
+         
+        echo "******************MOSTRAR TODOS***********************<br />";
+        $ProcesosAP1 = $Api->ejecutar(
+          'institucional', 'Procesos', 'mostrarTodos'
+          // ,null, false
+        );
+        print_r($ProcesosAP1);
+        
+        echo "*******************DATOS COMPLETOS**********************<br />";        
+        $ProcesosAP2 = $Api->ejecutar(
+              'institucional', 'procesos', 'datosCompletos'
+              , ['procesoID' => 1 ]
+        );
+        print_r($ProcesosAP2);
+        
+        echo "*******************CARGOS **********************<br />";        
+        $ProcesosAP3 = $Api->ejecutar(
+          'listados', 'cargos', 'todosCompletos'
+          // ,null, false
+        );
+        print_r($ProcesosAP3);
+    
+        
+    }
 
     function listadoColaboradoresPorCargo() {
 
