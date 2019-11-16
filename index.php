@@ -60,10 +60,18 @@
 
         <script type="text/javascript">
                             function abrirSIAPI() {
-                                window.open('https://si.apingenieria.net/', 'SIAPI');
+                                <?php if($_SERVER['SERVER_ADDR'] == '159.203.126.221'): ?>
+                                    window.open('http://159.203.126.221/ap/si/', 'SIAPI');
+                                <?php else: ?>
+                                    window.open('https://si.apingenieria.net/', 'SIAPI');
+                                <?php endif; ?>
                             }
                             function abrirAPIAPI() {
+                                <?php if($_SERVER['SERVER_ADDR'] == '159.203.126.221'): ?>
+                                window.open('http://159.203.126.221/ap/api/', 'APIAPI');
+                                <?php else: ?>
                                 window.open('https://api.apingenieria.net/', 'APIAPI');
+                                <?php endif; ?>
                             }
         </script>
 
