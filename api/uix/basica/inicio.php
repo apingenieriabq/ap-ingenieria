@@ -1,8 +1,12 @@
 <!doctype html>
 <html class="no-js" lang="es">
 <head>
-  
+<?php if($_SERVER['SERVER_ADDR'] == '159.203.126.221'): ?>
+<base href="ap/api/" />
+<?php else: ?>
   <base href="api/" />
+<?php endif; ?>  
+  
   
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 

@@ -2,7 +2,11 @@
 <html class="no-js h-100" lang="es">
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <head>
+  <?php if($_SERVER['SERVER_ADDR'] == '159.203.126.221'): ?>
+  <base href="ap/si/" />
+  <?php else: ?>
   <base href="si/" />
+  <?php endif; ?>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>{{titulo_plantilla}} - Sistema de Informaci&oacute;n de AP Ingenieria</title>
