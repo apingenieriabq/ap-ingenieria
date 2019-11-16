@@ -14,7 +14,7 @@ class ColaboradoresSQL {
     , `Responsable`.`colaboradorEMAIL`
     , `Usuarios`.`usuarioNOMBRE`
   FROM
-      BASEDEDATOSAPPRUEBAS.`DocumentosAP`
+      `DocumentosAP` 
       INNER JOIN `ProcesosAP`
           ON (`DocumentosAP`.`procesoID` = `ProcesosAP`.`procesoID`)
       LEFT JOIN `Colaboradores` AS `Responsable`

@@ -1,8 +1,8 @@
 <?php
 
-error_reporting(E_ERROR);
+error_reporting(E_ALL);
 ini_set('display_errors', true);
-ini_set('display_startup_errors', false);
+ini_set('display_startup_errors', true);
 ini_set('max_input_time', 3000);
 ini_set('max_execution_time', 3000);
 ini_set('memory_limit', '640M');

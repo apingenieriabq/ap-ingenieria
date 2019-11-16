@@ -55,7 +55,7 @@ class BasededatosAP  extends PDO {
 
     public static function formatearConsulta($sqlQuery)
     {
-        $variables = array('SICAMDB', 'APDB', 'BASEDEDATOSAPPRUEBAS',);
+        $variables = array('SICAMDB', 'APDB', 'BasededatosAP',);
         $datos = array(
             BasededatosAP::singleton()->BD_NAME,
             BasededatosAP::singleton()->BD_NAME,

@@ -156,7 +156,7 @@ class Usuario {
     public static function iniciarSesion($nombreUsuario, $claveUsuario) {
         $Usuarios = new Usuarios();
         $Usuarios->comprobar($nombreUsuario, $claveUsuario);
-        
+
         // print_r($Usuarios);
         // die();
         if (isset($Usuarios->usuarioID) and ! is_null($Usuarios->usuarioID)) {

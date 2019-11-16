@@ -121,7 +121,11 @@ class ModeloDatos {
             return $this->Registros;
         }
     }
+<<<<<<< HEAD
     function fila($donde = null, $columnas = '*' ){ 
+=======
+    function fila($donde = null, $columnas = '*' ){
+>>>>>>> a4682d9d4436d1a315c2f59bf581b55589588625
         global $BD_AP_PRINCIPAL;
         return $BD_AP_PRINCIPAL->get($this->nombreTabla, $columnas, $donde);
     }
