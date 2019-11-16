@@ -1,0 +1,1 @@
+<?php if (!defined('CLAVE_SECRETA')) die('Para acceder al archivo debes ser un usuario autorizado.');

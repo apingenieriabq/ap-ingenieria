@@ -1,0 +1,21 @@
+<div id="respuesta"></div>
+<script type="text/javascript">
+  var clientId = "superusuario";
+  var clientSecret = "superusuario";
+
+  // var authorizationBasic = $.base64.btoa(clientId + ':' + clientSecret);
+  var authorizationBasic = window.btoa(clientId + ':' + clientSecret);
+
+  var request = new XMLHttpRequest();
+  request.open('POST', 'https://ap-ingenieria-puroingeniosamario.c9users.io/api/sistema/api/probandoRecepcionPOST', true);
+  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+  request.setRequestHeader('Authorization', 'Basic ' + authorizationBasic);
+  request.setRequestHeader('Accept', 'application/json');
+  request.send("username=John&password=Smith&grant_type=password");
+
+  request.onreadystatechange = function() {
+    if (request.readyState === 4) {
+      document.writeln(request.responseText);
+    }
+  };
+</script>

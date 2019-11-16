@@ -1,0 +1,163 @@
+select option[selected] {
+    color: red;
+    border: 1px solid #333333;
+    font-weight: bold;
+    font-size: 110%;
+    border: thin solid black;
+}
+
+select:hover,
+select:focus {
+    border: 1px solid #333333;
+    font-weight: bold;
+}
+
+
+
+
+.mayusculas {
+    text-transform: uppercase;
+}
+.minusculas{
+    text-transform: lowercase;
+}
+.tipoTitulo {
+    text-transform: capitalize;
+}
+
+
+.main-navbar .navbar {
+    height: 40px!important;
+}
+
+.main-sidebar .navbar-brand {
+    height: 40px!important;
+    padding: 0px!important;
+}
+
+.main-navbar .navbar .nav-link {
+    min-width: 60px;
+    padding: 0px!important;
+}
+
+.main-navbar .navbar .user-avatar {
+    height: 40px!important;
+    padding: 3px;
+}
+
+.main-content>.main-content-container.container-fluid {
+    min-height: calc(100vh - 6.5rem)!important;
+}
+
+.page-header>.align-items-right>button {
+    float: right;
+}
+
+.form-control {
+    border: 1px solid #aaaaaa;
+    color: black;
+}
+
+.form-control:hover,
+.form-control:focus {
+    border: 1px solid #333333;
+    font-weight: bold;
+}
+
+.btn-accent {
+    margin: 0px 5px!important;
+}
+
+.btn-xs {
+    padding: 5px!important;
+    margin: 0px!important;
+}
+
+.btn-operaciones-tablas {
+    transition: 0.3s;
+}
+
+.btn-operaciones-tablas:hover {
+    padding: 0px!important;
+    -webkit-animation: scale-up-center 0.5s cubic-bezier(1.000, 0.000, 0.000, 1.000) both!important;
+    animation: scale-up-center 0.5s cubic-bezier(1.000, 0.000, 0.000, 1.000) both!important;
+}
+
+.btn-operaciones-tablas>.btn-group>.btn {
+    width: 0px!important;
+    -webkit-transition: width 1s;
+    /* Safari */
+    transition: width 1s;
+}
+
+.btn-operaciones-tablas:hover>.btn-group>.btn {
+    width: 30px!important;
+}
+
+.scale-up-center {}
+
+.sorting,
+.sorting_desc,
+.sorting_asc {
+    cursor: pointer;
+}
+
+.botonera {
+    display: block;
+    float: left;
+    padding: 10px;
+    text-align: left;
+    overflow-wrap: break-word;
+}
+
+.botonera button.dt-button, 
+.botonera div.dt-button, 
+.botonera a.dt-button {
+    background-image: none;   
+}
+
+
+.dataTables_filter label {
+    float: none!important;
+}
+
+table.dataTable tbody td {
+    padding: 10px!important;
+    font-size: 85%;
+}
+
+.modal-open .modal {
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999999;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+#contenido-vista>.directorio .card .card-body,
+#contenido-vista>.directorio .card .card-footer {
+    padding: 10px!important;
+}
+
+#contenido-vista>.directorio .card .card-text {
+    margin-bottom: 5px;
+}
+
+#contenido-vista>.directorio .card .card-body .badge {
+    float: right;
+}
+
+
+
+
+
+/*////Editor WYSIWYG*/
+
+
+div.note-editor.note-frame.panel.panel-default > div.note-editing-area > div.note-editable > p {
+    margin: 0px;
+    margin-bottom: 5px;
+    font-weight: lighter;
+}

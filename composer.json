@@ -1,0 +1,5 @@
+{
+    "require": {
+        "mmucklo/krumo": "^0.6.0"
+    }
+}
