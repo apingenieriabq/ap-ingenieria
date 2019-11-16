@@ -3,7 +3,7 @@
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <head>
   <?php if($_SERVER['SERVER_ADDR'] == '159.203.126.221'): ?>
-  <base href="ap/si/" />
+  <base href="./" />
   <?php else: ?>
   <base href="si/" />
   <?php endif; ?>

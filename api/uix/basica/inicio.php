@@ -2,7 +2,7 @@
 <html class="no-js" lang="es">
 <head>
 <?php if($_SERVER['SERVER_ADDR'] == '159.203.126.221'): ?>
-<base href="ap/api/" />
+<base href="./" />
 <?php else: ?>
   <base href="api/" />
 <?php endif; ?>  
