@@ -22,30 +22,36 @@ abstract class CallExpression extends AbstractExpression
 
     protected function compileCallable(Compiler $compiler)
     {
+        $callable = $this->getAttribute('callable');
+
         $closingParenthesis = false;
         $isArray = false;
-        if ($this->hasAttribute('callable') && $callable = $this->getAttribute('callable')) {
-            if (\is_string($callable) && false === strpos($callable, '::')) {
-                $compiler->raw($callable);
-            } else {
-                list($r, $callable) = $this->reflectCallable($callable);
-                if ($r instanceof \ReflectionMethod && \is_string($callable[0])) {
-                    if ($r->isStatic()) {
-                        $compiler->raw(sprintf('%s::%s', $callable[0], $callable[1]));
-                    } else {
-                        $compiler->raw(sprintf('$this->env->getRuntime(\'%s\')->%s', $callable[0], $callable[1]));
-                    }
-                } elseif ($r instanceof \ReflectionMethod && $callable[0] instanceof ExtensionInterface) {
-                    $compiler->raw(sprintf('$this->env->getExtension(\'%s\')->%s', \get_class($callable[0]), $callable[1]));
-                } else {
-                    $type = ucfirst($this->getAttribute('type'));
-                    $compiler->raw(sprintf('call_user_func_array($this->env->get%s(\'%s\')->getCallable(), ', $type, $this->getAttribute('name')));
-                    $closingParenthesis = true;
-                    $isArray = true;
-                }
-            }
+        if (\is_string($callable) && false === strpos($callable, '::')) {
+            $compiler->raw($callable);
         } else {
-            $compiler->raw($this->getAttribute('thing')->compile());
+            list($r, $callable) = $this->reflectCallable($callable);
+            if ($r instanceof \ReflectionMethod && \is_string($callable[0])) {
+                if ($r->isStatic()) {
+                    $compiler->raw(sprintf('%s::%s', $callable[0], $callable[1]));
+                } else {
+                    $compiler->raw(sprintf('$this->env->getRuntime(\'%s\')->%s', $callable[0], $callable[1]));
+                }
+            } elseif ($r instanceof \ReflectionMethod && $callable[0] instanceof ExtensionInterface) {
+                // For BC/FC with namespaced aliases
+                $class = (new \ReflectionClass(\get_class($callable[0])))->name;
+                if (!$compiler->getEnvironment()->hasExtension($class)) {
+                    // Compile a non-optimized call to trigger a \Twig\Error\RuntimeError, which cannot be a compile-time error
+                    $compiler->raw(sprintf('$this->env->getExtension(\'%s\')', $class));
+                } else {
+                    $compiler->raw(sprintf('$this->extensions[\'%s\']', ltrim($class, '\\')));
+                }
+
+                $compiler->raw(sprintf('->%s', $callable[1]));
+            } else {
+                $closingParenthesis = true;
+                $isArray = true;
+                $compiler->raw(sprintf('call_user_func_array($this->env->get%s(\'%s\')->getCallable(), ', ucfirst($this->getAttribute('type')), $this->getAttribute('name')));
+            }
         }
 
         $this->compileArguments($compiler, $isArray);
@@ -93,10 +99,8 @@ abstract class CallExpression extends AbstractExpression
         }
 
         if ($this->hasNode('arguments')) {
-            $callable = $this->hasAttribute('callable') ? $this->getAttribute('callable') : null;
-
+            $callable = $this->getAttribute('callable');
             $arguments = $this->getArguments($callable, $this->getNode('arguments'));
-
             foreach ($arguments as $node) {
                 if (!$first) {
                     $compiler->raw(', ');
@@ -109,7 +113,7 @@ abstract class CallExpression extends AbstractExpression
         $compiler->raw($isArray ? ']' : ')');
     }
 
-    protected function getArguments($callable, $arguments)
+    protected function getArguments($callable = null, $arguments)
     {
         $callType = $this->getAttribute('type');
         $callName = $this->getAttribute('name');

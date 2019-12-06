@@ -9,10 +9,10 @@ class ComposerStaticInit3bce01c8d6fbf63586ed0e8c21f164f2
     public static $files = array (
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
-        '1c3fd3e33ddd31aef5b20dfef2af1129' => __DIR__ . '/..' . '/kktsvetkov/krumo/class.krumo.php',
         'a7cee959d5f14eb7484e7f8e7182e03d' => __DIR__ . '/..' . '/geoip/geoip/src/geoip.inc',
         '8cf74b4cf02ad0591c257dcfb7edbc8d' => __DIR__ . '/..' . '/geoip/geoip/src/geoipcity.inc',
         'd114bd5194e69687495c9150ff6be780' => __DIR__ . '/..' . '/geoip/geoip/src/timezone.php',
+        '1c3fd3e33ddd31aef5b20dfef2af1129' => __DIR__ . '/..' . '/kktsvetkov/krumo/class.krumo.php',
     );
 
     public static $prefixLengthsPsr4 = array (

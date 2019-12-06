@@ -10,6 +10,7 @@
  */
 
 use Twig\Environment;
+use Twig\Loader\LoaderInterface;
 use Twig\Node\Node;
 use Twig\Node\SetNode;
 use Twig\Node\TextNode;
@@ -22,15 +23,6 @@ use Twig\TokenStream;
 class Twig_Tests_ParserTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @expectedException \Twig\Error\SyntaxError
-     */
-    public function testSetMacroThrowsExceptionOnReservedMethods()
-    {
-        $parser = $this->getParser();
-        $parser->setMacro('parent', $this->getMockBuilder('\Twig\Node\MacroNode')->disableOriginalConstructor()->getMock());
-    }
-
-    /**
      * @expectedException        \Twig\Error\SyntaxError
      * @expectedExceptionMessage Unknown "foo" tag. Did you mean "for" at line 1?
      */
@@ -42,7 +34,7 @@ class Twig_Tests_ParserTest extends \PHPUnit\Framework\TestCase
             new Token(Token::BLOCK_END_TYPE, '', 1),
             new Token(Token::EOF_TYPE, '', 1),
         ]);
-        $parser = new Parser(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()));
+        $parser = new Parser(new Environment($this->getMockBuilder(LoaderInterface::class)->getMock()));
         $parser->parse($stream);
     }
 
@@ -58,7 +50,7 @@ class Twig_Tests_ParserTest extends \PHPUnit\Framework\TestCase
             new Token(Token::BLOCK_END_TYPE, '', 1),
             new Token(Token::EOF_TYPE, '', 1),
         ]);
-        $parser = new Parser(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()));
+        $parser = new Parser(new Environment($this->getMockBuilder(LoaderInterface::class)->getMock()));
         $parser->parse($stream);
     }
 
@@ -68,8 +60,10 @@ class Twig_Tests_ParserTest extends \PHPUnit\Framework\TestCase
     public function testFilterBodyNodes($input, $expected)
     {
         $parser = $this->getParser();
+        $m = new \ReflectionMethod($parser, 'filterBodyNodes');
+        $m->setAccessible(true);
 
-        $this->assertEquals($expected, $parser->filterBodyNodes($input));
+        $this->assertEquals($expected, $m->invoke($parser, $input));
     }
 
     public function getFilterBodyNodesData()
@@ -98,7 +92,10 @@ class Twig_Tests_ParserTest extends \PHPUnit\Framework\TestCase
     {
         $parser = $this->getParser();
 
-        $parser->filterBodyNodes($input);
+        $m = new \ReflectionMethod($parser, 'filterBodyNodes');
+        $m->setAccessible(true);
+
+        $m->invoke($parser, $input);
     }
 
     public function getFilterBodyNodesDataThrowsException()
@@ -114,7 +111,11 @@ class Twig_Tests_ParserTest extends \PHPUnit\Framework\TestCase
      */
     public function testFilterBodyNodesWithBOM($emptyNode)
     {
-        $this->assertNull($this->getParser()->filterBodyNodes(new TextNode(\chr(0xEF).\chr(0xBB).\chr(0xBF).$emptyNode, 1)));
+        $parser = $this->getParser();
+
+        $m = new \ReflectionMethod($parser, 'filterBodyNodes');
+        $m->setAccessible(true);
+        $this->assertNull($m->invoke($parser, new TextNode(\chr(0xEF).\chr(0xBB).\chr(0xBF).$emptyNode, 1)));
     }
 
     public function getFilterBodyNodesWithBOMData()
@@ -129,7 +130,7 @@ class Twig_Tests_ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testParseIsReentrant()
     {
-        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock(), [
+        $twig = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock(), [
             'autoescape' => false,
             'optimizations' => 0,
         ]);
@@ -152,7 +153,7 @@ class Twig_Tests_ParserTest extends \PHPUnit\Framework\TestCase
 
     public function testGetVarName()
     {
-        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock(), [
+        $twig = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock(), [
             'autoescape' => false,
             'optimizations' => 0,
         ]);
@@ -174,21 +175,14 @@ EOF
 
     protected function getParser()
     {
-        $parser = new TestParser(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()));
+        $parser = new Parser(new Environment($this->getMockBuilder(LoaderInterface::class)->getMock()));
         $parser->setParent(new Node());
-        $parser->stream = new TokenStream([]);
+
+        $p = new \ReflectionProperty($parser, 'stream');
+        $p->setAccessible(true);
+        $p->setValue($parser, new TokenStream([]));
 
         return $parser;
-    }
-}
-
-class TestParser extends Parser
-{
-    public $stream;
-
-    public function filterBodyNodes(Twig_NodeInterface $node)
-    {
-        return parent::filterBodyNodes($node);
     }
 }
 

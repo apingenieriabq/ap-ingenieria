@@ -52,7 +52,7 @@
  * */
 class APISAPI {
 
-    const URL = 'https://api.apingenieria.net/';
+    const URL = 'http://api.apingenieria.net/';
     const USERNAME = 'superusuario';
     const PASSWORD = 'superusuario';
 

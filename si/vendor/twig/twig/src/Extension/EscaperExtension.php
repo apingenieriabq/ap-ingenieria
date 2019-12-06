@@ -10,16 +10,14 @@
  */
 
 namespace Twig\Extension {
+use Twig\FileExtensionEscapingStrategy;
 use Twig\NodeVisitor\EscaperNodeVisitor;
 use Twig\TokenParser\AutoEscapeTokenParser;
 use Twig\TwigFilter;
 
-/**
- * @final
- */
-class EscaperExtension extends AbstractExtension
+final class EscaperExtension extends AbstractExtension
 {
-    protected $defaultStrategy;
+    private $defaultStrategy;
 
     /**
      * @param string|false|callable $defaultStrategy An escaping strategy
@@ -58,21 +56,8 @@ class EscaperExtension extends AbstractExtension
      */
     public function setDefaultStrategy($defaultStrategy)
     {
-        // for BC
-        if (true === $defaultStrategy) {
-            @trigger_error('Using "true" as the default strategy is deprecated since version 1.21. Use "html" instead.', E_USER_DEPRECATED);
-
-            $defaultStrategy = 'html';
-        }
-
-        if ('filename' === $defaultStrategy) {
-            @trigger_error('Using "filename" as the default strategy is deprecated since version 1.27. Use "name" instead.', E_USER_DEPRECATED);
-
-            $defaultStrategy = 'name';
-        }
-
         if ('name' === $defaultStrategy) {
-            $defaultStrategy = ['\Twig\FileExtensionEscapingStrategy', 'guess'];
+            $defaultStrategy = [FileExtensionEscapingStrategy::class, 'guess'];
         }
 
         $this->defaultStrategy = $defaultStrategy;
@@ -94,11 +79,6 @@ class EscaperExtension extends AbstractExtension
         }
 
         return $this->defaultStrategy;
-    }
-
-    public function getName()
-    {
-        return 'escaper';
     }
 }
 

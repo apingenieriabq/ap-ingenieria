@@ -28,8 +28,6 @@ class EmbedNode extends IncludeNode
         parent::__construct(new ConstantExpression('not_used', $lineno), $variables, $only, $ignoreMissing, $lineno, $tag);
 
         $this->setAttribute('name', $name);
-        // to be removed in 2.0, used name instead
-        $this->setAttribute('filename', $name);
         $this->setAttribute('index', $index);
     }
 

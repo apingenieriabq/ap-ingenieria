@@ -10,6 +10,7 @@
  */
 
 use Twig\Environment;
+use Twig\Loader\LoaderInterface;
 use Twig\Node\Expression\NameExpression;
 use Twig\Test\NodeTestCase;
 
@@ -25,22 +26,18 @@ class Twig_Tests_Node_Expression_NameTest extends NodeTestCase
     public function getTests()
     {
         $node = new NameExpression('foo', 1);
+        $self = new NameExpression('_self', 1);
         $context = new NameExpression('_context', 1);
 
-        $env = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock(), ['strict_variables' => true]);
-        $env1 = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock(), ['strict_variables' => false]);
+        $env = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock(), ['strict_variables' => true]);
+        $env1 = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock(), ['strict_variables' => false]);
 
-        if (PHP_VERSION_ID >= 70000) {
-            $output = '($context["foo"] ?? $this->getContext($context, "foo"))';
-        } elseif (PHP_VERSION_ID >= 50400) {
-            $output = '(isset($context["foo"]) ? $context["foo"] : $this->getContext($context, "foo"))';
-        } else {
-            $output = '$this->getContext($context, "foo")';
-        }
+        $output = '(isset($context["foo"]) || array_key_exists("foo", $context) ? $context["foo"] : (function () { throw new RuntimeError(\'Variable "foo" does not exist.\', 1, $this->source); })())';
 
         return [
             [$node, "// line 1\n".$output, $env],
             [$node, $this->getVariableGetter('foo', 1), $env1],
+            [$self, "// line 1\n\$this->getTemplateName()"],
             [$context, "// line 1\n\$context"],
         ];
     }

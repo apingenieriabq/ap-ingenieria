@@ -15,14 +15,11 @@ use Twig\NodeVisitor\SandboxNodeVisitor;
 use Twig\Sandbox\SecurityPolicyInterface;
 use Twig\TokenParser\SandboxTokenParser;
 
-/**
- * @final
- */
-class SandboxExtension extends AbstractExtension
+final class SandboxExtension extends AbstractExtension
 {
-    protected $sandboxedGlobally;
-    protected $sandboxed;
-    protected $policy;
+    private $sandboxedGlobally;
+    private $sandboxed;
+    private $policy;
 
     public function __construct(SecurityPolicyInterface $policy, $sandboxed = false)
     {
@@ -98,11 +95,6 @@ class SandboxExtension extends AbstractExtension
         }
 
         return $obj;
-    }
-
-    public function getName()
-    {
-        return 'sandbox';
     }
 }
 

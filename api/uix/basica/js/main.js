@@ -7,9 +7,6 @@
 // Init all plugin when document is ready
 $(document).on('ready', function() {
 
-	obtenerGPS("latitud", "longitud", "mainpage");
-
-
 	// 0. Init console to avoid error
 	var method;
 	var noop = function() {};

@@ -10,6 +10,8 @@
  */
 
 use Twig\Environment;
+use Twig\Extension\CoreExtension;
+use Twig\Loader\LoaderInterface;
 
 class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
 {
@@ -18,7 +20,8 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testRandomFunction(array $expectedInArray, $value1, $value2 = null)
     {
-        $env = new Twig_Environment($this->getMockBuilder('Twig_LoaderInterface')->getMock());
+        $env = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock());
+
         for ($i = 0; $i < 100; ++$i) {
             $this->assertTrue(\in_array(twig_random($env, $value1, $value2), $expectedInArray, true)); // assertContains() would not consider the type
         }
@@ -78,18 +81,18 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
         $max = mt_getrandmax();
 
         for ($i = 0; $i < 100; ++$i) {
-            $val = twig_random(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()));
+            $val = twig_random(new Environment($this->getMockBuilder(LoaderInterface::class)->getMock()));
             $this->assertTrue(\is_int($val) && $val >= 0 && $val <= $max);
         }
     }
 
     public function testRandomFunctionReturnsAsIs()
     {
-        $this->assertSame('', twig_random(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()), ''));
-        $this->assertSame('', twig_random(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock(), ['charset' => null]), ''));
+        $this->assertSame('', twig_random(new Environment($this->getMockBuilder(LoaderInterface::class)->getMock()), ''));
+        $this->assertSame('', twig_random(new Environment($this->getMockBuilder(LoaderInterface::class)->getMock(), ['charset' => null]), ''));
 
         $instance = new \stdClass();
-        $this->assertSame($instance, twig_random(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()), $instance));
+        $this->assertSame($instance, twig_random(new Environment($this->getMockBuilder(LoaderInterface::class)->getMock()), $instance));
     }
 
     /**
@@ -97,36 +100,28 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testRandomFunctionOfEmptyArrayThrowsException()
     {
-        twig_random(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()), []);
+        twig_random(new Environment($this->getMockBuilder(LoaderInterface::class)->getMock()), []);
     }
 
     public function testRandomFunctionOnNonUTF8String()
     {
-        if (!\function_exists('iconv') && !\function_exists('mb_convert_encoding')) {
-            $this->markTestSkipped('needs iconv or mbstring');
-        }
-
-        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
+        $twig = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock());
         $twig->setCharset('ISO-8859-1');
 
-        $text = twig_convert_encoding('Äé', 'ISO-8859-1', 'UTF-8');
+        $text = iconv('UTF-8', 'ISO-8859-1', 'Äé');
         for ($i = 0; $i < 30; ++$i) {
             $rand = twig_random($twig, $text);
-            $this->assertTrue(\in_array(twig_convert_encoding($rand, 'UTF-8', 'ISO-8859-1'), ['Ä', 'é'], true));
+            $this->assertTrue(\in_array(iconv('ISO-8859-1', 'UTF-8', $rand), ['Ä', 'é'], true));
         }
     }
 
     public function testReverseFilterOnNonUTF8String()
     {
-        if (!\function_exists('iconv') && !\function_exists('mb_convert_encoding')) {
-            $this->markTestSkipped('needs iconv or mbstring');
-        }
-
-        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
+        $twig = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock());
         $twig->setCharset('ISO-8859-1');
 
-        $input = twig_convert_encoding('Äé', 'ISO-8859-1', 'UTF-8');
-        $output = twig_convert_encoding(twig_reverse_filter($twig, $input), 'UTF-8', 'ISO-8859-1');
+        $input = iconv('UTF-8', 'ISO-8859-1', 'Äé');
+        $output = iconv('ISO-8859-1', 'UTF-8', twig_reverse_filter($twig, $input));
 
         $this->assertEquals($output, 'éÄ');
     }
@@ -136,8 +131,8 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testCustomEscaper($expected, $string, $strategy)
     {
-        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
-        $twig->getExtension('\Twig\Extension\CoreExtension')->setEscaper('foo', 'foo_escaper_for_test');
+        $twig = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock());
+        $twig->getExtension(CoreExtension::class)->setEscaper('foo', 'foo_escaper_for_test');
 
         $this->assertSame($expected, twig_escape_filter($twig, $string, $strategy));
     }
@@ -156,7 +151,7 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testUnknownCustomEscaper()
     {
-        twig_escape_filter(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()), 'foo', 'bar');
+        twig_escape_filter(new Environment($this->getMockBuilder(LoaderInterface::class)->getMock()), 'foo', 'bar');
     }
 
     /**
@@ -164,7 +159,7 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testTwigFirst($expected, $input)
     {
-        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
+        $twig = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock());
         $this->assertSame($expected, twig_first($twig, $input));
     }
 
@@ -186,7 +181,7 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testTwigLast($expected, $input)
     {
-        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
+        $twig = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock());
         $this->assertSame($expected, twig_last($twig, $input));
     }
 
@@ -259,7 +254,7 @@ class Twig_Tests_Extension_CoreTest extends \PHPUnit\Framework\TestCase
      */
     public function testSliceFilter($expected, $input, $start, $length = null, $preserveKeys = false)
     {
-        $twig = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
+        $twig = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock());
         $this->assertSame($expected, twig_slice($twig, $input, $start, $length, $preserveKeys));
     }
 
@@ -320,7 +315,7 @@ final class CoreTestIteratorAggregateAggregate implements \IteratorAggregate
     }
 }
 
-final class CoreTestIterator implements Iterator
+final class CoreTestIterator implements \Iterator
 {
     private $position;
     private $array;

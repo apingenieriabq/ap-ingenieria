@@ -14,11 +14,9 @@ namespace Twig;
 /**
  * Holds information about a non-compiled Twig template.
  *
- * @final
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class Source
+final class Source
 {
     private $code;
     private $name;

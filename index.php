@@ -41,14 +41,15 @@
                     <li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
                     <li><a href="#" class="icon brands fa-dribbble"><span class="label">Dribbble</span></a></li>
                     <li><a href="#" class="icon brands fa-google-plus"><span class="label">Google+</span></a></li>
-                </ul>
+                </ul> 
                 <ul class="copyright">
-                    <li>&copy; AP Ingenieria S.A.S.</li>
+                    <li>&copy; AP Ingenieria S.A.S. - <?php //print_r( $_SERVER ); ?> </li>
                 </ul>
             </footer>
 
         </div> 
 
+        
         <!-- Scripts -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/jquery.dropotron.min.js"></script>
@@ -60,15 +61,15 @@
 
         <script type="text/javascript">
                             function abrirSIAPI() {
-                                <?php if($_SERVER['SERVER_ADDR'] == '159.203.126.221'): ?>
-                                    window.open('http://159.203.126.221/ap/si/', 'SIAPI');
+                                <?php if( $_SERVER['HTTP_HOST'] == '3.134.89.216:8080'): ?>
+                                    window.open('http://3.134.89.216:8080/si/', 'SIAPI');
                                 <?php else: ?>
                                     window.open('https://si.apingenieria.net/', 'SIAPI');
                                 <?php endif; ?>
                             }
                             function abrirAPIAPI() {
-                                <?php if($_SERVER['SERVER_ADDR'] == '159.203.126.221'): ?>
-                                window.open('http://159.203.126.221/ap/api/', 'APIAPI');
+                                <?php if($_SERVER['HTTP_HOST'] == '3.134.89.216:8080'): ?>
+                                window.open('http://3.134.89.216:8080/api/', 'APIAPI');
                                 <?php else: ?>
                                 window.open('https://api.apingenieria.net/', 'APIAPI');
                                 <?php endif; ?>

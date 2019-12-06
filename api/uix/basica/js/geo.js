@@ -64,7 +64,7 @@ function errorGPS(errorCode) {
     case 1:
       alert("El sistema necesita la autorización para conocer su ubicación, sino sabe contactar a Soporte TICS." +
         "\r\n\nAhora debemos recargar el sitio para validar nuevamente tu posición geografica.");
-      setTimeout(function() { window.location.reload(); }, 3210);
+      //setTimeout(function() { window.location.reload(); }, 3210);
       break;
     case 2:
       alert("Ubicacion no encontrada en el sistema");

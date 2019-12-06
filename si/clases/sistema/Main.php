@@ -85,7 +85,10 @@ class Main {
         $datos = $Api->ejecutar(
             'sistema','parametros','valores',
             array( 'parametrosCODIGOS' => array( 'LOGOAP_PNG', 'URL_PUBLICA') )
+            // , false
         );
+        // print_r($datos);
+        // die();
 
 
         $Menu = null;
@@ -104,6 +107,7 @@ class Main {
             );
         // echo "--->>>>>>>>>>>>>>>    <br /><br /><br />";
             // print_r($Menu);
+        //     session_destroy();
             // die();
         }
 

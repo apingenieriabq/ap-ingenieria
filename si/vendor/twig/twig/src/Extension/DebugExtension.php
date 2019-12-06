@@ -12,10 +12,7 @@
 namespace Twig\Extension {
 use Twig\TwigFunction;
 
-/**
- * @final
- */
-class DebugExtension extends AbstractExtension
+final class DebugExtension extends AbstractExtension
 {
     public function getFunctions()
     {
@@ -33,11 +30,6 @@ class DebugExtension extends AbstractExtension
             new TwigFunction('dump', 'twig_var_dump', ['is_safe' => $isDumpOutputHtmlSafe ? ['html'] : [], 'needs_context' => true, 'needs_environment' => true]),
         ];
     }
-
-    public function getName()
-    {
-        return 'debug';
-    }
 }
 
 class_alias('Twig\Extension\DebugExtension', 'Twig_Extension_Debug');
@@ -47,7 +39,7 @@ namespace {
 use Twig\Environment;
 use Twig\Template;
 
-function twig_var_dump(Environment $env, $context)
+function twig_var_dump(Environment $env, $context, ...$vars)
 {
     if (!$env->isDebug()) {
         return;
@@ -55,8 +47,7 @@ function twig_var_dump(Environment $env, $context)
 
     ob_start();
 
-    $count = \func_num_args();
-    if (2 === $count) {
+    if (!$vars) {
         $vars = [];
         foreach ($context as $key => $value) {
             if (!$value instanceof Template) {
@@ -66,9 +57,7 @@ function twig_var_dump(Environment $env, $context)
 
         var_dump($vars);
     } else {
-        for ($i = 2; $i < $count; ++$i) {
-            var_dump(func_get_arg($i));
-        }
+        var_dump(...$vars);
     }
 
     return ob_get_clean();

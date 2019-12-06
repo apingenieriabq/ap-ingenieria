@@ -45,27 +45,17 @@ class ExpressionParser
     const OPERATOR_LEFT = 1;
     const OPERATOR_RIGHT = 2;
 
-    protected $parser;
-    protected $unaryOperators;
-    protected $binaryOperators;
-
+    private $parser;
     private $env;
+    private $unaryOperators;
+    private $binaryOperators;
 
-    public function __construct(Parser $parser, $env = null)
+    public function __construct(Parser $parser, Environment $env)
     {
         $this->parser = $parser;
-
-        if ($env instanceof Environment) {
-            $this->env = $env;
-            $this->unaryOperators = $env->getUnaryOperators();
-            $this->binaryOperators = $env->getBinaryOperators();
-        } else {
-            @trigger_error('Passing the operators as constructor arguments to '.__METHOD__.' is deprecated since version 1.27. Pass the environment instead.', E_USER_DEPRECATED);
-
-            $this->env = $parser->getEnvironment();
-            $this->unaryOperators = func_get_arg(1);
-            $this->binaryOperators = func_get_arg(2);
-        }
+        $this->env = $env;
+        $this->unaryOperators = $env->getUnaryOperators();
+        $this->binaryOperators = $env->getBinaryOperators();
     }
 
     public function parseExpression($precedence = 0)
@@ -81,7 +71,7 @@ class ExpressionParser
             } elseif ('is' === $token->getValue()) {
                 $expr = $this->parseTestExpression($expr);
             } elseif (isset($op['callable'])) {
-                $expr = \call_user_func($op['callable'], $this->parser, $expr);
+                $expr = $op['callable']($this->parser, $expr);
             } else {
                 $expr1 = $this->parseExpression(self::OPERATOR_LEFT === $op['associativity'] ? $op['precedence'] + 1 : $op['precedence']);
                 $class = $op['class'];
@@ -98,7 +88,7 @@ class ExpressionParser
         return $expr;
     }
 
-    protected function getPrimary()
+    private function getPrimary()
     {
         $token = $this->parser->getCurrentToken();
 
@@ -109,10 +99,10 @@ class ExpressionParser
             $class = $operator['class'];
 
             return $this->parsePostfixExpression(new $class($expr, $token->getLine()));
-        } elseif ($token->test(Token::PUNCTUATION_TYPE, '(')) {
+        } elseif ($token->test(/* Token::PUNCTUATION_TYPE */ 9, '(')) {
             $this->parser->getStream()->next();
             $expr = $this->parseExpression();
-            $this->parser->getStream()->expect(Token::PUNCTUATION_TYPE, ')', 'An opened parenthesis is not properly closed');
+            $this->parser->getStream()->expect(/* Token::PUNCTUATION_TYPE */ 9, ')', 'An opened parenthesis is not properly closed');
 
             return $this->parsePostfixExpression($expr);
         }
@@ -120,12 +110,12 @@ class ExpressionParser
         return $this->parsePrimaryExpression();
     }
 
-    protected function parseConditionalExpression($expr)
+    private function parseConditionalExpression($expr)
     {
-        while ($this->parser->getStream()->nextIf(Token::PUNCTUATION_TYPE, '?')) {
-            if (!$this->parser->getStream()->nextIf(Token::PUNCTUATION_TYPE, ':')) {
+        while ($this->parser->getStream()->nextIf(/* Token::PUNCTUATION_TYPE */ 9, '?')) {
+            if (!$this->parser->getStream()->nextIf(/* Token::PUNCTUATION_TYPE */ 9, ':')) {
                 $expr2 = $this->parseExpression();
-                if ($this->parser->getStream()->nextIf(Token::PUNCTUATION_TYPE, ':')) {
+                if ($this->parser->getStream()->nextIf(/* Token::PUNCTUATION_TYPE */ 9, ':')) {
                     $expr3 = $this->parseExpression();
                 } else {
                     $expr3 = new ConstantExpression('', $this->parser->getCurrentToken()->getLine());
@@ -141,21 +131,21 @@ class ExpressionParser
         return $expr;
     }
 
-    protected function isUnary(Token $token)
+    private function isUnary(Token $token)
     {
-        return $token->test(Token::OPERATOR_TYPE) && isset($this->unaryOperators[$token->getValue()]);
+        return $token->test(/* Token::OPERATOR_TYPE */ 8) && isset($this->unaryOperators[$token->getValue()]);
     }
 
-    protected function isBinary(Token $token)
+    private function isBinary(Token $token)
     {
-        return $token->test(Token::OPERATOR_TYPE) && isset($this->binaryOperators[$token->getValue()]);
+        return $token->test(/* Token::OPERATOR_TYPE */ 8) && isset($this->binaryOperators[$token->getValue()]);
     }
 
     public function parsePrimaryExpression()
     {
         $token = $this->parser->getCurrentToken();
         switch ($token->getType()) {
-            case Token::NAME_TYPE:
+            case /* Token::NAME_TYPE */ 5:
                 $this->parser->getStream()->next();
                 switch ($token->getValue()) {
                     case 'true':
@@ -184,17 +174,17 @@ class ExpressionParser
                 }
                 break;
 
-            case Token::NUMBER_TYPE:
+            case /* Token::NUMBER_TYPE */ 6:
                 $this->parser->getStream()->next();
                 $node = new ConstantExpression($token->getValue(), $token->getLine());
                 break;
 
-            case Token::STRING_TYPE:
-            case Token::INTERPOLATION_START_TYPE:
+            case /* Token::STRING_TYPE */ 7:
+            case /* Token::INTERPOLATION_START_TYPE */ 10:
                 $node = $this->parseStringExpression();
                 break;
 
-            case Token::OPERATOR_TYPE:
+            case /* Token::OPERATOR_TYPE */ 8:
                 if (preg_match(Lexer::REGEX_NAME, $token->getValue(), $matches) && $matches[0] == $token->getValue()) {
                     // in this context, string operators are variable names
                     $this->parser->getStream()->next();
@@ -204,10 +194,8 @@ class ExpressionParser
                     $class = $this->unaryOperators[$token->getValue()]['class'];
 
                     $ref = new \ReflectionClass($class);
-                    $negClass = 'Twig\Node\Expression\Unary\NegUnary';
-                    $posClass = 'Twig\Node\Expression\Unary\PosUnary';
-                    if (!(\in_array($ref->getName(), [$negClass, $posClass, 'Twig_Node_Expression_Unary_Neg', 'Twig_Node_Expression_Unary_Pos'])
-                        || $ref->isSubclassOf($negClass) || $ref->isSubclassOf($posClass)
+                    if (!(\in_array($ref->getName(), [NegUnary::class, PosUnary::class, 'Twig_Node_Expression_Unary_Neg', 'Twig_Node_Expression_Unary_Pos'])
+                        || $ref->isSubclassOf(NegUnary::class) || $ref->isSubclassOf(PosUnary::class)
                         || $ref->isSubclassOf('Twig_Node_Expression_Unary_Neg') || $ref->isSubclassOf('Twig_Node_Expression_Unary_Pos'))
                     ) {
                         throw new SyntaxError(sprintf('Unexpected unary operator "%s".', $token->getValue()), $token->getLine(), $this->parser->getStream()->getSourceContext());
@@ -222,11 +210,11 @@ class ExpressionParser
 
                 // no break
             default:
-                if ($token->test(Token::PUNCTUATION_TYPE, '[')) {
+                if ($token->test(/* Token::PUNCTUATION_TYPE */ 9, '[')) {
                     $node = $this->parseArrayExpression();
-                } elseif ($token->test(Token::PUNCTUATION_TYPE, '{')) {
+                } elseif ($token->test(/* Token::PUNCTUATION_TYPE */ 9, '{')) {
                     $node = $this->parseHashExpression();
-                } elseif ($token->test(Token::OPERATOR_TYPE, '=') && ('==' === $this->parser->getStream()->look(-1)->getValue() || '!=' === $this->parser->getStream()->look(-1)->getValue())) {
+                } elseif ($token->test(/* Token::OPERATOR_TYPE */ 8, '=') && ('==' === $this->parser->getStream()->look(-1)->getValue() || '!=' === $this->parser->getStream()->look(-1)->getValue())) {
                     throw new SyntaxError(sprintf('Unexpected operator of value "%s". Did you try to use "===" or "!==" for strict comparison? Use "is same as(value)" instead.', $token->getValue()), $token->getLine(), $this->parser->getStream()->getSourceContext());
                 } else {
                     throw new SyntaxError(sprintf('Unexpected token "%s" of value "%s".', Token::typeToEnglish($token->getType()), $token->getValue()), $token->getLine(), $this->parser->getStream()->getSourceContext());
@@ -244,12 +232,12 @@ class ExpressionParser
         // a string cannot be followed by another string in a single expression
         $nextCanBeString = true;
         while (true) {
-            if ($nextCanBeString && $token = $stream->nextIf(Token::STRING_TYPE)) {
+            if ($nextCanBeString && $token = $stream->nextIf(/* Token::STRING_TYPE */ 7)) {
                 $nodes[] = new ConstantExpression($token->getValue(), $token->getLine());
                 $nextCanBeString = false;
-            } elseif ($stream->nextIf(Token::INTERPOLATION_START_TYPE)) {
+            } elseif ($stream->nextIf(/* Token::INTERPOLATION_START_TYPE */ 10)) {
                 $nodes[] = $this->parseExpression();
-                $stream->expect(Token::INTERPOLATION_END_TYPE);
+                $stream->expect(/* Token::INTERPOLATION_END_TYPE */ 11);
                 $nextCanBeString = true;
             } else {
                 break;
@@ -267,16 +255,16 @@ class ExpressionParser
     public function parseArrayExpression()
     {
         $stream = $this->parser->getStream();
-        $stream->expect(Token::PUNCTUATION_TYPE, '[', 'An array element was expected');
+        $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, '[', 'An array element was expected');
 
         $node = new ArrayExpression([], $stream->getCurrent()->getLine());
         $first = true;
-        while (!$stream->test(Token::PUNCTUATION_TYPE, ']')) {
+        while (!$stream->test(/* Token::PUNCTUATION_TYPE */ 9, ']')) {
             if (!$first) {
-                $stream->expect(Token::PUNCTUATION_TYPE, ',', 'An array element must be followed by a comma');
+                $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, ',', 'An array element must be followed by a comma');
 
                 // trailing ,?
-                if ($stream->test(Token::PUNCTUATION_TYPE, ']')) {
+                if ($stream->test(/* Token::PUNCTUATION_TYPE */ 9, ']')) {
                     break;
                 }
             }
@@ -284,7 +272,7 @@ class ExpressionParser
 
             $node->addElement($this->parseExpression());
         }
-        $stream->expect(Token::PUNCTUATION_TYPE, ']', 'An opened array is not properly closed');
+        $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, ']', 'An opened array is not properly closed');
 
         return $node;
     }
@@ -292,16 +280,16 @@ class ExpressionParser
     public function parseHashExpression()
     {
         $stream = $this->parser->getStream();
-        $stream->expect(Token::PUNCTUATION_TYPE, '{', 'A hash element was expected');
+        $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, '{', 'A hash element was expected');
 
         $node = new ArrayExpression([], $stream->getCurrent()->getLine());
         $first = true;
-        while (!$stream->test(Token::PUNCTUATION_TYPE, '}')) {
+        while (!$stream->test(/* Token::PUNCTUATION_TYPE */ 9, '}')) {
             if (!$first) {
-                $stream->expect(Token::PUNCTUATION_TYPE, ',', 'A hash value must be followed by a comma');
+                $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, ',', 'A hash value must be followed by a comma');
 
                 // trailing ,?
-                if ($stream->test(Token::PUNCTUATION_TYPE, '}')) {
+                if ($stream->test(/* Token::PUNCTUATION_TYPE */ 9, '}')) {
                     break;
                 }
             }
@@ -313,9 +301,9 @@ class ExpressionParser
             //  * a string -- 'a'
             //  * a name, which is equivalent to a string -- a
             //  * an expression, which must be enclosed in parentheses -- (1 + 2)
-            if (($token = $stream->nextIf(Token::STRING_TYPE)) || ($token = $stream->nextIf(Token::NAME_TYPE)) || $token = $stream->nextIf(Token::NUMBER_TYPE)) {
+            if (($token = $stream->nextIf(/* Token::STRING_TYPE */ 7)) || ($token = $stream->nextIf(/* Token::NAME_TYPE */ 5)) || $token = $stream->nextIf(/* Token::NUMBER_TYPE */ 6)) {
                 $key = new ConstantExpression($token->getValue(), $token->getLine());
-            } elseif ($stream->test(Token::PUNCTUATION_TYPE, '(')) {
+            } elseif ($stream->test(/* Token::PUNCTUATION_TYPE */ 9, '(')) {
                 $key = $this->parseExpression();
             } else {
                 $current = $stream->getCurrent();
@@ -323,12 +311,12 @@ class ExpressionParser
                 throw new SyntaxError(sprintf('A hash key must be a quoted string, a number, a name, or an expression enclosed in parentheses (unexpected token "%s" of value "%s".', Token::typeToEnglish($current->getType()), $current->getValue()), $current->getLine(), $stream->getSourceContext());
             }
 
-            $stream->expect(Token::PUNCTUATION_TYPE, ':', 'A hash key must be followed by a colon (:)');
+            $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, ':', 'A hash key must be followed by a colon (:)');
             $value = $this->parseExpression();
 
             $node->addElement($value, $key);
         }
-        $stream->expect(Token::PUNCTUATION_TYPE, '}', 'An opened hash is not properly closed');
+        $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, '}', 'An opened hash is not properly closed');
 
         return $node;
     }
@@ -337,7 +325,7 @@ class ExpressionParser
     {
         while (true) {
             $token = $this->parser->getCurrentToken();
-            if (Token::PUNCTUATION_TYPE == $token->getType()) {
+            if (/* Token::PUNCTUATION_TYPE */ 9 == $token->getType()) {
                 if ('.' == $token->getValue() || '[' == $token->getValue()) {
                     $node = $this->parseSubscriptExpression($node);
                 } elseif ('|' == $token->getValue()) {
@@ -411,15 +399,15 @@ class ExpressionParser
         if ('.' == $token->getValue()) {
             $token = $stream->next();
             if (
-                Token::NAME_TYPE == $token->getType()
+                /* Token::NAME_TYPE */ 5 == $token->getType()
                 ||
-                Token::NUMBER_TYPE == $token->getType()
+                /* Token::NUMBER_TYPE */ 6 == $token->getType()
                 ||
-                (Token::OPERATOR_TYPE == $token->getType() && preg_match(Lexer::REGEX_NAME, $token->getValue()))
+                (/* Token::OPERATOR_TYPE */ 8 == $token->getType() && preg_match(Lexer::REGEX_NAME, $token->getValue()))
             ) {
                 $arg = new ConstantExpression($token->getValue(), $lineno);
 
-                if ($stream->test(Token::PUNCTUATION_TYPE, '(')) {
+                if ($stream->test(/* Token::PUNCTUATION_TYPE */ 9, '(')) {
                     $type = Template::METHOD_CALL;
                     foreach ($this->parseArguments() as $n) {
                         $arguments->addElement($n);
@@ -436,11 +424,7 @@ class ExpressionParser
 
                 $name = $arg->getAttribute('value');
 
-                if ($this->parser->isReservedMacroName($name)) {
-                    throw new SyntaxError(sprintf('"%s" cannot be called as macro as it is a reserved keyword.', $name), $token->getLine(), $stream->getSourceContext());
-                }
-
-                $node = new MethodCallExpression($node, 'get'.$name, $arguments, $lineno);
+                $node = new MethodCallExpression($node, 'macro_'.$name, $arguments, $lineno);
                 $node->setAttribute('safe', true);
 
                 return $node;
@@ -450,19 +434,19 @@ class ExpressionParser
 
             // slice?
             $slice = false;
-            if ($stream->test(Token::PUNCTUATION_TYPE, ':')) {
+            if ($stream->test(/* Token::PUNCTUATION_TYPE */ 9, ':')) {
                 $slice = true;
                 $arg = new ConstantExpression(0, $token->getLine());
             } else {
                 $arg = $this->parseExpression();
             }
 
-            if ($stream->nextIf(Token::PUNCTUATION_TYPE, ':')) {
+            if ($stream->nextIf(/* Token::PUNCTUATION_TYPE */ 9, ':')) {
                 $slice = true;
             }
 
             if ($slice) {
-                if ($stream->test(Token::PUNCTUATION_TYPE, ']')) {
+                if ($stream->test(/* Token::PUNCTUATION_TYPE */ 9, ']')) {
                     $length = new ConstantExpression(null, $token->getLine());
                 } else {
                     $length = $this->parseExpression();
@@ -472,12 +456,12 @@ class ExpressionParser
                 $arguments = new Node([$arg, $length]);
                 $filter = new $class($node, new ConstantExpression('slice', $token->getLine()), $arguments, $token->getLine());
 
-                $stream->expect(Token::PUNCTUATION_TYPE, ']');
+                $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, ']');
 
                 return $filter;
             }
 
-            $stream->expect(Token::PUNCTUATION_TYPE, ']');
+            $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, ']');
         }
 
         return new GetAttrExpression($node, $arg, $arguments, $type, $lineno);
@@ -493,10 +477,10 @@ class ExpressionParser
     public function parseFilterExpressionRaw($node, $tag = null)
     {
         while (true) {
-            $token = $this->parser->getStream()->expect(Token::NAME_TYPE);
+            $token = $this->parser->getStream()->expect(/* Token::NAME_TYPE */ 5);
 
             $name = new ConstantExpression($token->getValue(), $token->getLine());
-            if (!$this->parser->getStream()->test(Token::PUNCTUATION_TYPE, '(')) {
+            if (!$this->parser->getStream()->test(/* Token::PUNCTUATION_TYPE */ 9, '(')) {
                 $arguments = new Node();
             } else {
                 $arguments = $this->parseArguments(true);
@@ -506,7 +490,7 @@ class ExpressionParser
 
             $node = new $class($node, $name, $arguments, $token->getLine(), $tag);
 
-            if (!$this->parser->getStream()->test(Token::PUNCTUATION_TYPE, '|')) {
+            if (!$this->parser->getStream()->test(/* Token::PUNCTUATION_TYPE */ 9, '|')) {
                 break;
             }
 
@@ -531,21 +515,21 @@ class ExpressionParser
         $args = [];
         $stream = $this->parser->getStream();
 
-        $stream->expect(Token::PUNCTUATION_TYPE, '(', 'A list of arguments must begin with an opening parenthesis');
-        while (!$stream->test(Token::PUNCTUATION_TYPE, ')')) {
+        $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, '(', 'A list of arguments must begin with an opening parenthesis');
+        while (!$stream->test(/* Token::PUNCTUATION_TYPE */ 9, ')')) {
             if (!empty($args)) {
-                $stream->expect(Token::PUNCTUATION_TYPE, ',', 'Arguments must be separated by a comma');
+                $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, ',', 'Arguments must be separated by a comma');
             }
 
             if ($definition) {
-                $token = $stream->expect(Token::NAME_TYPE, null, 'An argument must be a name');
+                $token = $stream->expect(/* Token::NAME_TYPE */ 5, null, 'An argument must be a name');
                 $value = new NameExpression($token->getValue(), $this->parser->getCurrentToken()->getLine());
             } else {
                 $value = $this->parseExpression();
             }
 
             $name = null;
-            if ($namedArguments && $token = $stream->nextIf(Token::OPERATOR_TYPE, '=')) {
+            if ($namedArguments && $token = $stream->nextIf(/* Token::OPERATOR_TYPE */ 8, '=')) {
                 if (!$value instanceof NameExpression) {
                     throw new SyntaxError(sprintf('A parameter name must be a string, "%s" given.', \get_class($value)), $token->getLine(), $stream->getSourceContext());
                 }
@@ -576,7 +560,7 @@ class ExpressionParser
                 }
             }
         }
-        $stream->expect(Token::PUNCTUATION_TYPE, ')', 'A list of arguments must be closed by a parenthesis');
+        $stream->expect(/* Token::PUNCTUATION_TYPE */ 9, ')', 'A list of arguments must be closed by a parenthesis');
 
         return new Node($args);
     }
@@ -586,14 +570,14 @@ class ExpressionParser
         $stream = $this->parser->getStream();
         $targets = [];
         while (true) {
-            $token = $stream->expect(Token::NAME_TYPE, null, 'Only variables can be assigned to');
+            $token = $stream->expect(/* Token::NAME_TYPE */ 5, null, 'Only variables can be assigned to');
             $value = $token->getValue();
             if (\in_array(strtolower($value), ['true', 'false', 'none', 'null'])) {
                 throw new SyntaxError(sprintf('You cannot assign a value to "%s".', $value), $token->getLine(), $stream->getSourceContext());
             }
             $targets[] = new AssignNameExpression($value, $token->getLine());
 
-            if (!$stream->nextIf(Token::PUNCTUATION_TYPE, ',')) {
+            if (!$stream->nextIf(/* Token::PUNCTUATION_TYPE */ 9, ',')) {
                 break;
             }
         }
@@ -606,7 +590,7 @@ class ExpressionParser
         $targets = [];
         while (true) {
             $targets[] = $this->parseExpression();
-            if (!$this->parser->getStream()->nextIf(Token::PUNCTUATION_TYPE, ',')) {
+            if (!$this->parser->getStream()->nextIf(/* Token::PUNCTUATION_TYPE */ 9, ',')) {
                 break;
             }
         }
@@ -614,19 +598,19 @@ class ExpressionParser
         return new Node($targets);
     }
 
-    private function parseNotTestExpression(\Twig_NodeInterface $node)
+    private function parseNotTestExpression(Node $node)
     {
         return new NotUnary($this->parseTestExpression($node), $this->parser->getCurrentToken()->getLine());
     }
 
-    private function parseTestExpression(\Twig_NodeInterface $node)
+    private function parseTestExpression(Node $node)
     {
         $stream = $this->parser->getStream();
         list($name, $test) = $this->getTest($node->getTemplateLine());
 
         $class = $this->getTestNodeClass($test);
         $arguments = null;
-        if ($stream->test(Token::PUNCTUATION_TYPE, '(')) {
+        if ($stream->test(/* Token::PUNCTUATION_TYPE */ 9, '(')) {
             $arguments = $this->parser->getExpressionParser()->parseArguments(true);
         }
 
@@ -636,13 +620,13 @@ class ExpressionParser
     private function getTest($line)
     {
         $stream = $this->parser->getStream();
-        $name = $stream->expect(Token::NAME_TYPE)->getValue();
+        $name = $stream->expect(/* Token::NAME_TYPE */ 5)->getValue();
 
         if ($test = $this->env->getTest($name)) {
             return [$name, $test];
         }
 
-        if ($stream->test(Token::NAME_TYPE)) {
+        if ($stream->test(/* Token::NAME_TYPE */ 5)) {
             // try 2-words tests
             $name = $name.' '.$this->parser->getCurrentToken()->getValue();
 
@@ -661,9 +645,10 @@ class ExpressionParser
 
     private function getTestNodeClass($test)
     {
-        if ($test instanceof TwigTest && $test->isDeprecated()) {
+        if ($test->isDeprecated()) {
             $stream = $this->parser->getStream();
             $message = sprintf('Twig Test "%s" is deprecated', $test->getName());
+
             if (!\is_bool($test->getDeprecatedVersion())) {
                 $message .= sprintf(' since version %s', $test->getDeprecatedVersion());
             }
@@ -671,19 +656,15 @@ class ExpressionParser
                 $message .= sprintf('. Use "%s" instead', $test->getAlternative());
             }
             $src = $stream->getSourceContext();
-            $message .= sprintf(' in %s at line %d.', $src->getPath() ? $src->getPath() : $src->getName(), $stream->getCurrent()->getLine());
+            $message .= sprintf(' in %s at line %d.', $src->getPath() ?: $src->getName(), $stream->getCurrent()->getLine());
 
             @trigger_error($message, E_USER_DEPRECATED);
         }
 
-        if ($test instanceof TwigTest) {
-            return $test->getNodeClass();
-        }
-
-        return $test instanceof \Twig_Test_Node ? $test->getClass() : 'Twig\Node\Expression\TestExpression';
+        return $test->getNodeClass();
     }
 
-    protected function getFunctionNodeClass($name, $line)
+    private function getFunctionNodeClass($name, $line)
     {
         if (false === $function = $this->env->getFunction($name)) {
             $e = new SyntaxError(sprintf('Unknown "%s" function.', $name), $line, $this->parser->getStream()->getSourceContext());
@@ -692,7 +673,7 @@ class ExpressionParser
             throw $e;
         }
 
-        if ($function instanceof TwigFunction && $function->isDeprecated()) {
+        if ($function->isDeprecated()) {
             $message = sprintf('Twig Function "%s" is deprecated', $function->getName());
             if (!\is_bool($function->getDeprecatedVersion())) {
                 $message .= sprintf(' since version %s', $function->getDeprecatedVersion());
@@ -701,19 +682,15 @@ class ExpressionParser
                 $message .= sprintf('. Use "%s" instead', $function->getAlternative());
             }
             $src = $this->parser->getStream()->getSourceContext();
-            $message .= sprintf(' in %s at line %d.', $src->getPath() ? $src->getPath() : $src->getName(), $line);
+            $message .= sprintf(' in %s at line %d.', $src->getPath() ?: $src->getName(), $line);
 
             @trigger_error($message, E_USER_DEPRECATED);
         }
 
-        if ($function instanceof TwigFunction) {
-            return $function->getNodeClass();
-        }
-
-        return $function instanceof \Twig_Function_Node ? $function->getClass() : 'Twig\Node\Expression\FunctionExpression';
+        return $function->getNodeClass();
     }
 
-    protected function getFilterNodeClass($name, $line)
+    private function getFilterNodeClass($name, $line)
     {
         if (false === $filter = $this->env->getFilter($name)) {
             $e = new SyntaxError(sprintf('Unknown "%s" filter.', $name), $line, $this->parser->getStream()->getSourceContext());
@@ -722,7 +699,7 @@ class ExpressionParser
             throw $e;
         }
 
-        if ($filter instanceof TwigFilter && $filter->isDeprecated()) {
+        if ($filter->isDeprecated()) {
             $message = sprintf('Twig Filter "%s" is deprecated', $filter->getName());
             if (!\is_bool($filter->getDeprecatedVersion())) {
                 $message .= sprintf(' since version %s', $filter->getDeprecatedVersion());
@@ -731,20 +708,16 @@ class ExpressionParser
                 $message .= sprintf('. Use "%s" instead', $filter->getAlternative());
             }
             $src = $this->parser->getStream()->getSourceContext();
-            $message .= sprintf(' in %s at line %d.', $src->getPath() ? $src->getPath() : $src->getName(), $line);
+            $message .= sprintf(' in %s at line %d.', $src->getPath() ?: $src->getName(), $line);
 
             @trigger_error($message, E_USER_DEPRECATED);
         }
 
-        if ($filter instanceof TwigFilter) {
-            return $filter->getNodeClass();
-        }
-
-        return $filter instanceof \Twig_Filter_Node ? $filter->getClass() : 'Twig\Node\Expression\FilterExpression';
+        return $filter->getNodeClass();
     }
 
     // checks that the node only contains "constant" elements
-    protected function checkConstantExpression(\Twig_NodeInterface $node)
+    private function checkConstantExpression(Node $node)
     {
         if (!($node instanceof ConstantExpression || $node instanceof ArrayExpression
             || $node instanceof NegUnary || $node instanceof PosUnary

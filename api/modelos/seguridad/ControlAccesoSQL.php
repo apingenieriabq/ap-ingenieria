@@ -23,6 +23,16 @@ const DATOS_COMPLETOS = <<<sql
 
 sql;
 
+const DATOS_COMPLETOS_2 = <<<sql
+    SELECT
+    	MenuComponentes.*
+    FROM
+    	MenuOperaciones
+    LEFT JOIN MenuComponentes ON
+    	MenuComponentes.componenteID = MenuOperaciones.componenteID
+
+sql;
+
     const COMPONENTES_POR_USUARIO_Y_COMPONENTES = <<<sql
     SELECT
       MenuComponentes.*

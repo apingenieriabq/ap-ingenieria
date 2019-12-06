@@ -11,7 +11,6 @@
 
 namespace Twig\TokenParser;
 
-use Twig\Error\SyntaxError;
 use Twig\Node\Expression\AssignNameExpression;
 use Twig\Node\ImportNode;
 use Twig\Token;
@@ -20,10 +19,8 @@ use Twig\Token;
  * Imports macros.
  *
  *   {% from 'forms.html' import forms %}
- *
- * @final
  */
-class FromTokenParser extends AbstractTokenParser
+final class FromTokenParser extends AbstractTokenParser
 {
     public function parse(Token $token)
     {
@@ -33,30 +30,26 @@ class FromTokenParser extends AbstractTokenParser
 
         $targets = [];
         do {
-            $name = $stream->expect(Token::NAME_TYPE)->getValue();
+            $name = $stream->expect(/* Token::NAME_TYPE */ 5)->getValue();
 
             $alias = $name;
             if ($stream->nextIf('as')) {
-                $alias = $stream->expect(Token::NAME_TYPE)->getValue();
+                $alias = $stream->expect(/* Token::NAME_TYPE */ 5)->getValue();
             }
 
             $targets[$name] = $alias;
 
-            if (!$stream->nextIf(Token::PUNCTUATION_TYPE, ',')) {
+            if (!$stream->nextIf(/* Token::PUNCTUATION_TYPE */ 9, ',')) {
                 break;
             }
         } while (true);
 
-        $stream->expect(Token::BLOCK_END_TYPE);
+        $stream->expect(/* Token::BLOCK_END_TYPE */ 3);
 
         $node = new ImportNode($macro, new AssignNameExpression($this->parser->getVarName(), $token->getLine()), $token->getLine(), $this->getTag());
 
         foreach ($targets as $name => $alias) {
-            if ($this->parser->isReservedMacroName($name)) {
-                throw new SyntaxError(sprintf('"%s" cannot be an imported macro as it is a reserved keyword.', $name), $token->getLine(), $stream->getSourceContext());
-            }
-
-            $this->parser->addImportedSymbol('function', $alias, 'get'.$name, $node->getNode('var'));
+            $this->parser->addImportedSymbol('function', $alias, 'macro_'.$name, $node->getNode('var'));
         }
 
         return $node;

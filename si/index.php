@@ -1,4 +1,5 @@
 <?php
+// die('arrancamos el SI....');
 session_start();
 // print_r($_SESSION);
 include './config.php';

@@ -12,21 +12,13 @@
 namespace Twig\Extension {
 use Twig\TwigFunction;
 
-/**
- * @final
- */
-class StringLoaderExtension extends AbstractExtension
+final class StringLoaderExtension extends AbstractExtension
 {
     public function getFunctions()
     {
         return [
             new TwigFunction('template_from_string', 'twig_template_from_string', ['needs_environment' => true]),
         ];
-    }
-
-    public function getName()
-    {
-        return 'string_loader';
     }
 }
 

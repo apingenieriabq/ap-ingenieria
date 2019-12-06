@@ -15,10 +15,8 @@ use Twig\Profiler\Profile;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
- *
- * @final
  */
-class BlackfireDumper
+final class BlackfireDumper
 {
     public function dump(Profile $profile)
     {

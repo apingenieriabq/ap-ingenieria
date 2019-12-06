@@ -10,6 +10,7 @@
  */
 
 use Twig\Environment;
+use Twig\Loader\LoaderInterface;
 use Twig\Node\DeprecatedNode;
 use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FunctionExpression;
@@ -58,7 +59,7 @@ if (true) {
 EOF
         ];
 
-        $environment = new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock());
+        $environment = new Environment($this->getMockBuilder(LoaderInterface::class)->getMock());
         $environment->addFunction(new TwigFunction('foo', 'foo', []));
 
         $expr = new FunctionExpression('foo', new Node(), 1);

@@ -11,12 +11,13 @@
 
 use Twig\Compiler;
 use Twig\Environment;
+use Twig\Loader\LoaderInterface;
 
 class Twig_Tests_CompilerTest extends \PHPUnit\Framework\TestCase
 {
     public function testReprNumericValueWithLocale()
     {
-        $compiler = new Compiler(new Environment($this->getMockBuilder('\Twig\Loader\LoaderInterface')->getMock()));
+        $compiler = new Compiler(new Environment($this->getMockBuilder(LoaderInterface::class)->getMock()));
 
         $locale = setlocale(LC_NUMERIC, 0);
         if (false === $locale) {

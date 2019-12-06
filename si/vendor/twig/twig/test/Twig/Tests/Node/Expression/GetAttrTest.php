@@ -44,7 +44,8 @@ class Twig_Tests_Node_Expression_GetAttrTest extends NodeTestCase
         $tests[] = [$node, sprintf('%s%s, "bar", [])', $this->getAttributeGetter(), $this->getVariableGetter('foo', 1))];
 
         $node = new GetAttrExpression($expr, $attr, $args, Template::ARRAY_CALL, 1);
-        $tests[] = [$node, sprintf('%s%s, "bar", [], "array")', $this->getAttributeGetter(), $this->getVariableGetter('foo', 1))];
+        $tests[] = [$node, '(($__internal_%s = // line 1'."\n".
+            '($context["foo"] ?? null)) && is_array($__internal_%s) || $__internal_%s instanceof ArrayAccess ? ($__internal_%s["bar"] ?? null) : null)', null, true, ];
 
         $args = new ArrayExpression([], 1);
         $args->addElement(new NameExpression('foo', 1));

@@ -1,12 +1,7 @@
 <!doctype html>
 <html class="no-js" lang="es">
 <head>
-<?php if($_SERVER['SERVER_ADDR'] == '159.203.126.221'): ?>
-<base href="./" />
-<?php else: ?>
-  <base href="api/" />
-<?php endif; ?>  
-  
+  <!--<base href="api/" />-->
   
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
@@ -314,7 +309,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#99131313', e
               <h3>Cadena de Conexión via web</h3>
               <ul>
                 <li>
-                  <p><b>https://invitado:invitado@ap-ingenieria-puroingeniosamario.c9users.io/api/</b></p>
+                  <p><b>https://invitado:invitado@DOMINIO_SISTEMA/api/</b></p>
                 </li>
 
               </ul>
@@ -1275,6 +1270,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#99131313', e
   <!-- Javascript main files -->
   <script src="uix/basica/js/geo.js"></script>
   <script src="uix/basica/js/main.js"></script>
+  <script type="text/javascript" >
+      
+  $(document).on('ready', function() {
+  	obtenerGPS("latitud", "longitud", "mainpage");
+  });
+  </script>
 
 </body>
 </html>

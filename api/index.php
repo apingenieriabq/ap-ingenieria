@@ -2,7 +2,7 @@
 session_start();
 // session_destroy();
 // die();
-//$origin=isset($_SERVER['HTTP_ORIGIN'])?$_SERVER['HTTP_ORIGIN']:$_SERVER['HTTP_HOST'];
+$origin=isset($_SERVER['HTTP_ORIGIN'])?$_SERVER['HTTP_ORIGIN']:$_SERVER['HTTP_HOST'];
 // header('Content-Type: text/html; charset=utf-8');
 header('Access-Control-Allow-Origin: '.$origin);
 header('Access-Control-Allow-Credentials: true');
@@ -79,11 +79,11 @@ $app->map(['GET','POST'], '/{componente}/{controlador}/{operacion}', function ($
     return $response;
 })->add( new ControlAutenticacion() );
 
-// $app->map(['GET','POST'],'/conectar', function ($request, $response, $args) {
-//     return $response->write(
-//         RespuestasSistema::exito("Bienvenido al Api REST de la AP Ingenieria.", Usuario::sesionActiva() )
-//     );
-// })->add( new ControlAutenticacion() );
+$app->map(['GET','POST'],'/conectar', function ($request, $response, $args) {
+    return $response->write(
+        RespuestasSistema::exito("Bienvenido al Api REST de la AP Ingenieria.", Usuario::sesionActiva() )
+    );
+})->add( new ControlAutenticacion() );
 // $app->get('/sesionActiva', function ($request, $response, $args) {
 //     return $response->write(
 //         RespuestasSistema::exito("Sesion Activa por el Usuario Actual", SesionCliente::completa() )
@@ -97,9 +97,9 @@ $app->map(['GET','POST'], '/{componente}/{controlador}/{operacion}', function ($
 //     }
 //     return $response;
 // })->add( new ControlAutenticacion() );
-// $app->map(['GET','POST'],'/registrarUbicacion', function ($request, $response, $args) {
-//     return $response;
-// })->add( new ControlAutenticacion('GPS') );
+$app->map(['GET','POST'],'/registrarUbicacion', function ($request, $response, $args) {
+    return $response;
+})->add( new ControlAutenticacion('GPS') );
 $app->get('/desconectar', function ($request, $response, $args) {
     Usuario::cerrarSesion();
     return $response->write(

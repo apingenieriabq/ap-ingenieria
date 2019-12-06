@@ -14,9 +14,9 @@ $BD_AP_PRINCIPAL = new Medoo([
     // required
     'database_type' => 'mysql',
     'database_name' => 'apingeni_flat',
-    'server' => '192.185.163.35',
-    'username' => 'apingeni_flatadm',
-    'password' => 'UcG9AKYPcMjwFm9',
+    'server' => '159.203.126.221',
+    'username' => 'root',
+    'password' => 'Web2019*',
 
     // [optional]
     'charset' => 'utf8',
@@ -46,9 +46,9 @@ $BD_AP_LOGS = new Medoo([
     // required
     'database_type' => 'mysql',
     'database_name' => 'apingeni_logs',
-    'server' => '192.185.163.35',
-    'username' => 'apingeni_logs',
-    'password' => 'bs76hy2K3WgNgRu',
+    'server' => '159.203.126.221',
+    'username' => 'root',
+    'password' => 'Web2019*',
 
     // [optional]
     'charset' => 'utf8',

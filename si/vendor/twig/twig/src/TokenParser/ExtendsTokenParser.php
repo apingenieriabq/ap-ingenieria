@@ -19,10 +19,8 @@ use Twig\Token;
  * Extends a template by another one.
  *
  *  {% extends "base.html" %}
- *
- * @final
  */
-class ExtendsTokenParser extends AbstractTokenParser
+final class ExtendsTokenParser extends AbstractTokenParser
 {
     public function parse(Token $token)
     {
@@ -37,7 +35,7 @@ class ExtendsTokenParser extends AbstractTokenParser
         }
         $this->parser->setParent($this->parser->getExpressionParser()->parseExpression());
 
-        $stream->expect(Token::BLOCK_END_TYPE);
+        $stream->expect(/* Token::BLOCK_END_TYPE */ 3);
     }
 
     public function getTag()

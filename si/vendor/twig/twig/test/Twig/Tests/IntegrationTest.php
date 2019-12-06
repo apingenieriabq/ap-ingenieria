@@ -55,7 +55,7 @@ function test_foo($value = 'foo')
     return $value;
 }
 
-class TwigTestFoo implements Iterator
+class TwigTestFoo implements \Iterator
 {
     const BAR_NAME = 'bar';
 
@@ -162,6 +162,7 @@ class TwigTestExtension extends AbstractExtension
             new TwigFilter('magic_call_array', ['TwigTestExtension', 'magicStaticCall']),
             new TwigFilter('*_path', [$this, 'dynamic_path']),
             new TwigFilter('*_foo_*_bar', [$this, 'dynamic_foo']),
+            new TwigFilter('anon_foo', function ($name) { return '*'.$name.'*'; }),
         ];
     }
 
@@ -175,6 +176,7 @@ class TwigTestExtension extends AbstractExtension
             new TwigFunction('static_call_array', ['TwigTestExtension', 'staticCall']),
             new TwigFunction('*_path', [$this, 'dynamic_path']),
             new TwigFunction('*_foo_*_bar', [$this, 'dynamic_foo']),
+            new TwigFunction('anon_foo', function ($name) { return '*'.$name.'*'; }),
         ];
     }
 

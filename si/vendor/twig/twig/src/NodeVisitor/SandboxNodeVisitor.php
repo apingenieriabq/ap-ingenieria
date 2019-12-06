@@ -26,16 +26,14 @@ use Twig\Node\PrintNode;
 use Twig\Node\SetNode;
 
 /**
- * @final
- *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SandboxNodeVisitor extends AbstractNodeVisitor
+final class SandboxNodeVisitor extends AbstractNodeVisitor
 {
-    protected $inAModule = false;
-    protected $tags;
-    protected $filters;
-    protected $functions;
+    private $inAModule = false;
+    private $tags;
+    private $filters;
+    private $functions;
 
     private $needsToStringWrap = false;
 

@@ -19,17 +19,15 @@ use Twig\Token;
  * Imports macros.
  *
  *   {% import 'forms.html' as forms %}
- *
- * @final
  */
-class ImportTokenParser extends AbstractTokenParser
+final class ImportTokenParser extends AbstractTokenParser
 {
     public function parse(Token $token)
     {
         $macro = $this->parser->getExpressionParser()->parseExpression();
         $this->parser->getStream()->expect('as');
-        $var = new AssignNameExpression($this->parser->getStream()->expect(Token::NAME_TYPE)->getValue(), $token->getLine());
-        $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
+        $var = new AssignNameExpression($this->parser->getStream()->expect(/* Token::NAME_TYPE */ 5)->getValue(), $token->getLine());
+        $this->parser->getStream()->expect(/* Token::BLOCK_END_TYPE */ 3);
 
         $this->parser->addImportedSymbol('template', $var->getAttribute('name'));
 

@@ -41,9 +41,9 @@ class SeguridadControlador extends Controladores {
     $Respuesta = $Api->ejecutar(
       'seguridad', 'usuarios', 'verificarLoginCedulaColaborador'
       , [ 'personaIDENTIFICACION' => $this->cedulaDelColaborador, 'usuarioCLAVE' => $Clave]
-//      , false
+      // , false
     );
-//  print_r($Respuesta);
+  // print_r($Respuesta);
     if(!is_null($Respuesta)){
       if(is_object($Respuesta)){
         // var_dump($Respuesta);

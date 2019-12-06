@@ -20,6 +20,7 @@ use Twig\Node\Expression\FunctionExpression;
 use Twig\Node\Expression\GetAttrExpression;
 use Twig\Node\Expression\NameExpression;
 use Twig\Node\Expression\TestExpression;
+use Twig\Node\Node;
 
 /**
  * Checks if a variable is defined in the current context.
@@ -33,7 +34,7 @@ use Twig\Node\Expression\TestExpression;
  */
 class DefinedTest extends TestExpression
 {
-    public function __construct(\Twig_NodeInterface $node, $name, \Twig_NodeInterface $arguments = null, $lineno)
+    public function __construct(Node $node, $name, Node $arguments = null, $lineno)
     {
         if ($node instanceof NameExpression) {
             $node->setAttribute('is_defined_test', true);
@@ -53,8 +54,9 @@ class DefinedTest extends TestExpression
         parent::__construct($node, $name, $arguments, $lineno);
     }
 
-    protected function changeIgnoreStrictCheck(GetAttrExpression $node)
+    private function changeIgnoreStrictCheck(GetAttrExpression $node)
     {
+        $node->setAttribute('optimizable', false);
         $node->setAttribute('ignore_strict_check', true);
 
         if ($node->getNode('node') instanceof GetAttrExpression) {

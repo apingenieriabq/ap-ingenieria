@@ -24,17 +24,19 @@ use Twig\Token;
  *   {% endspaceless %}
  *   {# output will be <div><strong>foo</strong></div> #}
  *
- * @final
+ * @deprecated since Twig 2.7, to be removed in 3.0 (use the spaceless filter instead)
  */
-class SpacelessTokenParser extends AbstractTokenParser
+final class SpacelessTokenParser extends AbstractTokenParser
 {
     public function parse(Token $token)
     {
+        @trigger_error('The spaceless tag is deprecated since Twig 2.7, use the spaceless filter instead.', E_USER_DEPRECATED);
+
         $lineno = $token->getLine();
 
-        $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
+        $this->parser->getStream()->expect(/* Token::BLOCK_END_TYPE */ 3);
         $body = $this->parser->subparse([$this, 'decideSpacelessEnd'], true);
-        $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
+        $this->parser->getStream()->expect(/* Token::BLOCK_END_TYPE */ 3);
 
         return new SpacelessNode($body, $lineno, $this->getTag());
     }
