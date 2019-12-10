@@ -21,9 +21,16 @@ if (!defined('DIR_BASE')) {
 }
 if (!defined('URL_BASE')) {
   if(PRUEBAS == 'SI'){
-    define('URL_BASE', 'https://aria-ingllinasramirez108079.codeanyapp.com/si/');
+    define('URL_BASE', 'https://159.203.126.221/ap/si/');
   }else{
     define('URL_BASE', 'https://si.apingenieria.net/');
+  }
+}
+if (!defined('URL_SI')) {
+  if(PRUEBAS == 'SI'){
+    define('URL_SI', 'https://159.203.126.221/ap/si/');
+  }else{
+    define('URL_SI', 'https://si.apingenieria.net/');
   }
 }
 
@@ -81,9 +88,9 @@ if (!defined('DIR_API')) {
 }
 if (!defined('URL_API')) {
   if(PRUEBAS == 'SI'){
-    define('URL_API', 'https://aria-ingllinasramirez108079.codeanyapp.com/api/');
+    define('URL_API', 'https://159.203.126.221/ap/api/');
   }else{
-    define('URL_API', 'https://si.apingenieria.net/');
+    define('URL_API', 'https://api.apingenieria.net/');
   }
 }
 

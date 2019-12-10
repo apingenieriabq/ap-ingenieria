@@ -62,7 +62,7 @@ if (!defined('URL_API')) {
   if(PRUEBAS == 'SI'){
     define('URL_API', 'https://159.203.126.221/ap/api/');
   }else{
-    define('URL_API', 'https://si.apingenieria.net/');
+    define('URL_API', 'https://api.apingenieria.net/');
   }
 }
 
