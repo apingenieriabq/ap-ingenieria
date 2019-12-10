@@ -1,4 +1,5 @@
 <?php
+define('PRUEBAS', 'SI');
 
 error_reporting(E_ALL);
 ini_set('display_errors', true);
@@ -19,11 +20,11 @@ if (!defined('DIR_BASE')) {
     define('DIR_BASE', __DIR__.DS);
 }
 if (!defined('URL_BASE')) {
+  if(PRUEBAS == 'SI'){
+    define('URL_BASE', 'https://aria-ingllinasramirez108079.codeanyapp.com/si/');
+  }else{
     define('URL_BASE', 'https://si.apingenieria.net/');
-}
-
-if (!defined('DIR_API')) {
-    define('DIR_API', '../api/'.__DIR__.DS);
+  }
 }
 
 
@@ -74,5 +75,19 @@ spl_autoload_register(function ($nombre_clase) {
     }
 });
 //Main::start();
+
+if (!defined('DIR_API')) {
+    define('DIR_API', '../api/'.__DIR__.DS);
+}
+if (!defined('URL_API')) {
+  if(PRUEBAS == 'SI'){
+    define('URL_API', 'https://aria-ingllinasramirez108079.codeanyapp.com/api/');
+  }else{
+    define('URL_API', 'https://si.apingenieria.net/');
+  }
+}
+
+
 $Api = new APISAPI();
+
 $twig = Main::twigConfigPlantilla(DIR_PLANTILLAS);

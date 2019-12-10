@@ -42,7 +42,7 @@ class MenuOperaciones {
         return BasededatosAP::selectVariasFilas($sqlQuery, array($menuID));
     }
     public static function delMenu($menuID){
-        $sqlQuery = ControlAccesoSQL::DATOS_COMPLETOS_2
+        $sqlQuery = ControlAccesoSQL::DATOS_COMPLETOS
             .' WHERE MenuOperaciones.menuPADRE = ? AND MenuOperaciones.menuMENU = "SI" '
             .' ORDER BY MenuOperaciones.menuORDEN ' ;
         return BasededatosAP::selectVariasFilas($sqlQuery, array($menuID));

@@ -7,16 +7,36 @@ require DIR_API.'vendor/autoload.php';
 require DIR_API.'libs/autoload.php';
 require DIR_API.'libs/Motor.php';
 
-// Using Medoo namespace
+define('HOST_MYSQL', '192.185.163.35');
+define('BD_NAME_MYSQL', 'apingeni_flat');
+define('BD_USER_MYSQL', 'apingeni_flatadm');
+define('BD_PASSWORD_MYSQL', 'UcG9AKYPcMjwFm9');
+
+define('HOST_LOG_MYSQL', '192.185.163.35');
+define('BD_LOG_NAME_MYSQL', 'apingeni_logs');
+define('BD_USER_LOG_MYSQL', 'apingeni_logs');
+define('BD_PASSWORD_LOG_MYSQL', 'bs76hy2K3WgNgRu');
+
+// define('HOST_MYSQL', '159.203.126.221');
+// define('BD_NAME_MYSQL', 'apingeni_flat');
+// define('BD_USER_MYSQL', 'root');
+// define('BD_PASSWORD_MYSQL', 'Web2019*');
+
+// define('HOST_LOG_MYSQL', '159.203.126.221');
+// define('BD_LOG_NAME_MYSQL', 'apingeni_logs');
+// define('BD_USER_LOG_MYSQL', 'root');
+// define('BD_PASSWORD_LOG_MYSQL', 'Web2019*');
+
+
 use Medoo\Medoo;
 
 $BD_AP_PRINCIPAL = new Medoo([
     // required
     'database_type' => 'mysql',
-    'database_name' => 'apingeni_flat',
-    'server' => '159.203.126.221',
-    'username' => 'root',
-    'password' => 'Web2019*',
+    'database_name' => BD_NAME_MYSQL,
+    'server' => HOST_MYSQL,
+    'username' => BD_USER_MYSQL,
+    'password' => BD_PASSWORD_MYSQL,
 
     // [optional]
     'charset' => 'utf8',
@@ -42,13 +62,14 @@ $BD_AP_PRINCIPAL = new Medoo([
         'SET SQL_MODE=ANSI_QUOTES',
     ],
 ]);
+
 $BD_AP_LOGS = new Medoo([
     // required
     'database_type' => 'mysql',
-    'database_name' => 'apingeni_logs',
-    'server' => '159.203.126.221',
-    'username' => 'root',
-    'password' => 'Web2019*',
+    'database_name' => BD_LOG_NAME_MYSQL,
+    'server' => HOST_LOG_MYSQL,
+    'username' => BD_USER_LOG_MYSQL,
+    'password' => BD_PASSWORD_LOG_MYSQL,
 
     // [optional]
     'charset' => 'utf8',

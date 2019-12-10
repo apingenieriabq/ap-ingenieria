@@ -12,10 +12,10 @@ class BasededatosAP  extends PDO {
     public static $instanciaLog = null;
 
     private function bdWEBTIC() {
-        $this->HOST = '159.203.126.221';
-        $this->BD_NAME = 'apingeni_flat';
-        $this->BD_USER =  'root';
-        $this->BD_PASSWORD =  'Web2019*';
+        $this->HOST = HOST_MYSQL;
+        $this->BD_NAME = BD_NAME_MYSQL;
+        $this->BD_USER =  BD_USER_MYSQL;
+        $this->BD_PASSWORD =  BD_PASSWORD_MYSQL;
     }
 
     private function bdGoogle() {

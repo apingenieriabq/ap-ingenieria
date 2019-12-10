@@ -5,6 +5,7 @@
 //     header('Location: ' . $redirect);
 //     exit();
 // }
+define('PRUEBAS', 'SI');
 
 error_reporting(E_ALL);
 ini_set('display_errors', true);
@@ -36,19 +37,32 @@ if (!defined('DIR_BASE')) {
     define('DIR_BASE', __DIR__ . DS);
 }
 if (!defined('URL_BASE')) {
+  if(PRUEBAS == 'SI'){
+    define('URL_BASE', 'https://aria-ingllinasramirez108079.codeanyapp.com/');
+  }else{
     define('URL_BASE', 'https://apingenieria.net/');
+  }
 }
 if (!defined('DIR_SI')) {
     define('DIR_SI', DIR_BASE.'si/');
 }
 if (!defined('URL_SI')) {
-    define('URL_SI',  'https://si.apingenieria.net/');
+  if(PRUEBAS == 'SI'){
+    define('URL_SI', 'https://aria-ingllinasramirez108079.codeanyapp.com/si/');
+  }else{
+    define('URL_SI', 'https://si.apingenieria.net/');
+  }
 }
+
 if (!defined('DIR_API')) {
     define('DIR_API', DIR_BASE.'api/');
 }
 if (!defined('URL_API')) {
-    define('URL_API',  'https://api.apingenieria.net/');
+  if(PRUEBAS == 'SI'){
+    define('URL_API', 'https://aria-ingllinasramirez108079.codeanyapp.com/api/');
+  }else{
+    define('URL_API', 'https://si.apingenieria.net/');
+  }
 }
 
 if (!defined('DIR_CONTROLADORES')) {
@@ -65,6 +79,13 @@ if (!defined('DIR_COMPONENTES')) {
 }
 if (!defined('DIR_ARCHIVOS')) {
     define('DIR_ARCHIVOS', DIR_BASE.'archivo/');
+}
+if (!defined('URL_ARCHIVOS')) {
+  if(PRUEBAS == 'SI'){
+    define('URL_ARCHIVOS', 'https://aria-ingllinasramirez108079.codeanyapp.com/archivo/');
+  }else{
+    define('URL_ARCHIVOS', 'https://archivo.apingenieria.net/');
+  }
 }
 if (!defined('URL_ARCHIVOS')) {
     define('URL_ARCHIVOS',  'https://archivo.apingenieria.net/');

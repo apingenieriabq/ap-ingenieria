@@ -1,3 +1,4 @@
+<?php include 'config.php' ?>
 <!DOCTYPE HTML>
 <!--
         Alpha by HTML5 UP
@@ -60,20 +61,12 @@
         <script src="assets/js/main.js"></script>
 
         <script type="text/javascript">
-                            function abrirSIAPI() {
-                                <?php if( $_SERVER['HTTP_HOST'] == '3.134.89.216:8080'): ?>
-                                    window.open('http://3.134.89.216:8080/si/', 'SIAPI');
-                                <?php else: ?>
-                                    window.open('https://si.apingenieria.net/', 'SIAPI');
-                                <?php endif; ?>
-                            }
-                            function abrirAPIAPI() {
-                                <?php if($_SERVER['HTTP_HOST'] == '3.134.89.216:8080'): ?>
-                                window.open('http://3.134.89.216:8080/api/', 'APIAPI');
-                                <?php else: ?>
-                                window.open('https://api.apingenieria.net/', 'APIAPI');
-                                <?php endif; ?>
-                            }
+        function abrirSIAPI() {
+                window.open('<?=URL_SI?>', 'SIAPI');
+        }
+        function abrirAPIAPI() {
+            window.open('<?=URL_API?>', 'APIAPI');
+        }
         </script>
 
     </body>

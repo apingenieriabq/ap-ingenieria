@@ -85,10 +85,10 @@ class Main {
         $datos = $Api->ejecutar(
             'sistema','parametros','valores',
             array( 'parametrosCODIGOS' => array( 'LOGOAP_PNG', 'URL_PUBLICA') )
-            // , false
+//             , false
         );
-        // print_r($datos);
-        // die();
+//         print_r($datos);
+//         die();
 
 
         $Menu = null;

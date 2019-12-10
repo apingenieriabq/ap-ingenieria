@@ -71,6 +71,7 @@
             <span>{{ItemMenu.menuTITULO}}</span>
           </a>
           <div class="dropdown-menu dropdown-menu-small">
+  
             {% for SubItemMenu in ItemMenu.SubOperaciones %}
             <a class="dropdown-item " href="javascript:void(0);" data-modulo="{{SubItemMenu.menuCONTROLADOR}}" data-operacion="{{SubItemMenu.menuOPERACION}}"
                onclick="abrirItemMenu(this);" target="_self" >{{SubItemMenu.menuTITULO}}</a>
