@@ -5,6 +5,7 @@
 //     header('Location: ' . $redirect);
 //     exit();
 // }
+
 define('PRUEBAS', 'SI');
 
 error_reporting(E_ALL);
@@ -38,7 +39,7 @@ if (!defined('DIR_BASE')) {
 }
 if (!defined('URL_BASE')) {
   if(PRUEBAS == 'SI'){
-    define('URL_BASE', 'http://159.203.126.221/ap/');
+    define('URL_BASE', 'https://159.203.126.221/ap/');
   }else{
     define('URL_BASE', 'https://apingenieria.net/');
   }
@@ -48,7 +49,7 @@ if (!defined('DIR_SI')) {
 }
 if (!defined('URL_SI')) {
   if(PRUEBAS == 'SI'){
-    define('URL_SI', 'http://159.203.126.221/ap/si/');
+    define('URL_SI', 'https://159.203.126.221/ap/si/');
   }else{
     define('URL_SI', 'https://si.apingenieria.net/');
   }
@@ -59,7 +60,7 @@ if (!defined('DIR_API')) {
 }
 if (!defined('URL_API')) {
   if(PRUEBAS == 'SI'){
-    define('URL_API', 'http://159.203.126.221/ap/api/');
+    define('URL_API', 'https://159.203.126.221/ap/api/');
   }else{
     define('URL_API', 'https://si.apingenieria.net/');
   }

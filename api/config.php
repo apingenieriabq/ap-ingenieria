@@ -7,26 +7,40 @@ require DIR_API.'vendor/autoload.php';
 require DIR_API.'libs/autoload.php';
 require DIR_API.'libs/Motor.php';
 
-define('HOST_MYSQL', '192.185.163.35');
-define('BD_NAME_MYSQL', 'apingeni_flat');
-define('BD_USER_MYSQL', 'apingeni_flatadm');
-define('BD_PASSWORD_MYSQL', 'UcG9AKYPcMjwFm9');
-
-define('HOST_LOG_MYSQL', '192.185.163.35');
-define('BD_LOG_NAME_MYSQL', 'apingeni_logs');
-define('BD_USER_LOG_MYSQL', 'apingeni_logs');
-define('BD_PASSWORD_LOG_MYSQL', 'bs76hy2K3WgNgRu');
-
-// define('HOST_MYSQL', '159.203.126.221');
+// define('HOST_MYSQL', '192.185.163.35');
 // define('BD_NAME_MYSQL', 'apingeni_flat');
-// define('BD_USER_MYSQL', 'root');
-// define('BD_PASSWORD_MYSQL', 'Web2019*');
+// define('BD_USER_MYSQL', 'apingeni_flatadm');
+// define('BD_PASSWORD_MYSQL', 'UcG9AKYPcMjwFm9');
 
-// define('HOST_LOG_MYSQL', '159.203.126.221');
+// define('HOST_LOG_MYSQL', '192.185.163.35');
 // define('BD_LOG_NAME_MYSQL', 'apingeni_logs');
-// define('BD_USER_LOG_MYSQL', 'root');
-// define('BD_PASSWORD_LOG_MYSQL', 'Web2019*');
+// define('BD_USER_LOG_MYSQL', 'apingeni_logs');
+// define('BD_PASSWORD_LOG_MYSQL', 'bs76hy2K3WgNgRu');
+ if(PRUEBAS == 'SI'){
+   
+    define('HOST_MYSQL', '159.203.126.221');
+    define('BD_NAME_MYSQL', 'apingeni_flat');
+    define('BD_USER_MYSQL', 'root');
+    define('BD_PASSWORD_MYSQL', 'Web2019*');
 
+    define('HOST_LOG_MYSQL', '159.203.126.221');
+    define('BD_LOG_NAME_MYSQL', 'apingeni_logs');
+    define('BD_USER_LOG_MYSQL', 'root');
+    define('BD_PASSWORD_LOG_MYSQL', 'Web2019*');
+
+ }else{
+
+    define('HOST_MYSQL', '167.172.236.1');
+    define('BD_NAME_MYSQL', 'apingeni_flat');
+    define('BD_USER_MYSQL', 'root');
+    define('BD_PASSWORD_MYSQL', 'Ap2019*');
+
+    define('HOST_LOG_MYSQL', '167.172.236.1');
+    define('BD_LOG_NAME_MYSQL', 'apingeni_logs');
+    define('BD_USER_LOG_MYSQL', 'root');
+    define('BD_PASSWORD_LOG_MYSQL', 'Ap2019*');
+   
+}
 
 use Medoo\Medoo;
 
